@@ -1,0 +1,35 @@
+# Dependencies and package-manager output
+node_modules/
+.npm/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build, coverage, and tool caches
+coverage/
+Distribution/
+build/
+.cache/
+.astro/
+.expo/
+.turbo/
+*.tsbuildinfo
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Native and operating-system output
+android/.gradle/
+android/.idea/
+ios/Pods/
+.DS_Store
+Thumbs.db
+
+# Local browser artifacts
+*.har
+*.webm
+screenshots/

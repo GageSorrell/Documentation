@@ -1,0 +1,49 @@
+{
+  "name": "sorrell-documentation-monorepo",
+  "private": true,
+  "description": "The monorepo for documentation tooling used for products under the Sorrell brand.",
+  "author": {
+    "email": "gage@sorrell.sh",
+    "name": "Gage Sorrell",
+    "url": "https://sorrell.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GageSorrell/Documentation/tree/Master#ReadMe",
+    "directory": "."
+  },
+  "bugs": {
+    "url": "https://github.com/GageSorrell/Documentation/issues"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=24.0.0 <25.0.0",
+    "npm": ">=11.0.0"
+  },
+  "scripts": {
+    "check": "npm run lint && npm run typecheck && npm run typecheck --workspace @sorrell/docs-cli && npm test --workspace @sorrell/docs-cli && npm run build --workspace @sorrell/docs-cli",
+    "lint": "eslint --config Configuration/eslint.config.js .",
+    "typecheck": "tsc --project Configuration/tsconfig.base.json --noEmit --incremental false"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "3.3.6",
+    "@sorrell/eslint-config": "2.3.0",
+    "@sorrell/tsconfig": "2.1.0",
+    "@types/node": "22.20.3",
+    "eslint": "9.39.5",
+    "eslint-config-expo": "57.0.2",
+    "eslint-plugin-react-perf": "3.3.3",
+    "react": "19.2.3",
+    "typescript": "6.0.2" 
+  },
+  "workspaces": [
+    "./Application/*",
+    "./Documentation",
+    "./Package/*",
+    "./Script/*",
+    "./Website"
+  ],
+  "type": "module",
+  "version": "1.0.0",
+  "packageManager": "npm@11.0.0"
+}
