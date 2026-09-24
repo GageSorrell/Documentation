@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "Sorrell Storybook Demonstration",
+    "slug": "sorrell-demonstration-storybook",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "scheme": "sorrell-demonstration-storybook",
+    "platforms": ["ios", "android"],
+    "ios": {"supportsTablet": true},
+    "android": {"adaptiveIcon": {"backgroundColor": "#09090b"}},
+    "plugins": ["expo-dev-client"]
+  }
+}

@@ -1,0 +1,4 @@
+name: sorrell-docs-create-site
+description: Create and configure Sorrell documentation websites with sorrell-docs.
+invocation:
+  keywords: [create documentation site, initialize docs website]

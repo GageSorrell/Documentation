@@ -111,7 +111,8 @@ Android/iOS-compatible Effect-managed Expo and Storybook processes.
 
 Create the six canonical skill bundles, metadata, package them in
 `@sorrell/docs-skills`, and implement project/user scoped list/install/update/
-uninstall behavior with managed-collision protection.
+uninstall behavior with managed-collision protection for Codex (default) and
+Claude Code (`--agent claude`) install targets.
 
 ## Milestone 13 — Vercel Routing and Release Automation
 
@@ -123,11 +124,63 @@ routing publication, release manifests, exact revision/API/Storybook pairing,
 rollback to retained child deployments, validated redacted environment
 configuration, thin GitHub Actions, and bounded safe retries.
 
-## Milestone 14 — Final Documentation, Packaging, and Release Readiness
+## Milestone 14 — Agent-Readable Documentation Output
 
-Complete GFM documentation for the three-package workspace and Vercel routing,
-package-consumer tests, binary-manifest checks, cleanup, the full CI matrix,
-packed-artifact skill validation, generated-site and Expo consumer tests, and
-final `agent-browser` verification of `/`, `/docs`, versioned/API-reference
-paths, optional `/storybook`, desktop/tablet/mobile layouts, theme, search,
-Storybook, and accessibility scenarios.
+Add the shared `AgentDocument` model, agent-manifest and corpus schemas, and
+single formatter to `@sorrell/docs-core`. Replace the separate Copy for LLM
+models in `@sorrell/docs-ui` and `@sorrell/docs-api-reference` with them, and
+add declaration kind, `Added in` metadata, and source links to API-module
+documents. Add the `agent` configuration block, the web Storybook component
+manifest, and the agent-output build stage, which emits Markdown twins,
+per-version `llms.txt` and `llms-full.txt`, `agent/manifest.json`, and
+`agent/corpus/{version}.json`. Landing emits the root `/llms.txt`. Add
+`sorrell-docs agent build|verify`, noindex headers, and Pagefind and sitemap
+exclusion, and update the authoring and publishing skills. Gate: Copy for LLM
+text and Markdown twins are byte-identical, no JSX or raw HTML leaks into agent
+documents, repeated builds are deterministic, and a Vercel preview serves the
+agent files.
+
+## Milestone 15 — Generated Product Skills
+
+Generate the site's product skill (`SKILL.md` plus version-pinned
+`references/`) from the agent corpus, requiring an author-written
+`agent.description`. Add package-scoped `sorrell-docs agent skill`, publish
+skill directories and archives beneath the documentation prefix, and add
+`skills install --from`. Keep product skills out of `Skill` and
+`@sorrell/docs-skills`. Gate: generated skills pass the skill quick validator
+and install into Codex and Claude Code targets, and a behavioral fixture
+confirms that version-specific API questions route to the matching reference.
+
+## Milestone 16 — Hosted MCP Server
+
+Implement `@sorrell/docs-mcp` with `McpServer` and `Toolkit` from
+`effect/unstable/ai`, a build-time lexical search index, and the read-only
+`search_docs`, `get_document`, `get_api`, `list_versions`, `list_packages`, and
+`list_components` tools, with `Vercel` and `Stdio` entry modules. Validate the
+corpus and index at build time, then verify checksums and load versions on
+first use at runtime. Add `agent.mcp.enabled`, the normalized `mcpEndpoint`
+(`https://mcp.` plus the public host without a leading `www.`), and a
+no-store `{mcpEndpoint}/health` route that reports the release id and corpus
+checksum. Generate the optional `Mcp` application package as its own Vercel
+function project serving the root of the `mcp` subdomain, with no Landing
+rewrite and no `/mcp` route. Deployment adds the subdomain, reports DNS records
+when needed, verifies previews through their deployment URLs, and points the
+subdomain at the verified deployment through a Vercel alias before Landing. A
+bounded post-promotion health check must pass before Landing is published, and
+any failure restores the previous MCP and Landing deployments. Add
+`sorrell-docs agent mcp` over stdio and a local MCP port in `dev`. Gate: an MCP
+client completes initialization and tool calls against the preview deployment
+and, in an authorized test project, on the `mcp` subdomain; corpus-checksum
+mismatches block promotion; post-promotion failures roll back; and MCP-disabled
+sites omit the package, subdomain, and project.
+
+## Milestone 17 — Final Documentation, Packaging, and Release Readiness
+
+Complete GFM documentation for the generated workspace packages, Vercel
+routing, and agent access, package-consumer tests, binary-manifest checks,
+cleanup, the full CI matrix, packed-artifact skill validation, generated-site
+and Expo consumer tests, and final `agent-browser` verification of `/`,
+`/docs`, versioned/API-reference paths, optional `/storybook`,
+desktop/tablet/mobile layouts, theme, search, Storybook, and accessibility
+scenarios. Verify agent output, a generated product skill, and the MCP
+endpoint on the `mcp` subdomain.

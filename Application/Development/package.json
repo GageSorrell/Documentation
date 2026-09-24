@@ -16,5 +16,35 @@
     "url": "https://github.com/GageSorrell/Documentation/issues"
   },
   "type": "module",
-  "description": "The exhaustive workspace-source React Native Storybook application."
+  "description": "The exhaustive workspace-source React Native Storybook application.",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "expo start --dev-client",
+    "start": "expo start",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "export": "expo export --platform all",
+    "prebuild": "expo prebuild --no-install"
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "3.1.1",
+    "@sorrell/docs-react-native-storybook": "0.1.0",
+    "@gorhom/bottom-sheet": "5.2.14",
+    "@storybook/addon-ondevice-actions": "10.6.0",
+    "@storybook/addon-ondevice-controls": "10.6.0",
+    "@storybook/react-native": "10.6.0",
+    "storybook": "10.6.0",
+    "expo": "57.0.25",
+    "expo-dev-client": "57.0.19",
+    "expo-status-bar": "57.0.1",
+    "react": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-gesture-handler": "3.3.0",
+    "react-native-reanimated": "4.5.1",
+    "react-native-safe-area-context": "5.8.0"
+  },
+  "devDependencies": {
+    "@expo/metro-config": "57.0.12",
+    "@types/react": "19.3.0",
+    "typescript": "6.0.2"
+  }
 }

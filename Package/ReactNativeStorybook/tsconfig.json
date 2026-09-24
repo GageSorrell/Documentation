@@ -1,0 +1,14 @@
+{
+  "extends": "../../Configuration/tsconfig.base.json",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "jsx": "react-jsx",
+    "noEmit": false,
+    "outDir": "Distribution",
+    "rootDir": "Source",
+    "tsBuildInfoFile": "../../.cache/react-native-storybook.tsbuildinfo"
+  },
+  "include": ["Source/**/*.ts", "Source/**/*.tsx"]
+}

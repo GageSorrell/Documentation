@@ -1,0 +1,4 @@
+name: sorrell-docs-write-content
+description: Author versioned Markdown and MDX documentation for Sorrell sites.
+invocation:
+  keywords: [write documentation, author article]

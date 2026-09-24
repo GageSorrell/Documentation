@@ -1,3 +1,5 @@
+*&copy; 2026 Gage Sorrell.  Released under the [MIT license](./License.md).*
+
 # `@sorrell/docs-astro`
 
 Astro integration and route/content helpers for generated Sorrell documentation sites.

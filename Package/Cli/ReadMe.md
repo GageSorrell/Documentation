@@ -1,3 +1,5 @@
+*&copy; 2026 Gage Sorrell.  Released under the [MIT license](./License.md).*
+
 # `@sorrell/docs-cli`
 
 Shared Effect v4 runtime services for the Sorrell documentation tools.

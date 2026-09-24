@@ -24,6 +24,7 @@ const fileSystemFailure = (operation: string, path: string, cause: unknown) =>
 
 export class DocsFileSystem extends Context.Service<DocsFileSystem, {
     readonly exists: (path: string) => Effect.Effect<boolean, DocsFileSystemError>;
+    readonly isDirectory: (path: string) => Effect.Effect<boolean, DocsFileSystemError>;
     readonly makeDirectory: (path: string) => Effect.Effect<void, DocsFileSystemError>;
     readonly makeTempDirectoryScoped: (options?: {
         readonly directory?: string;
@@ -36,7 +37,7 @@ export class DocsFileSystem extends Context.Service<DocsFileSystem, {
     }) => Effect.Effect<string, DocsFileSystemError, Scope.Scope>;
     readonly readDirectory: (path: string) => Effect.Effect<ReadonlyArray<string>, DocsFileSystemError>;
     readonly readText: (path: string) => Effect.Effect<string, DocsFileSystemError>;
-    readonly remove: (path: string) => Effect.Effect<void, DocsFileSystemError>;
+    readonly remove: (path: string, options?: { readonly recursive?: boolean }) => Effect.Effect<void, DocsFileSystemError>;
     readonly rename: (from: string, to: string) => Effect.Effect<void, DocsFileSystemError>;
     readonly writeText: (path: string, content: string) => Effect.Effect<void, DocsFileSystemError>;
 }>()("sorrell/docs-cli/DocsFileSystem") {
@@ -48,6 +49,10 @@ export class DocsFileSystem extends Context.Service<DocsFileSystem, {
             return DocsFileSystem.of({
                 exists: (path) => fileSystem.exists(path).pipe(
                     Effect.mapError((cause) => fileSystemFailure("exists", path, cause))
+                ),
+                isDirectory: (path) => fileSystem.stat(path).pipe(
+                    Effect.map((info) => info.type === "Directory"),
+                    Effect.mapError((cause) => fileSystemFailure("isDirectory", path, cause))
                 ),
                 makeDirectory: (path) => fileSystem.makeDirectory(path, { recursive: true }).pipe(
                     Effect.mapError((cause) => fileSystemFailure("makeDirectory", path, cause))
@@ -64,7 +69,7 @@ export class DocsFileSystem extends Context.Service<DocsFileSystem, {
                 readText: (path) => fileSystem.readFileString(path).pipe(
                     Effect.mapError((cause) => fileSystemFailure("readText", path, cause))
                 ),
-                remove: (path) => fileSystem.remove(path, { force: true }).pipe(
+                remove: (path, options) => fileSystem.remove(path, { force: true, recursive: options?.recursive === true }).pipe(
                     Effect.mapError((cause) => fileSystemFailure("remove", path, cause))
                 ),
                 rename: (from, to) => fileSystem.rename(from, to).pipe(

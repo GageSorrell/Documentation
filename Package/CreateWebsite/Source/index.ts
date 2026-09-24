@@ -13,5 +13,8 @@ export * from "./Cli.js";
 export * from "./Build.js";
 export * from "./Deployment.js";
 export * from "./Generator.js";
+export * from "./NativeBuild.js";
+export * from "./NativeGenerator.js";
+export * from "./NativeTypes.js";
 export * from "./Routing.js";
 export * from "./Types.js";

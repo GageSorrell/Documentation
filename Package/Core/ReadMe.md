@@ -1,3 +1,5 @@
+*&copy; 2026 Gage Sorrell.  Released under the [MIT license](./License.md).*
+
 # `@sorrell/docs-core`
 
 Browser-safe Effect schemas, configuration normalization, diagnostics, and stable domain models for Sorrell documentation tooling.

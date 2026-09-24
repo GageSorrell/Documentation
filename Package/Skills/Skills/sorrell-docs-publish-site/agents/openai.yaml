@@ -1,0 +1,4 @@
+name: sorrell-docs-publish-site
+description: Build, verify, and publish Sorrell documentation websites safely.
+invocation:
+  keywords: [publish documentation site, deploy docs]

@@ -1,0 +1,7 @@
+name: sorrell-docs-author-native-stories
+description: Author native Storybook stories, examples, and articles with sorrell-docs.
+invocation:
+  keywords:
+    - write native story
+    - author Expo example
+    - write Storybook article

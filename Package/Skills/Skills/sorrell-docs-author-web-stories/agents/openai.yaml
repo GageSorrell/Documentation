@@ -1,0 +1,4 @@
+name: sorrell-docs-author-web-stories
+description: Author React stories and examples for Sorrell web Storybook.
+invocation:
+  keywords: [write web story, document component]

@@ -1,0 +1,7 @@
+name: sorrell-docs-create-story
+description: Create and operate Expo React Native Storybook applications with sorrell-docs.
+invocation:
+  keywords:
+    - create native Storybook
+    - create Expo Storybook
+    - initialize mobile component workbench

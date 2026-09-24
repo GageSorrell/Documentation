@@ -21,7 +21,7 @@
     "npm": ">=11.0.0"
   },
   "scripts": {
-    "check": "npm run lint && npm run typecheck && npm run typecheck --workspace @sorrell/docs-core && npm test --workspace @sorrell/docs-core && npm run build --workspace @sorrell/docs-core && npm run typecheck --workspace @sorrell/docs-cli && npm test --workspace @sorrell/docs-cli && npm run build --workspace @sorrell/docs-cli && npm run typecheck --workspace @sorrell/docs-ui && npm run build --workspace @sorrell/docs-ui && npm run typecheck --workspace @sorrell/docs-astro && npm run build --workspace @sorrell/docs-astro && npm run typecheck --workspace @sorrell/docs-api-reference && npm test --workspace @sorrell/docs-api-reference && npm run build --workspace @sorrell/docs-api-reference && npm run typecheck --workspace @sorrell/docs-create-website && npm test --workspace @sorrell/docs-create-website && npm run build --workspace @sorrell/docs-create-website && npm run typecheck --workspace @sorrell/docs-storybook-web && npm run build --workspace @sorrell/docs-storybook-web && npm run typecheck --workspace @sorrell/documentation && npm run build --workspace @sorrell/documentation && npm run typecheck --workspace @sorrell/website && npm run build --workspace @sorrell/website",
+    "check": "npm run lint && npm run typecheck && npm run typecheck --workspace @sorrell/docs-core && npm test --workspace @sorrell/docs-core && npm run build --workspace @sorrell/docs-core && npm run typecheck --workspace @sorrell/docs-cli && npm test --workspace @sorrell/docs-cli && npm run build --workspace @sorrell/docs-cli && npm run typecheck --workspace @sorrell/docs-ui && npm run build --workspace @sorrell/docs-ui && npm run typecheck --workspace @sorrell/docs-react-native-storybook && npm test --workspace @sorrell/docs-react-native-storybook && npm run build --workspace @sorrell/docs-react-native-storybook && npm run typecheck --workspace @sorrell/docs-astro && npm run build --workspace @sorrell/docs-astro && npm run typecheck --workspace @sorrell/docs-api-reference && npm test --workspace @sorrell/docs-api-reference && npm run build --workspace @sorrell/docs-api-reference && npm run typecheck --workspace @sorrell/docs-skills && npm test --workspace @sorrell/docs-skills && npm run build --workspace @sorrell/docs-skills && npm run typecheck --workspace @sorrell/docs-create-website && npm test --workspace @sorrell/docs-create-website && npm run build --workspace @sorrell/docs-create-website && npm run typecheck --workspace @sorrell/docs-storybook-web && npm run build --workspace @sorrell/docs-storybook-web && npm run typecheck --workspace @sorrell/application-development && npm run typecheck --workspace @sorrell/application-demonstration && npm run typecheck --workspace @sorrell/documentation && npm run build --workspace @sorrell/documentation && npm run typecheck --workspace @sorrell/website && npm run build --workspace @sorrell/website",
     "lint": "eslint --config Configuration/eslint.config.js .",
     "typecheck": "tsc --project Configuration/tsconfig.base.json --noEmit --incremental false"
   },
@@ -29,12 +29,14 @@
     "@eslint/eslintrc": "3.3.6",
     "@sorrell/eslint-config": "2.3.0",
     "@sorrell/tsconfig": "2.1.0",
+    "@storybook/react-vite": "10.6.0",
     "@types/node": "22.20.3",
     "eslint": "9.39.5",
     "eslint-config-expo": "57.0.2",
     "eslint-plugin-react-perf": "3.3.3",
     "react": "19.2.3",
-    "typescript": "6.0.2" 
+    "react-dom": "19.2.3",
+    "typescript": "6.0.2"
   },
   "workspaces": [
     "./Application/*",

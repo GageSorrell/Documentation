@@ -39,6 +39,7 @@
     "@effect/platform-node": "4.0.0-rc.117",
     "@sorrell/docs-cli": "0.1.0",
     "@sorrell/docs-core": "0.1.0",
+    "@sorrell/docs-skills": "0.1.0",
     "effect": "4.0.0-rc.117"
   },
   "devDependencies": {
