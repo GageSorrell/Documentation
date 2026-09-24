@@ -1,0 +1,48 @@
+{
+  "name": "@sorrell/docs-ui",
+  "version": "0.1.0",
+  "description": "Responsive React UI primitives and documentation shells for Sorrell documentation sites.",
+  "author": {
+    "name": "Gage Sorrell",
+    "email": "gage@sorrell.sh",
+    "url": "https://sorrell.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GageSorrell/Documentation/tree/Master#ReadMe",
+    "directory": "Package/Ui"
+  },
+  "bugs": {
+    "url": "https://github.com/GageSorrell/Documentation/issues"
+  },
+  "license": "MIT",
+  "private": false,
+  "type": "module",
+  "files": [
+    "Distribution",
+    "ReadMe.md"
+  ],
+  "main": "./Distribution/index.js",
+  "types": "./Distribution/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./Distribution/index.d.ts",
+      "import": "./Distribution/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "typecheck": "tsc --project tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=19.0.0"
+  },
+  "dependencies": {
+    "@sorrell/docs-core": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "react": "19.2.3"
+  }
+}

@@ -35,3 +35,41 @@ export class DocsProcessError extends Data.TaggedError("DocsProcessError")<{
     readonly stderr: string;
     readonly cause: unknown;
 }> {}
+
+export class DocsWorkspaceError extends Data.TaggedError("DocsWorkspaceError")<{
+    readonly operation: string;
+    readonly path: string;
+    readonly cause: unknown;
+}> {}
+
+export class DocsTargetError extends Data.TaggedError("DocsTargetError")<{
+    readonly target: string;
+    readonly reason: string;
+}> {}
+
+export class DocsTemplateError extends Data.TaggedError("DocsTemplateError")<{
+    readonly path: string;
+    readonly cause: unknown;
+}> {}
+
+export class DocsManifestError extends Data.TaggedError("DocsManifestError")<{
+    readonly path: string;
+    readonly cause: unknown;
+}> {}
+
+export class DocsIntegrationError extends Data.TaggedError("DocsIntegrationError")<{
+    readonly provider: "git" | "github" | "vercel";
+    readonly operation: string;
+    readonly cause: unknown;
+}> {}
+
+export class DocsArchiveError extends Data.TaggedError("DocsArchiveError")<{
+    readonly operation: string;
+    readonly path: string;
+    readonly cause: unknown;
+}> {}
+
+export class DocsStageError extends Data.TaggedError("DocsStageError")<{
+    readonly stage: string;
+    readonly cause: unknown;
+}> {}

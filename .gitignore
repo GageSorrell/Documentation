@@ -9,9 +9,12 @@ pnpm-debug.log*
 # Build, coverage, and tool caches
 coverage/
 Distribution/
+dist/
 build/
 .cache/
 .astro/
+.generated/
+Documentation/Source/data/
 .expo/
 .turbo/
 *.tsbuildinfo

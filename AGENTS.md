@@ -24,6 +24,7 @@ handing off repository changes.
 | `Script` | Private packages and repository automation. Directory names are PascalCase. |
 | `Skill` | Installable AI skill source bundles, one PascalCase directory per skill. |
 | `Website` | Web-package development sandbox; it is not the published documentation site. |
+| `Storybook` | Independent web Storybook application for `@sorrell/docs-storybook-web`, built at `/storybook/`. |
 
 ## Documentation files
 
@@ -47,12 +48,14 @@ explicitly required by the website or Storybook pipeline.
 ## Workspace and package rules
 
 The root workspace includes `Application/*`, `Documentation`, `Package/*`,
-`Script/*`, and `Website`. Only the two reserved public executable names may
-be exposed: `sorrell-docs` and `sorrell-storybook`. Published packages use the
+`Script/*`, `Storybook`, and `Website`. Only the reserved public executable name
+`sorrell-docs` may be exposed. Published packages use the
 `@sorrell/docs-` prefix and publish compiled output plus declarations.
 Use PascalCase for module path segments, including `@module` documentation
 names, such as `@sorrell/docs-cli/Services` and
-`@sorrell/docs-cli/Test/RuntimeTest`.
+`@sorrell/docs-cli/Test/RuntimeTest`. Conventional entrypoint files are the
+exception: files such as `index.ts`, `index.tsx`, and `index.js` must keep
+their lowercase `index` name rather than being renamed to `Index`.
 
 Keep the normative plan at `Documentation/ImplementationPlan.md` and the
 ordered gates at `Documentation/DevelopmentMilestones.md`. `Local` is working

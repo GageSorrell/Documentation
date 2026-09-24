@@ -16,5 +16,21 @@
     "url": "https://github.com/GageSorrell/Documentation/issues"
   },
   "type": "module",
-  "description": "The web-package development sandbox."
+  "description": "The web-package development sandbox.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc --project tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@sorrell/docs-ui": "0.1.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.1",
+    "vite": "8.3.0"
+  }
 }

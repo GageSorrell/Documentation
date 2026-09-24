@@ -1,0 +1,15 @@
+{
+  "extends": "../Configuration/tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
+    "moduleResolution": "NodeNext",
+    "noEmit": true,
+    "paths": {
+      "@sorrell/docs-ui": ["../Package/Ui/Source/index.ts"]
+    },
+    "types": ["vite/client"]
+  },
+  "include": ["Source/**/*.ts", "Source/**/*.tsx", "vite.config.ts"]
+}

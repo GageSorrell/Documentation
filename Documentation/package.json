@@ -16,5 +16,24 @@
     "url": "https://github.com/GageSorrell/Documentation/issues"
   },
   "type": "module",
-  "description": "The published dogfood documentation site."
+  "description": "The published dogfood documentation site.",
+  "scripts": {
+    "api:generate": "node GenerateApi.mjs",
+    "build": "npm run api:generate && astro build && pagefind --site dist --output-path dist/pagefind",
+    "dev": "npm run api:generate && astro dev",
+    "preview": "astro preview",
+    "typecheck": "npm run api:generate && astro check"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "8.0.2",
+    "@pagefind/default-ui": "1.5.2",
+    "@sorrell/docs-api-reference": "0.1.0",
+    "@sorrell/docs-astro": "0.1.0",
+    "@sorrell/docs-core": "0.1.0",
+    "astro": "7.3.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.4",
+    "pagefind": "1.5.2"
+  }
 }

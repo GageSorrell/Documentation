@@ -1,0 +1,18 @@
+---
+title: Authoring a component story
+description: A short MDX article fixture for the independent Storybook site.
+---
+
+import { Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import * as ShowcaseCardStories from "./ShowcaseCard.stories";
+
+<Meta title="Guides/Authoring a component story" />
+
+# Authoring a component story
+
+Storybook keeps component behavior close to the documentation that explains it.
+The fixture below demonstrates Docs blocks, Autodocs, and the shared theme surface.
+
+<Canvas of={ShowcaseCardStories.Default} />
+
+<Controls of={ShowcaseCardStories.Default} />

@@ -1,0 +1,24 @@
+---
+import { getCollection, render } from "astro:content";
+import { documentationSlug, docsPath, visibleDocumentationPages } from "@sorrell/docs-astro";
+import DocsLayout from "../layouts/DocsLayout.astro";
+
+const entries = await getCollection("documentation", ({ data }) => !data.draft);
+const indexEntry = entries.find((entry) => entry.id === "index");
+if (indexEntry === undefined) { throw new Error("Documentation requires Source/content/docs/index.md"); }
+const { Content, headings } = await render(indexEntry);
+const pages = visibleDocumentationPages(entries.map((entry) => ({ ...entry.data, id: entry.id, slug: documentationSlug(entry.id) })));
+const copyText = `# ${indexEntry.data.title}\n\nURL: ${new URL(docsPath("/docs"), "https://sorrell.sh").toString()}\n\n${indexEntry.body}`;
+---
+
+<DocsLayout
+    canonicalPath={docsPath("/docs")}
+    copyText={copyText}
+    description={indexEntry.data.description}
+    headings={headings}
+    pages={pages}
+    slug=""
+    title={indexEntry.data.title}
+>
+    <Content />
+</DocsLayout>

@@ -1,0 +1,211 @@
+---
+import { canonicalUrl, docsPath, docsVersionPath } from "@sorrell/docs-astro";
+import { docsUiCss } from "@sorrell/docs-ui";
+import { documentationVersions } from "../Versions.js";
+
+interface PageSummary {
+    readonly description: string;
+    readonly group: string;
+    readonly id: string;
+    readonly slug: string;
+    readonly title: string;
+}
+
+interface Heading {
+    readonly depth: number;
+    readonly slug: string;
+    readonly text: string;
+}
+
+interface Props {
+    readonly canonicalPath: string;
+    readonly copyText: string;
+    readonly description: string;
+    readonly headings: ReadonlyArray<Heading>;
+    readonly pages: ReadonlyArray<PageSummary>;
+    readonly slug: string;
+    readonly title: string;
+    readonly version?: string | undefined;
+}
+
+const { canonicalPath, copyText, description, headings, pages, slug, title, version } = Astro.props;
+const prefix = "/docs";
+const groups = [ ...new Set(pages.map((page) => page.group)) ];
+const canonical = canonicalUrl("https://sorrell.sh", canonicalPath);
+const pageHref = (page: PageSummary): string => {
+    const pageSlug = page.id === "index" ? "" : page.slug;
+    return version === undefined ? docsPath(prefix, pageSlug) : docsVersionPath(prefix, version, pageSlug);
+};
+const versionHref = (versionId: string): string => versionId === "current"
+    ? docsPath(prefix, slug)
+    : docsVersionPath(prefix, versionId, slug);
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="description" content={description} />
+        <meta property="og:description" content={description} />
+        <meta property="og:title" content={`${title} · Sorrell Documentation`} />
+        <meta property="og:type" content="article" />
+        <link rel="canonical" href={canonical} />
+        <title>{title} · Sorrell Documentation</title>
+    </head>
+    <body>
+        <div class="docs-site">
+            <header class="docs-topbar">
+                <a class="docs-brand" href="/" aria-label="Sorrell Documentation home">Sorrell Docs</a>
+                <nav class="docs-topnav" aria-label="Primary navigation">
+                    <a href={docsPath(prefix)} aria-current={canonicalPath === docsPath(prefix) ? "page" : undefined}>Docs</a>
+                    <a href={docsPath(prefix, "architecture")}>Concepts</a>
+                    <a href={docsPath(prefix, "search")}>Search</a>
+                </nav>
+                <nav class="docs-version-nav" aria-label="Documentation versions">
+                    {documentationVersions.map((item) => <a
+                        aria-current={(version === item.id || (version === undefined && item.id === "current")) ? "page" : undefined}
+                        href={versionHref(item.id)}
+                    >{item.label}</a>)}
+                </nav>
+                <button class="docs-theme-toggle" type="button" data-theme-toggle aria-label="Toggle color theme">◐</button>
+            </header>
+            <div class="docs-layout">
+                <aside class="docs-sidebar" aria-label="Documentation navigation">
+                    <div class="docs-sidebar-label">CONTENTS</div>
+                    {groups.map((group) => <section class="docs-nav-group">
+                        <h2>{group}</h2>
+                        <ul>
+                            {pages.filter((page) => page.group === group).map((page) => <li>
+                                <a href={pageHref(page)}>{page.title}</a>
+                            </li>)}
+                        </ul>
+                    </section>)}
+                </aside>
+                <main class="docs-main" id="main-content">
+                    <nav class="docs-breadcrumbs" aria-label="Breadcrumb">
+                        <a href={docsPath(prefix)}>DOCS</a>
+                        <span>/</span>
+                        <span>{title}</span>
+                    </nav>
+                    <div class="docs-heading-row">
+                        <div>
+                            <p class="docs-eyebrow">SORRELL DOCUMENTATION</p>
+                            <h1>{title}</h1>
+                        </div>
+                        <button class="docs-copy-button" type="button" data-copy-llm data-copy-text={copyText}>Copy for LLM</button>
+                    </div>
+                    <p class="docs-lede">{description}</p>
+                    <article class="docs-prose" data-pagefind-body>
+                        <slot />
+                    </article>
+                    <nav class="docs-previous-next" aria-label="Page navigation">
+                        {(() => {
+                            const currentIndex = pages.findIndex((page) => pageHref(page) === canonicalPath);
+                            const previous = currentIndex > 0 ? pages[currentIndex - 1] : undefined;
+                            const next = currentIndex >= 0 && currentIndex < pages.length - 1 ? pages[currentIndex + 1] : undefined;
+                            return <>
+                                {previous ? <a href={pageHref(previous)}><small>Previous</small><strong>{previous.title}</strong></a> : <span />}
+                                {next ? <a class="next" href={pageHref(next)}><small>Next</small><strong>{next.title}</strong></a> : <span />}
+                            </>;
+                        })()}
+                    </nav>
+                </main>
+                <aside class="docs-toc" aria-label="On this page">
+                    <strong>On this page</strong>
+                    <ul>
+                        {headings.filter((heading) => heading.depth === 2).map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}
+                    </ul>
+                </aside>
+            </div>
+            <footer class="docs-footer">Built for readable, durable documentation.</footer>
+        </div>
+    </body>
+</html>
+
+<style is:global set:html={docsUiCss}></style>
+<style is:global>
+    :root { color-scheme: dark; }
+    [data-theme="light"] { color-scheme: light; }
+    body { margin: 0; }
+    .docs-topbar { align-items: center; border-bottom: 1px solid var(--docs-border); display: flex; gap: 2rem; min-height: 68px; padding: 0 2rem; }
+    .docs-brand { color: var(--docs-foreground); font-size: 1.25rem; font-weight: 750; letter-spacing: -0.04em; text-decoration: none; }
+    .docs-topnav { display: flex; flex: 1; gap: 1.5rem; }
+    .docs-topnav a, .docs-theme-toggle { color: var(--docs-muted); font: inherit; text-decoration: none; }
+    .docs-topnav a:hover, .docs-topnav a[aria-current="page"] { color: var(--docs-foreground); }
+    .docs-version-nav { border: 1px solid var(--docs-border); border-radius: .5rem; display: flex; gap: .2rem; padding: .2rem; }
+    .docs-version-nav a { border-radius: .3rem; color: var(--docs-muted); font-size: .8rem; padding: .3rem .5rem; text-decoration: none; }
+    .docs-version-nav a:hover, .docs-version-nav a[aria-current="page"] { background: var(--docs-code-background); color: var(--docs-foreground); }
+    .docs-theme-toggle { background: transparent; border: 1px solid var(--docs-border); border-radius: 999px; cursor: pointer; padding: .45rem .7rem; }
+    .docs-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr) 220px; margin: 0 auto; max-width: 1480px; min-height: calc(100vh - 120px); }
+    .docs-sidebar, .docs-toc { padding: 3rem 1.5rem; }
+    .docs-sidebar { border-right: 1px solid var(--docs-border); }
+    .docs-toc { border-left: 1px solid var(--docs-border); }
+    .docs-sidebar-label, .docs-eyebrow { color: var(--docs-accent); font-size: .72rem; font-weight: 700; letter-spacing: .14em; }
+    .docs-nav-group { margin-top: 2rem; }
+    .docs-nav-group h2 { color: var(--docs-foreground); font-size: .9rem; margin: 0 0 .65rem; }
+    .docs-nav-group ul, .docs-toc ul { list-style: none; margin: 0; padding: 0; }
+    .docs-nav-group li { margin: .35rem 0; }
+    .docs-nav-group a, .docs-toc a { color: var(--docs-muted); font-size: .9rem; text-decoration: none; }
+    .docs-nav-group a:hover, .docs-toc a:hover { color: var(--docs-foreground); }
+    .docs-main { min-width: 0; padding: 4.5rem clamp(1.5rem, 6vw, 6rem); }
+    .docs-breadcrumbs { color: var(--docs-muted); display: flex; font-size: .72rem; gap: .7rem; letter-spacing: .13em; margin-bottom: 2rem; text-transform: uppercase; }
+    .docs-breadcrumbs a { color: var(--docs-accent); text-decoration: none; }
+    .docs-heading-row { align-items: start; display: flex; gap: 2rem; justify-content: space-between; }
+    .docs-heading-row h1 { color: var(--docs-foreground); font-size: clamp(2.4rem, 6vw, 4.5rem); letter-spacing: -.065em; line-height: 1; margin: .5rem 0 0; }
+    .docs-copy-button { background: var(--docs-foreground); border: 0; border-radius: 999px; color: var(--docs-background); cursor: pointer; font-weight: 700; padding: .75rem 1rem; white-space: nowrap; }
+    .docs-copy-button[data-copied="true"] { background: var(--docs-accent); color: var(--docs-background); }
+    .docs-lede { color: var(--docs-muted); font-size: 1.15rem; line-height: 1.65; margin: 1.25rem 0 3rem; max-width: 48rem; }
+    .docs-prose { color: var(--docs-foreground); font-size: 1.05rem; line-height: 1.75; max-width: 48rem; }
+    .docs-prose h2 { font-size: 2rem; letter-spacing: -.04em; margin: 3.5rem 0 1rem; }
+    .docs-prose h3 { font-size: 1.35rem; margin: 2.25rem 0 .75rem; }
+    .docs-prose a { color: var(--docs-accent); }
+    .docs-prose blockquote { border-left: 3px solid var(--docs-accent); color: var(--docs-muted); margin: 2rem 0; padding-left: 1.25rem; }
+    .docs-prose code { background: var(--docs-code-background); border-radius: .35rem; padding: .12rem .3rem; }
+    .docs-prose pre { background: var(--docs-code-background); border: 1px solid var(--docs-border); border-radius: .75rem; overflow-x: auto; padding: 1rem; }
+    .docs-prose pre code { background: transparent; padding: 0; }
+    .docs-previous-next { border-top: 1px solid var(--docs-border); display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; margin-top: 5rem; padding-top: 1.5rem; }
+    .docs-previous-next a { color: var(--docs-foreground); display: flex; flex-direction: column; gap: .35rem; text-decoration: none; }
+    .docs-previous-next a.next { align-items: end; text-align: right; }
+    .docs-previous-next small { color: var(--docs-muted); }
+    .docs-toc strong { color: var(--docs-foreground); }
+    .docs-toc ul { border-top: 1px solid var(--docs-border); margin-top: 1rem; padding-top: 1rem; }
+    .docs-toc li { margin: .7rem 0; }
+    .docs-footer { border-top: 1px solid var(--docs-border); color: var(--docs-muted); font-size: .85rem; padding: 1.5rem 2rem; text-align: center; }
+    @media (max-width: 1000px) { .docs-layout { grid-template-columns: 200px minmax(0, 1fr); } .docs-toc { display: none; } }
+    @media (max-width: 700px) { .docs-topbar { gap: 1rem; padding: 0 1rem; } .docs-topnav { gap: .8rem; } .docs-topnav a:nth-child(2) { display: none; } .docs-version-nav { margin-left: auto; } .docs-layout { display: block; } .docs-sidebar { border-bottom: 1px solid var(--docs-border); border-right: 0; padding: 1rem; } .docs-nav-group { display: inline-block; margin: .6rem 1rem .2rem 0; vertical-align: top; } .docs-nav-group ul { display: none; } .docs-main { padding: 2.5rem 1rem; } .docs-heading-row { display: block; } .docs-copy-button { margin-top: 1.5rem; } }
+</style>
+
+<script is:inline>
+    const themeKey = "sorrell-docs-theme";
+    const applyTheme = (theme) => {
+        document.documentElement.dataset.theme = theme;
+        localStorage.setItem(themeKey, theme);
+    };
+    const storedTheme = localStorage.getItem(themeKey);
+    if (storedTheme === "light" || storedTheme === "dark") { applyTheme(storedTheme); }
+    document.querySelector("[data-theme-toggle]")?.addEventListener("click", () => {
+        applyTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light");
+    });
+    document.querySelectorAll("[data-copy-llm]").forEach((button) => {
+        button.addEventListener("click", async () => {
+            const text = button.dataset.copyText ?? "";
+            try {
+                await navigator.clipboard.writeText(text);
+            } catch {
+                const area = document.createElement("textarea");
+                area.value = text;
+                document.body.appendChild(area);
+                area.select();
+                document.execCommand("copy");
+                area.remove();
+            }
+            button.dataset.copied = "true";
+            button.textContent = "Copied";
+            window.setTimeout(() => {
+                button.dataset.copied = "false";
+                button.textContent = "Copy for LLM";
+            }, 1600);
+        });
+    });
+</script>

@@ -36,6 +36,15 @@ export default defineConfig(
         ignores: [ "**/.next/**" ]
     },
     {
+        /* Astro generates this directory during type generation. */
+        ignores: [ "**/.astro/**" ]
+    },
+    {
+        /* EffectWebsite is a cloned external reference project. Its tooling
+           and formatting policy are intentionally independent of this repo. */
+        ignores: [ "**/EffectWebsite/**" ]
+    },
+    {
         /* ESLint ignores dot-directories by default (`.rnstorybook`,
            `.expo`, ...). `.rnstorybook/stories/*` and its `main.ts`/
            `preview.tsx` are hand-written source, not generated output, so
@@ -157,6 +166,59 @@ export default defineConfig(
             "@stylistic/max-len": "off",
             "@typescript-eslint/consistent-type-imports": "off",
             "@typescript-eslint/typedef": "off",
+            "jsdoc/require-file-overview": "off",
+            "jsdoc/require-jsdoc": "off",
+            "sort-imports": "off",
+            "sort-keys": "off"
+        }
+    },
+    {
+        files: [ "**/Website/**/*.ts", "**/Website/**/*.tsx" ],
+        rules:
+        {
+            "@stylistic/max-len": "off",
+            "@typescript-eslint/typedef": "off",
+            "import/no-unresolved": "off",
+            "jsdoc/no-blank-blocks": "off",
+            "jsdoc/require-description": "off",
+            "jsdoc/require-file-overview": "off",
+            "jsdoc/require-jsdoc": "off",
+            "sort-imports": "off",
+            "sort-keys": "off"
+        }
+    },
+    {
+        /* Storybook configuration and fixture applications are consumer-side
+           integration code, not published API source. */
+        files: [ "**/Storybook/**/*.ts", "**/Storybook/**/*.tsx" ],
+        rules:
+        {
+            "@stylistic/brace-style": "off",
+            "@stylistic/jsx-curly-spacing": "off",
+            "@stylistic/max-len": "off",
+            "@stylistic/jsx-max-props-per-line": "off",
+            "@typescript-eslint/typedef": "off",
+            "import/no-unresolved": "off",
+            "jsdoc/require-description": "off",
+            "jsdoc/require-file-overview": "off",
+            "jsdoc/require-jsdoc": "off",
+            "react-perf/jsx-no-new-array-as-prop": "off",
+            "react-perf/jsx-no-new-function-as-prop": "off",
+            "react-perf/jsx-no-new-object-as-prop": "off",
+            "sort-imports": "off",
+            "sort-keys": "off"
+        }
+    },
+    {
+        /* Astro application configuration and generated-content type shims are
+           framework boundaries rather than published API source. */
+        files: [ "**/Documentation/**/*.ts", "**/Documentation/**/*.tsx" ],
+        rules:
+        {
+            "@stylistic/brace-style": "off",
+            "@typescript-eslint/consistent-type-imports": "off",
+            "@typescript-eslint/typedef": "off",
+            "import/no-unresolved": "off",
             "jsdoc/require-file-overview": "off",
             "jsdoc/require-jsdoc": "off",
             "sort-imports": "off",

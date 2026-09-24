@@ -1,0 +1,43 @@
+---
+import { getCollection, render } from "astro:content";
+import { documentationSlug, docsPath, docsVersionPath, visibleDocumentationPages } from "@sorrell/docs-astro";
+import DocsLayout from "../layouts/DocsLayout.astro";
+import { documentationVersions } from "../Versions.js";
+
+export async function getStaticPaths() {
+    const entries = await getCollection("documentation", ({ data }) => !data.draft);
+    const currentPaths = entries.filter((entry) => entry.id !== "index").map((entry) => ({
+        params: { slug: documentationSlug(entry.id) },
+        props: { entry, version: undefined }
+    }));
+    const versionedPaths = documentationVersions.filter(({ id }) => id !== "current").flatMap(({ id }) => entries.map((entry) => {
+        const slug = documentationSlug(entry.id);
+        return {
+            params: { slug: slug === "" ? id : `${id}/${slug}` },
+            props: { entry, version: id }
+        };
+    }));
+    return [ ...currentPaths, ...versionedPaths ];
+}
+
+const { entry, version } = Astro.props;
+const { Content, headings } = await render(entry);
+const entries = await getCollection("documentation", ({ data }) => !data.draft);
+const pages = visibleDocumentationPages(entries.map((item) => ({ ...item.data, id: item.id, slug: documentationSlug(item.id) })));
+const slug = documentationSlug(entry.id);
+const canonicalPath = version === undefined ? docsPath("/docs", slug) : docsVersionPath("/docs", version, slug);
+const copyText = `# ${entry.data.title}\n\nURL: ${new URL(canonicalPath, "https://sorrell.sh").toString()}\n\n${entry.body}`;
+---
+
+<DocsLayout
+    canonicalPath={canonicalPath}
+    copyText={copyText}
+    description={entry.data.description}
+    headings={headings}
+    pages={pages}
+    slug={slug}
+    title={entry.data.title}
+    version={version}
+>
+    <Content />
+</DocsLayout>

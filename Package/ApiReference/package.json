@@ -1,0 +1,45 @@
+{
+  "name": "@sorrell/docs-api-reference",
+  "version": "0.1.0",
+  "description": "Programmatic TypeDoc generation, validation, and snapshots for Sorrell API references.",
+  "author": {
+    "name": "Gage Sorrell",
+    "email": "gage@sorrell.sh",
+    "url": "https://sorrell.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GageSorrell/Documentation/tree/Master#ReadMe",
+    "directory": "Package/ApiReference"
+  },
+  "bugs": {
+    "url": "https://github.com/GageSorrell/Documentation/issues"
+  },
+  "license": "MIT",
+  "private": false,
+  "type": "module",
+  "files": ["Distribution", "ReadMe.md"],
+  "main": "./Distribution/index.js",
+  "types": "./Distribution/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./Distribution/index.d.ts",
+      "import": "./Distribution/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "test": "vitest run",
+    "typecheck": "tsc --project tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@sorrell/docs-core": "0.1.0",
+    "effect": "4.0.0-rc.117",
+    "typedoc": "0.28.20"
+  },
+  "devDependencies": {
+    "@effect/vitest": "4.0.0-rc.117",
+    "@types/node": "22.20.3",
+    "vitest": "5.0.1"
+  }
+}

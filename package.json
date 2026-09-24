@@ -21,7 +21,7 @@
     "npm": ">=11.0.0"
   },
   "scripts": {
-    "check": "npm run lint && npm run typecheck && npm run typecheck --workspace @sorrell/docs-cli && npm test --workspace @sorrell/docs-cli && npm run build --workspace @sorrell/docs-cli",
+    "check": "npm run lint && npm run typecheck && npm run typecheck --workspace @sorrell/docs-core && npm test --workspace @sorrell/docs-core && npm run build --workspace @sorrell/docs-core && npm run typecheck --workspace @sorrell/docs-cli && npm test --workspace @sorrell/docs-cli && npm run build --workspace @sorrell/docs-cli && npm run typecheck --workspace @sorrell/docs-ui && npm run build --workspace @sorrell/docs-ui && npm run typecheck --workspace @sorrell/docs-astro && npm run build --workspace @sorrell/docs-astro && npm run typecheck --workspace @sorrell/docs-api-reference && npm test --workspace @sorrell/docs-api-reference && npm run build --workspace @sorrell/docs-api-reference && npm run typecheck --workspace @sorrell/docs-create-website && npm test --workspace @sorrell/docs-create-website && npm run build --workspace @sorrell/docs-create-website && npm run typecheck --workspace @sorrell/docs-storybook-web && npm run build --workspace @sorrell/docs-storybook-web && npm run typecheck --workspace @sorrell/documentation && npm run build --workspace @sorrell/documentation && npm run typecheck --workspace @sorrell/website && npm run build --workspace @sorrell/website",
     "lint": "eslint --config Configuration/eslint.config.js .",
     "typecheck": "tsc --project Configuration/tsconfig.base.json --noEmit --incremental false"
   },
@@ -41,6 +41,7 @@
     "./Documentation",
     "./Package/*",
     "./Script/*",
+    "./Storybook",
     "./Website"
   ],
   "type": "module",

@@ -1,0 +1,14 @@
+{
+  "extends": "../../Configuration/tsconfig.base.json",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "noEmit": false,
+    "types": ["node"],
+    "outDir": "Distribution",
+    "rootDir": "Source",
+    "tsBuildInfoFile": "../../.cache/api-reference.tsbuildinfo"
+  },
+  "include": ["Source/**/*.ts"]
+}

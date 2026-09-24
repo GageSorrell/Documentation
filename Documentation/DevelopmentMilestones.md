@@ -39,8 +39,9 @@ failures.
 Implement `@sorrell/docs-core` with schemas, normalization, diagnostics,
 navigation/content/API/generated-project models, including API-reference
 breadcrumbs, categories, export counts, introduction versions, source records,
-and stable links, plus deterministic theme fixtures without Node-only imports
-in browser consumers.
+stable links, normalized route prefixes, Vercel project maps, and release
+manifests, plus deterministic theme fixtures without Node-only imports in
+browser consumers.
 
 ## Milestone 4 — Effect Automation Services
 
@@ -62,14 +63,16 @@ clipboard fallback behavior, and accessibility with `agent-browser`.
 Implement `@sorrell/docs-astro`, content collections, Markdown/MDX processing,
 routes, versions, redirects, permalinks, highlighting, search metadata,
 canonical/OG metadata, 404 handling, Pagefind, top-of-content `Copy for LLM`
-integration for articles, and the initial `Documentation` dogfood site.
+integration for articles, and the initial `Documentation` dogfood application
+mounted at the normalized documentation prefix, defaulting to `/docs`.
 
-## Milestone 7 — Web Storybook at `/storybook`
+## Milestone 7 — Independent Web Storybook at `/storybook`
 
-Implement `@sorrell/docs-storybook-web` with React/Vite, Docs, Autodocs,
-controls, themes, prop inference, development shell, production routing, and
-representative story/example/article fixtures. Verify theme synchronization and
-all nested `/storybook/` assets with `agent-browser`.
+Implement `@sorrell/docs-storybook-web` as an independent React/Vite
+application package with Docs, Autodocs, controls, themes, prop inference,
+development routing, production base-path configuration, and representative
+story/example/article fixtures. Verify theme synchronization and all nested
+`/storybook/` assets with `agent-browser`.
 
 ## Milestone 8 — API Reference and Snapshot Pipeline
 
@@ -82,12 +85,15 @@ export counts, introduction metadata, GitHub source links, declaration kind
 badges, signature copy controls, stable anchors, and the `On this page` table
 of contents.
 
-## Milestone 9 — `sorrell-docs` CLI and Website Generator
+## Milestone 9 — `sorrell-docs` CLI and Three-Package Website Generator
 
-Implement `@sorrell/docs-create-website` and its website, content, Storybook,
-native Storybook, API, development, build, and verify commands with
-prompt/non-interactive parity, staged validation, atomic promotion, and
-interruption cleanup.
+Implement `@sorrell/docs-create-website` and generate `Landing`,
+`Documentation`, and optional `Storybook` workspace packages with matching
+base paths, package manifests, Vercel project metadata, deployment manifests,
+route-aware links, native Storybook, API, development, build, and verify
+commands with prompt/non-interactive parity, staged validation, atomic
+promotion, and interruption cleanup. Storybook-disabled projects omit the
+Storybook package, route, dependency, and deployment configuration.
 
 ## Milestone 10 — React Native Storybook Library
 
@@ -107,15 +113,21 @@ Create the six canonical skill bundles, metadata, package them in
 `@sorrell/docs-skills`, and implement project/user scoped list/install/update/
 uninstall behavior with managed-collision protection.
 
-## Milestone 13 — Vercel and Release Automation
+## Milestone 13 — Vercel Routing and Release Automation
 
-Add normal and snapshot Vercel configuration, deploy commands, validated
-redacted environment configuration, thin GitHub Actions, exact revision/API/
-Storybook pairing, and bounded safe retries.
+Add normal and snapshot Vercel configuration for independent Landing,
+Documentation, and optional Storybook projects. Generate Landing-owned rewrites
+for `/docs` and `/storybook`, including nested paths, assets, redirects, and
+configurable route prefixes. Implement child-first deployment, Landing-last
+routing publication, release manifests, exact revision/API/Storybook pairing,
+rollback to retained child deployments, validated redacted environment
+configuration, thin GitHub Actions, and bounded safe retries.
 
 ## Milestone 14 — Final Documentation, Packaging, and Release Readiness
 
-Complete GFM documentation, package-consumer tests, binary-manifest checks,
-cleanup, the full CI matrix, packed-artifact skill validation, generated-site
-and Expo consumer tests, and final `agent-browser` desktop/tablet/mobile,
-theme, search, Storybook, and accessibility scenarios.
+Complete GFM documentation for the three-package workspace and Vercel routing,
+package-consumer tests, binary-manifest checks, cleanup, the full CI matrix,
+packed-artifact skill validation, generated-site and Expo consumer tests, and
+final `agent-browser` verification of `/`, `/docs`, versioned/API-reference
+paths, optional `/storybook`, desktop/tablet/mobile layouts, theme, search,
+Storybook, and accessibility scenarios.

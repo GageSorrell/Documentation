@@ -1,0 +1,21 @@
+{
+  "extends": "../Configuration/tsconfig.base.json",
+  "compilerOptions": {
+    "allowJs": false,
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
+    "jsx": "react-jsx",
+    "moduleResolution": "NodeNext",
+    "noEmit": true,
+    "types": ["vite/client"]
+  },
+  "include": [
+    ".storybook/**/*.ts",
+    ".storybook/**/*.tsx",
+    "Source/**/*.ts",
+    "Source/**/*.tsx",
+    "Stories/**/*.mdx",
+    "Stories/**/*.ts",
+    "Stories/**/*.tsx"
+  ]
+}

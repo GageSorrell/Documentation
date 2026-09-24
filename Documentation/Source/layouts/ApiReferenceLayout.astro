@@ -1,0 +1,145 @@
+---
+import type { ApiReferenceRecord } from "@sorrell/docs-core";
+import { recordToLlmDocument } from "@sorrell/docs-api-reference";
+import { canonicalUrl, docsPath } from "@sorrell/docs-astro";
+import { docsUiCss } from "@sorrell/docs-ui";
+
+interface Props {
+    readonly record: ApiReferenceRecord;
+}
+
+const { record } = Astro.props as Props;
+const document = recordToLlmDocument(record);
+const copyText = [ `# ${document.title}`, `Context: ${document.context}`, `URL: ${new URL(Astro.url.pathname, "https://sorrell.sh").toString()}`, "", document.content ].join("\n");
+const canonicalPath = Astro.url.pathname;
+const canonical = canonicalUrl("https://sorrell.sh", canonicalPath);
+const sourceHref = (source: ApiReferenceRecord["source"]): string | undefined => source === undefined ? undefined : `${source.repositoryUrl}/blob/${source.revision}/${source.file}${source.line === undefined ? "" : `#L${source.line}`}`;
+const declarationsFor = (categoryId: string) => record.declarations.filter((declaration) => declaration.categoryId === categoryId);
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="description" content={record.summary} />
+        <meta property="og:description" content={record.summary} />
+        <meta property="og:title" content={`${record.displayName} · API Reference`} />
+        <link rel="canonical" href={canonical} />
+        <title>{record.displayName} · API Reference</title>
+    </head>
+    <body>
+        <div class="docs-site docs-api-site">
+            <header class="docs-header">
+                <a class="docs-brand" href="/" aria-label="Sorrell Documentation home">Sorrell Docs</a>
+                <nav class="docs-header-nav" aria-label="Primary navigation">
+                    <a href={docsPath("/docs")}>Docs</a>
+                    <a href={docsPath("/docs", "api")} aria-current="page">Reference</a>
+                    <a href="/storybook/">Storybook</a>
+                </nav>
+                <div class="docs-header-actions">
+                    <a class="docs-search-button" href={docsPath("/docs", "search")} aria-label="Search documentation">⌕ <span>Search</span></a>
+                    <button class="docs-theme-toggle" type="button" data-theme-toggle aria-label="Toggle color theme">◐</button>
+                </div>
+            </header>
+            <div class="docs-api-page">
+                <aside class="docs-sidebar" aria-label="API reference navigation">
+                    <div class="docs-sidebar-label">API REFERENCE</div>
+                    <h2 class="docs-api-package">{record.packageName}</h2>
+                    <p class="docs-api-version">{record.version}</p>
+                    {record.categories.map((category) => <section class="docs-sidebar-group">
+                        <h3>{category.label}<span aria-hidden="true">⌃</span></h3>
+                        <ul class="docs-nav-items">
+                            {declarationsFor(category.id).map((declaration) => <li><a href={`#${declaration.id}`}>{declaration.name}</a></li>)}
+                        </ul>
+                    </section>)}
+                </aside>
+                <main class="docs-api-main" id="main-content">
+                    <nav class="docs-breadcrumbs" aria-label="Breadcrumb">
+                        {record.breadcrumbs.map((breadcrumb, index) => <>
+                            {index === 0 ? null : <span class="docs-breadcrumb-separator">/</span>}
+                            {breadcrumb.current || breadcrumb.href === undefined ? <span>{breadcrumb.label}</span> : <a href={breadcrumb.href}>{breadcrumb.label}</a>}
+                        </>)}
+                    </nav>
+                    <div class="docs-api-heading-row">
+                        <div>
+                            <p class="docs-eyebrow">API REFERENCE</p>
+                            <h1>{record.displayName}</h1>
+                            <p>{record.summary}</p>
+                        </div>
+                        <button class="docs-copy-button" type="button" data-copy-llm data-copy-text={copyText}>Copy for LLM</button>
+                    </div>
+                    <div class="docs-api-meta">
+                        <span>{record.exportCount} exports</span>
+                        {record.introductionVersion === undefined ? null : <span>Added in {record.introductionVersion}</span>}
+                        {sourceHref(record.source) === undefined ? null : <a href={sourceHref(record.source)} rel="noreferrer">◉ Source ↗</a>}
+                    </div>
+                    {record.categories.map((category) => <section class="docs-api-category" id={`category-${category.id}`}>
+                        <h2>{category.label}</h2>
+                        {declarationsFor(category.id).map((declaration) => <article class="docs-api-declaration" id={declaration.id}>
+                            <div class="docs-declaration-heading">
+                                <h3>{declaration.name}<span class="docs-kind-badge">{declaration.kind.toUpperCase()}</span></h3>
+                                <div class="docs-declaration-links">
+                                    {declaration.introductionVersion === undefined ? null : <span>Added in {declaration.introductionVersion}</span>}
+                                    {sourceHref(declaration.source) === undefined ? null : <a href={sourceHref(declaration.source)} rel="noreferrer">Source ↗</a>}
+                                    <a href={`#${declaration.id}`}>#</a>
+                                </div>
+                            </div>
+                            <p>{declaration.description}</p>
+                            <h4>Signature</h4>
+                            <div class="docs-signature-row">
+                                <pre><code>{declaration.signature}</code></pre>
+                                <button class="docs-signature-copy" type="button" data-copy-signature={declaration.signature}>Copy</button>
+                            </div>
+                        </article>)}
+                    </section>)}
+                </main>
+                <aside class="docs-toc" aria-label="On this page">
+                    <strong>On this page</strong>
+                    <ul class="docs-nav-items">
+                        {record.categories.map((category) => <li><a href={`#category-${category.id}`}>{category.label}</a>
+                            <ul>{declarationsFor(category.id).map((declaration) => <li><a href={`#${declaration.id}`}>{declaration.name}</a></li>)}</ul>
+                        </li>)}
+                    </ul>
+                </aside>
+            </div>
+            <footer class="docs-footer">Generated from TypeDoc source comments.</footer>
+        </div>
+    </body>
+</html>
+
+<style is:global set:html={docsUiCss}></style>
+<style is:global>
+    :root { color-scheme: dark; }
+    [data-theme="light"] { color-scheme: light; }
+    body { margin: 0; }
+    .docs-api-site { min-height: 100vh; }
+    .docs-api-package { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 1.1rem; margin: 1.8rem 0 .3rem; overflow-wrap: anywhere; }
+    .docs-api-version { color: var(--docs-muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85rem; margin: 0; }
+    .docs-sidebar-group { margin-top: 2rem; }
+    .docs-sidebar-group h3 { align-items: center; display: flex; font-size: .95rem; justify-content: space-between; margin: 0 0 .6rem; }
+    .docs-sidebar-group h3 span { color: var(--docs-muted); }
+    .docs-api-main { max-width: 1050px; }
+    .docs-api-main > .docs-breadcrumbs { margin-top: 34px; }
+    .docs-api-meta { align-items: center; color: var(--docs-muted); display: flex; flex-wrap: wrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; gap: 24px; margin: 28px 0 62px; }
+    .docs-api-meta a, .docs-declaration-links a { color: var(--docs-accent); }
+    .docs-signature-row { align-items: start; display: flex; gap: 10px; }
+    .docs-signature-row pre { flex: 1; min-width: 0; }
+    .docs-signature-copy { background: transparent; border: 1px solid var(--docs-border); border-radius: 6px; color: var(--docs-muted); cursor: pointer; padding: 7px 9px; }
+    .docs-signature-copy:hover, .docs-signature-copy:focus-visible { border-color: var(--docs-accent); color: var(--docs-foreground); }
+    .docs-toc .docs-nav-items ul { list-style: none; margin: .5rem 0 0; padding-left: 1rem; }
+    @media (max-width: 780px) { .docs-signature-row { display: block; } .docs-signature-copy { margin-top: 6px; } }
+</style>
+
+<script is:inline>
+    const themeKey = "sorrell-docs-theme";
+    const applyTheme = (theme) => { document.documentElement.dataset.theme = theme; localStorage.setItem(themeKey, theme); };
+    const storedTheme = localStorage.getItem(themeKey);
+    if (storedTheme === "light" || storedTheme === "dark") applyTheme(storedTheme);
+    document.querySelector("[data-theme-toggle]")?.addEventListener("click", () => applyTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light"));
+    const copy = async (text) => {
+        try { await navigator.clipboard.writeText(text); } catch { const area = document.createElement("textarea"); area.value = text; document.body.appendChild(area); area.select(); document.execCommand("copy"); area.remove(); }
+    };
+    document.querySelectorAll("[data-copy-llm]").forEach((button) => button.addEventListener("click", async () => { await copy(button.dataset.copyText ?? ""); button.dataset.copied = "true"; button.textContent = "Copied"; window.setTimeout(() => { button.dataset.copied = "false"; button.textContent = "Copy for LLM"; }, 1600); }));
+    document.querySelectorAll("[data-copy-signature]").forEach((button) => button.addEventListener("click", async () => { await copy(button.dataset.copySignature ?? ""); button.textContent = "Copied"; window.setTimeout(() => { button.textContent = "Copy"; }, 1600); }));
+</script>
