@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       release:
-        description: Optional release id from the target Releases directory
+        description: Optional Vercel deployment ID or URL to restore
         required: false
         type: string
 
@@ -13,13 +13,13 @@ permissions:
 
 jobs:
   rollback:
-    name: Restore an exact release manifest
+    name: Roll back Documentation
     runs-on: ubuntu-latest
     environment: production
     env:
-      SORRELL_DOCS_TARGET: ${{ vars.SORRELL_DOCS_TARGET || '.' }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -32,7 +32,10 @@ jobs:
         run: npm ci
       - name: Install pinned Vercel CLI
         run: npm install --global vercel@48.10.2
-      - name: Build CLI
-        run: npm run build:website-cli
-      - name: Roll back Landing to the recorded release
-        run: node Package/CreateWebsite/Distribution/bin.js deploy rollback ${{ inputs.release }} --target "$SORRELL_DOCS_TARGET"
+      - name: Roll back Documentation deployment
+        run: |
+          if [ -n "${{ inputs.release }}" ]; then
+            vercel rollback "${{ inputs.release }}" --token="$VERCEL_TOKEN" --scope="$VERCEL_ORG_ID" --yes
+          else
+            vercel rollback --token="$VERCEL_TOKEN" --scope="$VERCEL_ORG_ID" --yes
+          fi
