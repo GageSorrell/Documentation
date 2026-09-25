@@ -1,9 +1,9 @@
 ---
 import type { ApiReferenceRecord } from "@sorrell/docs-core";
 import { recordToAgentDocument } from "@sorrell/docs-api-reference";
-import { formatAgentDocument } from "@sorrell/docs-core";
+import { DefaultDesignTokens, formatAgentDocument } from "@sorrell/docs-core";
 import { canonicalUrl, docsPath } from "@sorrell/docs-astro";
-import { docsUiCss } from "@sorrell/docs-ui";
+import { createThemeCss, docsUiCss } from "@sorrell/docs-ui";
 
 interface Props
 {
@@ -112,6 +112,7 @@ const declarationsFor = (categoryId: string) => record.declarations.filter((decl
 </html>
 
 <style is:global set:html={docsUiCss}></style>
+<style is:global set:html={createThemeCss(DefaultDesignTokens)}></style>
 <style is:global>
     :root { color-scheme: dark; }
     [data-theme="light"] { color-scheme: light; }

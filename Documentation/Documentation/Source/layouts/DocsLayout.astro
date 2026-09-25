@@ -1,6 +1,7 @@
 ---
 import { canonicalUrl, docsPath, docsVersionPath } from "@sorrell/docs-astro";
-import { docsUiCss } from "@sorrell/docs-ui";
+import { DefaultDesignTokens } from "@sorrell/docs-core";
+import { createThemeCss, docsUiCss } from "@sorrell/docs-ui";
 import { documentationVersions } from "../Versions.js";
 
 interface PageSummary
@@ -128,6 +129,7 @@ const versionHref = (versionId: string): string => versionId === "current"
 </html>
 
 <style is:global set:html={docsUiCss}></style>
+<style is:global set:html={createThemeCss(DefaultDesignTokens)}></style>
 <style is:global>
     :root { color-scheme: dark; }
     [data-theme="light"] { color-scheme: light; }
