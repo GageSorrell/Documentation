@@ -28,6 +28,6 @@ jobs:
       - name: Install pinned Vercel CLI
         run: npm install --global vercel@48.10.2
       - name: Build CLI
-        run: npm run build --workspace @sorrell/docs-create-website
+        run: npm run build:website-cli
       - name: Publish preview
         run: node Package/CreateWebsite/Distribution/bin.js deploy preview --target "$SORRELL_DOCS_TARGET"

@@ -13,8 +13,6 @@ jobs:
   snapshot:
     name: Generate and validate API snapshot
     runs-on: ubuntu-latest
-    env:
-      SORRELL_DOCS_TARGET: ${{ vars.SORRELL_DOCS_TARGET || '.' }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -26,8 +24,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build CLI
-        run: npm run build --workspace @sorrell/docs-create-website
+        run: npm run build:website-cli
       - name: Generate API snapshot
-        run: node Package/CreateWebsite/Distribution/bin.js api snapshot --target "$SORRELL_DOCS_TARGET"
+        run: npm run api:generate --workspace @sorrell/documentation
       - name: Validate API snapshot
-        run: node Package/CreateWebsite/Distribution/bin.js api validate --target "$SORRELL_DOCS_TARGET"
+        run: >
+          node --input-type=module -e "import { readFile } from 'node:fs/promises';
+          import { assertValidApiDataset } from '@sorrell/docs-api-reference';
+          const path = 'Documentation/Source/data/ApiReference.json';
+          assertValidApiDataset(JSON.parse(await readFile(path, 'utf8')));
+          console.log('API snapshot is valid.');"
