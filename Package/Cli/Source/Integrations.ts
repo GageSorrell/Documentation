@@ -1,6 +1,4 @@
 /**
- *
- *
  * @module @sorrell/docs-cli/Integrations
  *
  * @file      Integrations.ts
@@ -19,18 +17,21 @@ import {
 } from "./errors.js";
 
 /** @internal */
-export interface GitStatus {
+export interface GitStatus
+{
     readonly clean: boolean;
     readonly output: string;
 }
 /** @internal */
-export interface VercelDeploymentResult {
+export interface VercelDeploymentResult
+{
     readonly deploymentId: string;
     readonly url: string;
     readonly raw: string;
 }
 /** @internal */
-export interface VercelDeploymentInspection {
+export interface VercelDeploymentInspection
+{
     readonly deploymentId: string;
     readonly url: string;
     readonly state:

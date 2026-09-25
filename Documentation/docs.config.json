@@ -118,7 +118,7 @@
         "project": "sorrell-documentation-landing"
       },
       "documentation": {
-        "project": "sorrell-documentation"
+        "project": "documentation"
       },
       "storybook": {
         "project": "sorrell-documentation-storybook"
