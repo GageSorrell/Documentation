@@ -476,6 +476,15 @@ const promoteWebsite = (
     Effect.gen(function* ()
     {
         const vercel = yield* VercelService;
+        yield* vercel.promote(
+            manifest.deployments.documentation.deploymentId
+        );
+        if (manifest.deployments.storybook !== undefined)
+        {
+            yield* vercel.promote(
+                manifest.deployments.storybook.deploymentId
+            );
+        }
         if (manifest.deployments.mcp !== undefined)
         {
             if (manifest.mcpEndpoint !== undefined)
@@ -562,7 +571,6 @@ const rollbackWebsite = (
 > =>
     Effect.gen(function* ()
     {
-        const vercel = yield* VercelService;
         const writer = yield* AtomicWriter;
         const fileSystem = yield* DocsFileSystem;
         const path = yield* DocsPath;
@@ -584,18 +592,7 @@ const rollbackWebsite = (
             `${selectedId}.json`
         );
         const selected = yield* readManifest(fileSystem, selectedPath);
-        if (selected.deployments.mcp !== undefined)
-        {
-            if (selected.mcpEndpoint !== undefined)
-            {
-                yield* vercel.alias(
-                    selected.deployments.mcp.deploymentId,
-                    new URL(selected.mcpEndpoint).host
-                );
-            }
-            yield* vercel.promote(selected.deployments.mcp.deploymentId);
-        }
-        yield* vercel.promote(selected.deployments.landing.deploymentId);
+        yield* promoteWebsite(selected);
         yield* writer.writeText(
             activePath,
             `${JSON.stringify(selected, null, 2)}\n`

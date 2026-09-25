@@ -9,7 +9,6 @@
 
 import { defineConfig } from "astro/config";
 import { fileURLToPath } from "node:url";
-// eslint-disable-next-line import/no-unresolved -- declared in the Landing package dependencies
 import tailwindcss from "@tailwindcss/vite";
 
 /**

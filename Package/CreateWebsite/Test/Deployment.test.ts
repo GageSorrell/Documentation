@@ -21,6 +21,7 @@ import { Effect, Layer } from "effect";
 import {
     type WebsiteReleaseManifest,
     deployWebsite,
+    promoteWebsite,
     rollbackWebsite,
     verifyWebsiteDeployment,
     writeReleaseManifest
@@ -57,6 +58,65 @@ const manifest = (
 });
 describe("website deployment orchestration", () =>
 {
+    it("promotes every child deployment before Landing", async () =>
+    {
+        const base = manifest("release-1", "https://landing.vercel.app");
+        const release: WebsiteReleaseManifest = {
+            ...base,
+            deployments: {
+                ...base.deployments,
+                mcp: {
+                    deploymentId: "release-1-mcp",
+                    project: "mcp",
+                    url: "https://mcp.vercel.app"
+                },
+                storybook: {
+                    deploymentId: "release-1-storybook",
+                    project: "storybook",
+                    url: "https://storybook.vercel.app"
+                }
+            },
+            mcpEndpoint: "https://mcp.docs.sorrell.sh"
+        };
+        const events: Array<string> = [];
+        const layer = Layer.succeed(
+            VercelService,
+            VercelService.of({
+                alias: (deployment: string, alias: string) =>
+                    Effect.sync(() =>
+                    {
+                        events.push(`alias:${deployment}:${alias}`);
+                    }),
+                deploy: () => Effect.die("unused"),
+                inspect: (deployment: string) =>
+                    Effect.succeed({
+                        deploymentId: deployment,
+                        raw: "ready",
+                        state: "READY" as const,
+                        url: deployment
+                    }),
+                promote: (deployment: string) =>
+                    Effect.sync(() =>
+                    {
+                        events.push(`promote:${deployment}`);
+                    }),
+                remove: () => Effect.void,
+                rollback: () => Effect.void
+            })
+        );
+
+        await Effect.runPromise(
+            promoteWebsite(release).pipe(Effect.provide(layer))
+        );
+
+        expect(events).toEqual([
+            "promote:release-1-docs",
+            "promote:release-1-storybook",
+            "alias:release-1-mcp:mcp.docs.sorrell.sh",
+            "promote:release-1-mcp",
+            "promote:release-1-landing"
+        ]);
+    });
     it("deploys children before Landing and writes child rewrites", async () =>
     {
         const target = await mkdtemp(join(tmpdir(), "sorrell-deploy-"));
@@ -289,7 +349,10 @@ describe("website deployment orchestration", () =>
                 )
             );
             expect(restored.releaseId).toBe("release-1");
-            expect(promoted).toEqual([ "release-1-landing" ]);
+            expect(promoted).toEqual([
+                "release-1-docs",
+                "release-1-landing"
+            ]);
             expect(
                 JSON.parse(
                     await readFile(
