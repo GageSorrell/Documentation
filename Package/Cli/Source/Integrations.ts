@@ -337,7 +337,7 @@ export class VercelService extends Context.Service<
                             ...args,
                             "--token",
                             Redacted.value(credentials.token),
-                            "--team",
+                            "--scope",
                             credentials.orgId
                         ]),
                         Effect.mapError(
