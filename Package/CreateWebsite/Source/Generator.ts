@@ -396,7 +396,19 @@ ${config.metadata.description}
                 },
                 {
                     headers: [ { key: "X-Robots-Tag", value: "noindex" } ],
-                    source: `${config.routing.documentationPrefix}/llms*.txt`
+                    source: `${config.routing.documentationPrefix}/llms.txt`
+                },
+                {
+                    headers: [ { key: "X-Robots-Tag", value: "noindex" } ],
+                    source: `${config.routing.documentationPrefix}/llms-full.txt`
+                },
+                {
+                    headers: [ { key: "X-Robots-Tag", value: "noindex" } ],
+                    source: `${config.routing.documentationPrefix}/:version/llms.txt`
+                },
+                {
+                    headers: [ { key: "X-Robots-Tag", value: "noindex" } ],
+                    source: `${config.routing.documentationPrefix}/:version/llms-full.txt`
                 }
             ],
             installCommand: "npm install",
@@ -419,7 +431,19 @@ ${config.metadata.description}
                 },
                 {
                     headers: [ { key: "X-Robots-Tag", value: "noindex" } ],
-                    source: `${config.routing.documentationPrefix}/llms*.txt`
+                    source: `${config.routing.documentationPrefix}/llms.txt`
+                },
+                {
+                    headers: [ { key: "X-Robots-Tag", value: "noindex" } ],
+                    source: `${config.routing.documentationPrefix}/llms-full.txt`
+                },
+                {
+                    headers: [ { key: "X-Robots-Tag", value: "noindex" } ],
+                    source: `${config.routing.documentationPrefix}/:version/llms.txt`
+                },
+                {
+                    headers: [ { key: "X-Robots-Tag", value: "noindex" } ],
+                    source: `${config.routing.documentationPrefix}/:version/llms-full.txt`
                 }
             ],
             installCommand: "npm install",

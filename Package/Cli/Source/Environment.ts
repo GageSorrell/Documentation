@@ -39,7 +39,7 @@ const config = Config.all({
 });
 const missing = (
     provider: "github" | "vercel",
-    values: ReadonlyArray<readonly [string, Option.Option<unknown>]>
+    values: ReadonlyArray<readonly [ string, Option.Option<unknown> ]>
 ): Effect.Effect<never, DocsEnvironmentError> =>
 {
     const names = values

@@ -25,7 +25,34 @@
           "value": "noindex"
         }
       ],
-      "source": "/docs/llms*.txt"
+      "source": "/docs/llms.txt"
+    },
+    {
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ],
+      "source": "/docs/llms-full.txt"
+    },
+    {
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ],
+      "source": "/docs/:version/llms.txt"
+    },
+    {
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ],
+      "source": "/docs/:version/llms-full.txt"
     }
   ],
   "installCommand": "npm install",
