@@ -195,9 +195,40 @@ const deployWebsiteCommand = (
                             "(ensure DNS points to the MCP Vercel project alias)"
                     );
                 }
+                const publishedDeployments = [
+                    {
+                        label: "Documentation",
+                        target: manifest.deployments.documentation
+                    },
+                    ...(manifest.deployments.storybook === undefined
+                        ? []
+                        : [
+                            {
+                                label: "Storybook",
+                                target: manifest.deployments.storybook
+                            }
+                        ]),
+                    ...(manifest.deployments.mcp === undefined
+                        ? []
+                        : [
+                            {
+                                label: "MCP",
+                                target: manifest.deployments.mcp
+                            }
+                        ]),
+                    {
+                        label: "Landing",
+                        target: manifest.deployments.landing
+                    }
+                ];
                 yield* Console.log(
-                    `${production ? "Published" : "Deployed preview"} ` +
-                        `${manifest.releaseId} at ${manifest.deployments.landing.url}`
+                    [
+                        `${production ? "Published" : "Deployed preview"} ${manifest.releaseId}`,
+                        ...publishedDeployments.map(
+                            ({ label, target: deployment }) =>
+                                `  ${label}${deployment.project === undefined ? "" : ` (${deployment.project})`}: ${deployment.url}`
+                        )
+                    ].join("\n")
                 );
             }).pipe(Effect.provide(docsAutomationLayer), Effect.asVoid)
     );
