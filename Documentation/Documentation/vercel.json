@@ -1,0 +1,34 @@
+{
+  "headers": [
+    {
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ],
+      "source": "/docs/agent/:path*"
+    },
+    {
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ],
+      "source": "/docs/:path*.md"
+    },
+    {
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ],
+      "source": "/docs/llms*.txt"
+    }
+  ],
+  "installCommand": "npm install",
+  "outputDirectory": "dist",
+  "version": 2
+}

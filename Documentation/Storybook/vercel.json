@@ -1,4 +1,5 @@
 {
+  "installCommand": "npm install",
   "outputDirectory": "Distribution",
   "version": 2
 }

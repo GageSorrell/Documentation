@@ -37,6 +37,7 @@
       "source": "/storybook/agent/:path*"
     }
   ],
+  "installCommand": "npm install",
   "redirects": [],
   "rewrites": [
     {

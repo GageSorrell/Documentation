@@ -399,6 +399,7 @@ ${config.metadata.description}
                     source: `${config.routing.documentationPrefix}/llms*.txt`
                 }
             ],
+            installCommand: "npm install",
             outputDirectory: "dist",
             version: 2
         }),
@@ -421,6 +422,7 @@ ${config.metadata.description}
                     source: `${config.routing.documentationPrefix}/llms*.txt`
                 }
             ],
+            installCommand: "npm install",
             outputDirectory: "dist",
             version: 2
         }),
@@ -906,12 +908,17 @@ export const System: Story = { args: { children: null, initialMode: "system" }, 
         path: "Storybook/VercelProject.snapshot.json"
     },
     {
-        content: json({ outputDirectory: "Distribution", version: 2 }),
+        content: json({
+            installCommand: "npm install",
+            outputDirectory: "Distribution",
+            version: 2
+        }),
         path: "Storybook/vercel.json"
     },
     {
         content: json({
             cleanUrls: true,
+            installCommand: "npm install",
             outputDirectory: "Distribution",
             version: 2
         }),

@@ -50,6 +50,7 @@ describe("generated website routing", () =>
                 source: "/storybook/:path*"
             }
         ]);
+        expect(result.installCommand).toBe("npm install");
         expect(result.redirects).toEqual([]);
     });
     it("keeps redirects in the Landing configuration and derives snapshot projects", () =>
