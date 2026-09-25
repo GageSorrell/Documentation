@@ -549,7 +549,7 @@ const docsCommand = Command.make("sorrell-docs").pipe(
 );
 export/** @internal */
 const runDocsCli = (args: ReadonlyArray<string>) =>
-    Command.runWith(docsCommand, { renderErrors: false, version: "0.1.0" })(
+    Command.runWith(docsCommand, { renderErrors: false, version: "1.0.1" })(
         args
     ).pipe(
         Effect.provide(

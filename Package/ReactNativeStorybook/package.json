@@ -1,6 +1,6 @@
 {
   "name": "@sorrell/docs-react-native-storybook",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "description": "Reusable React Native Storybook providers, decorators, Metro helpers, and article primitives.",
   "author": {
     "name": "Gage Sorrell",

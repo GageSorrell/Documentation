@@ -1,0 +1,46 @@
+/**
+ * Generated Astro landing site configuration.
+ *
+ * @file      astro.config.mjs
+ * @author    Gage Sorrell <gage@sorrell.sh>
+ * @copyright (c) 2026 Gage Sorrell
+ * @license   MIT
+ */
+
+import { defineConfig } from "astro/config";
+import { fileURLToPath } from "node:url";
+// eslint-disable-next-line import/no-unresolved -- declared in the Landing package dependencies
+import tailwindcss from "@tailwindcss/vite";
+
+/**
+ * Rewrite Storybook-prefixed requests to the Storybook server.
+ *
+ * @param {string} path - The prefixed request path.
+ */
+// eslint-disable-next-line @typescript-eslint/typedef
+const rewriteStorybookPath = (path) => path.replace("/storybook", "");
+
+export default defineConfig({
+    build: { format: "directory" },
+    outDir: "./Distribution",
+    output: "static",
+    server: { host: "127.0.0.1", port: 4173 },
+    srcDir: "./Source",
+    vite: {
+        plugins: [ tailwindcss() ],
+        resolve: {
+            alias: {
+                "@": fileURLToPath(new URL("./Source/", import.meta.url))
+            }
+        },
+        server: {
+            proxy: {
+                "/docs": "http://localhost:4321",
+                "/storybook": {
+                    rewrite: rewriteStorybookPath,
+                    target: "http://localhost:6006"
+                }
+            }
+        }
+    }
+});

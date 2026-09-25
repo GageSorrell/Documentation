@@ -1,6 +1,6 @@
 {
   "name": "@sorrell/docs-release",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,7 +9,7 @@
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@sorrell/docs-cli": "0.1.0",
+    "@sorrell/docs-cli": "1.0.1",
     "effect": "4.0.0-rc.117"
   }
 }

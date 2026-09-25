@@ -1,6 +1,6 @@
 {
   "name": "@sorrell/documentation",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "private": true,
   "author": {
     "name": "Gage Sorrell",
@@ -29,10 +29,10 @@
   "dependencies": {
     "@astrojs/mdx": "8.0.2",
     "@pagefind/default-ui": "1.5.2",
-    "@sorrell/docs-api-reference": "0.1.0",
-    "@sorrell/docs-astro": "0.1.0",
-    "@sorrell/docs-core": "0.1.0",
-    "@sorrell/docs-ui": "0.1.0",
+    "@sorrell/docs-api-reference": "1.0.1",
+    "@sorrell/docs-astro": "1.0.1",
+    "@sorrell/docs-core": "1.0.1",
+    "@sorrell/docs-ui": "1.0.1",
     "astro": "7.3.4"
   },
   "devDependencies": {

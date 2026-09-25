@@ -1,6 +1,6 @@
 {
   "name": "@sorrell/docs-astro",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "description": "Astro integration and route helpers for Sorrell documentation sites.",
   "author": {
     "email": "gage@sorrell.sh",
@@ -36,7 +36,7 @@
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@sorrell/docs-core": "0.1.0"
+    "@sorrell/docs-core": "1.0.1"
   },
   "peerDependencies": {
     "astro": ">=7.0.0"

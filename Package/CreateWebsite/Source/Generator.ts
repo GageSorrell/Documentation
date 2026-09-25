@@ -52,7 +52,7 @@ const packageManifest = (
             ? { ...scripts, build: "astro build", verify: "astro check" }
             : scripts,
         type: "module",
-        version: "0.1.0"
+        version: "1.0.1"
     });
 const baseTsconfig = (): string =>
     json({
@@ -124,11 +124,11 @@ const documentationFiles = (
             },
             {
                 "@astrojs/mdx": "8.0.2",
-                "@sorrell/docs-api-reference": "0.1.0",
-                "@sorrell/docs-core": "0.1.0",
-                "@sorrell/docs-astro": "0.1.0",
-                "@sorrell/docs-create-website": "0.1.0",
-                "@sorrell/docs-ui": "0.1.0",
+                "@sorrell/docs-api-reference": "1.0.1",
+                "@sorrell/docs-core": "1.0.1",
+                "@sorrell/docs-astro": "1.0.1",
+                "@sorrell/docs-create-website": "1.0.1",
+                "@sorrell/docs-ui": "1.0.1",
                 astro: "7.3.4"
             },
             {
@@ -287,8 +287,8 @@ const storybookFiles = (
                 verify: "storybook build --output-dir Distribution && node GenerateManifest.mjs"
             },
             {
-                "@sorrell/docs-core": "0.1.0",
-                "@sorrell/docs-ui": "0.1.0",
+                "@sorrell/docs-core": "1.0.1",
+                "@sorrell/docs-ui": "1.0.1",
                 "@storybook/addon-docs": "10.6.0",
                 "@storybook/addon-themes": "10.6.0",
                 "@storybook/react-vite": "10.6.0",
@@ -782,8 +782,8 @@ const mcpFiles = (config: DocsConfig): ReadonlyArray<GeneratedWebsiteFile> => [
                 verify: "node Verify.mjs"
             },
             {
-                "@sorrell/docs-core": "0.1.0",
-                "@sorrell/docs-mcp": "0.1.0",
+                "@sorrell/docs-core": "1.0.1",
+                "@sorrell/docs-mcp": "1.0.1",
                 effect: "4.0.0-rc.117"
             },
             { "@sorrell/tsconfig": "2.1.0" }

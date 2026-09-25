@@ -1,6 +1,6 @@
 {
   "name": "@sorrell/docs-create-website",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "description": "Generate and orchestrate three-package Sorrell documentation websites.",
   "author": {
     "name": "Gage Sorrell",
@@ -38,11 +38,11 @@
   },
   "dependencies": {
     "@effect/platform-node": "4.0.0-rc.117",
-    "@sorrell/docs-api-reference": "0.1.0",
-    "@sorrell/docs-cli": "0.1.0",
-    "@sorrell/docs-core": "0.1.0",
-    "@sorrell/docs-mcp": "0.1.0",
-    "@sorrell/docs-skills": "0.1.0",
+    "@sorrell/docs-api-reference": "1.0.1",
+    "@sorrell/docs-cli": "1.0.1",
+    "@sorrell/docs-core": "1.0.1",
+    "@sorrell/docs-mcp": "1.0.1",
+    "@sorrell/docs-skills": "1.0.1",
     "effect": "4.0.0-rc.117"
   },
   "devDependencies": {

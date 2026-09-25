@@ -1,6 +1,6 @@
 {
   "name": "@sorrell/docs-core",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "description": "Effect schemas and normalized domain models for Sorrell documentation tooling.",
   "author": {
     "email": "gage@sorrell.sh",

@@ -1,6 +1,6 @@
 {
   "name": "@sorrell/docs-skills",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "description": "Canonical Sorrell documentation workflow skills and their managed installer.",
   "author": {
     "name": "Gage Sorrell",
@@ -34,7 +34,7 @@
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@sorrell/docs-cli": "0.1.0",
+    "@sorrell/docs-cli": "1.0.1",
     "effect": "4.0.0-rc.117"
   },
   "devDependencies": {

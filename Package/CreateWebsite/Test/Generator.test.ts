@@ -24,6 +24,7 @@ describe("three-package website generation", () =>
         expect(landingTsconfig.compilerOptions.moduleResolution).toBe("Bundler");
         expect(landingPackage.scripts).toEqual({
             build: "astro build",
+            check: "astro check",
             dev: "astro dev --host 127.0.0.1 --port 4173",
             verify: "astro check"
         });

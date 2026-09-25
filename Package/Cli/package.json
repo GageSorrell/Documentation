@@ -1,6 +1,6 @@
 {
   "name": "@sorrell/docs-cli",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "description": "Shared Effect runtime services for Sorrell documentation tooling.",
   "author": {
     "name": "Gage Sorrell",

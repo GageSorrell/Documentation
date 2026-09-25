@@ -1,7 +1,7 @@
 /**
  *
  *
- * @module @react-native-notion-markdown/documentation/lib/landing
+ * @module generated-documentation-landing/lib/landing
  *
  * @file      landing.ts
  * @author    Gage Sorrell <gage@sorrell.sh>
@@ -10,7 +10,7 @@
  */
 
 /**
- * @module @react-native-notion-markdown/documentation/lib/landing
+ * @module generated-documentation-landing/lib/landing
  * @file landing.ts
  * @author Gage Sorrell <gage@sorrell.sh>
  * @copyright (c) 2026 Gage Sorrell

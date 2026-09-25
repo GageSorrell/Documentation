@@ -1,6 +1,6 @@
 {
   "name": "@sorrell/website",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "private": true,
   "author": {
     "name": "Gage Sorrell",
@@ -23,7 +23,7 @@
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@sorrell/docs-ui": "0.1.0",
+    "@sorrell/docs-ui": "1.0.1",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },

@@ -1,0 +1,204 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro"
+import Footer from "../components/Footer.astro"
+import LandingPage from "../components/landing/LandingPage.astro"
+import type { LandingPageConfig } from "../lib/landing.js"
+import "../styles/landing.css"
+import "../styles/tokens.css"
+
+const config: LandingPageConfig = {
+  name: "sorrell-documentation",
+  logo: "",
+  eyebrow: "Documentation for products with more to explain",
+  title: "Sorrell Documentation",
+  description: "Build readable documentation sites with a shared content, theme, and publishing system.",
+  content: {
+    capabilityLabel: "// One config, four useful surfaces",
+    examplesCaption: "Author content once and ship guides, API references, interactive stories, and agent-ready output.",
+    examplesLabel: "// From authored pages to a published site",
+    problemLabel: "// Documentation that stays connected",
+    problemTitle: "Guides, references, and stories from one source.",
+    modelLabel: "// The site architecture",
+    modelTitle: "Keep content, components, and publishing in sync.",
+    modelDescription: "A shared configuration connects authored pages, generated references, interactive examples, and the routes readers use.",
+    modelChecks: ["Keep guides and versioned routes together.", "Generate API references from package entry points.", "Publish stories and documentation with shared themes."],
+    codingLabel: "// Useful for people and tools",
+    codingTitle: "Make documentation work for readers and agents.",
+    codingDescription: "Versioned guides, generated API references, Storybook, and structured output stay discoverable through one site configuration.",
+    codingLinkLabel: "Read the architecture overview",
+    quotesLabel: "// One source, several surfaces",
+    quotesTitle: "Documentation that grows with the product.",
+    faqLabel: "// FAQ",
+    faqTitle: "Questions teams ask about the documentation system.",
+    faqDescription: "Start with the guides your readers need, then add API references, stories, and versions as the product grows.",
+    ctaTitle: "Give every product surface a place in the docs.",
+    pipelineSteps: [
+      { value: "01", title: "Configure", description: "Routes, themes, and packages" },
+      { value: "02", title: "Author", description: "Markdown, APIs, and stories" },
+      { value: "03", title: "Publish", description: "A connected static site" }
+    ]
+  },
+  navItems: [{ label: "Docs", href: "/docs/" },
+    { label: "Architecture", href: "/docs/architecture/" },
+    { label: "Authoring", href: "/docs/authoring/" },
+    { label: "API", href: "/docs/api/" },
+    { label: "Storybook", href: "/storybook/" },
+    { label: "GitHub", href: "https://github.com/GageSorrell/Documentation/tree/Master#ReadMe", external: true }
+  ],
+  installOptions: [
+    { id: "npm", label: "npm", command: "npm install -D @sorrell/docs-create-website" },
+    { id: "pnpm", label: "pnpm", command: "pnpm add -D @sorrell/docs-create-website" },
+    { id: "yarn", label: "yarn", command: "yarn add -D @sorrell/docs-create-website" },
+    { id: "bun", label: "bun", command: "bun add -d @sorrell/docs-create-website" },
+    { id: "deno", label: "deno", command: "deno add npm:@sorrell/docs-create-website" }
+  ],
+  primaryCta: {"href":"/docs/","label":"Read the docs"},
+  secondaryCta: { label: "Explore the API", href: "/docs/api/" },
+  capabilityItems: [
+    { value: "01", label: "Versioned guides" },
+    { value: "02", label: "Generated API" },
+    { value: "03", label: "Interactive stories" },
+    { value: "04", label: "Agent-ready output" }
+  ],
+  comparisonTiers: [
+    {
+      id: "start",
+      label: "Start",
+      description: "Start with the guides readers need and leave room for the rest of the product story.",
+      features: [
+        {
+          id: "content",
+          label: "Content",
+          title: "One home for guides and versioned content.",
+          description: "Organize authored pages into stable routes that remain easy to browse as products and versions grow.",
+          without: "Guides, release notes, and versioned pages drift across disconnected sites.",
+          with: "Keep authored documentation together under clear, predictable routes."
+        },
+        {
+          id: "rendering",
+          label: "Rendering",
+          title: "A site that reflects your product identity.",
+          description: "Use shared components and theme tokens across the landing page, guides, API references, and stories.",
+          without: "Each product surface gets a separate visual system and navigation model.",
+          with: "Share the same identity, navigation, and theme across the site."
+        }
+      ]
+    },
+    {
+      id: "scale",
+      label: "Scale",
+      description: "Connect generated references and interactive examples as the documentation system expands.",
+      features: [
+        {
+          id: "editing",
+          label: "Editing",
+          title: "Generate API references from real packages.",
+          description: "Point the site at package entry points and make source APIs discoverable beside their guides.",
+          without: "API details live in a manually maintained reference that falls behind the source.",
+          with: "Build generated API pages from the packages the product actually ships."
+        },
+        {
+          id: "platforms",
+          label: "Platforms",
+          title: "Interactive examples beside the explanation.",
+          description: "Publish Storybook components and documentation under one navigation and deployment.",
+          without: "Readers leave the docs to find examples and component behavior.",
+          with: "Link working stories directly from the relevant guides and references."
+        }
+      ]
+    }
+  ],
+  modelRows: [
+    { value: "Author", label: "Guides, API sources, and Storybook stories" },
+    { value: "Generate", label: "Versioned routes and package references" },
+    { value: "Publish", label: "A themed static site with agent output" }
+  ],
+  capabilities: [
+    {
+      eyebrow: "Guides",
+      title: "Versioned product documentation",
+      description: "Give tutorials, architecture notes, and authoring guidance stable routes that can evolve with each release.",
+      href: "/docs/",
+      linkLabel: "Browse the docs"
+    },
+    {
+      eyebrow: "API",
+      title: "References generated from source",
+      description: "Keep package APIs, types, and entry points discoverable next to the guides that explain how to use them.",
+      href: "/docs/api/",
+      linkLabel: "Browse the API"
+    },
+    {
+      eyebrow: "Stories",
+      title: "Examples you can explore",
+      description: "Pair concepts with interactive components and runnable examples from the web Storybook.",
+      href: "/storybook/",
+      linkLabel: "Explore Storybook"
+    },
+    {
+      eyebrow: "Authoring",
+      title: "A clear path from source to site",
+      description: "Understand how configuration, content, generated routes, and deployment fit together in this repository.",
+      href: "/docs/authoring/",
+      linkLabel: "Read the authoring guide"
+    }
+  ],
+  statements: [
+    {
+      label: "For product teams",
+      title: "Give every product surface a reliable home.",
+      description: "Keep onboarding, architecture, API details, and interactive examples within one connected experience."
+    },
+    {
+      label: "For package authors",
+      title: "Keep guides close to the code they explain.",
+      description: "Generate API references from package entry points and maintain product guidance alongside the source."
+    },
+    {
+      label: "For readers and agents",
+      title: "Make the same knowledge easy to find and reuse.",
+      description: "Publish readable pages and structured outputs from a shared documentation source."
+    }
+  ],
+  faqs: [
+    {
+      question: "What is included in the documentation site?",
+      answer: "The site combines a landing page, authored guides, generated API references, and the web Storybook when enabled in configuration."
+    },
+    {
+      question: "Can the site include versioned documentation?",
+      answer: "Yes. The configuration supports versioned content and routes so published guides can match the releases readers use."
+    },
+    {
+      question: "Are API references maintained by hand?",
+      answer: "API pages are generated from configured TypeScript package entry points, keeping the reference connected to source code."
+    },
+    {
+      question: "Where should I start?",
+      answer: "Read the architecture overview, then follow the authoring guide or browse the API and Storybook from the navigation above."
+    }
+  ]
+}
+const tokens = {
+  "dark": {
+    "accent": "#93c5fd",
+    "background": "#09090b",
+    "border": "#27272a",
+    "codeBackground": "#18181b",
+    "foreground": "#f4f4f5",
+    "muted": "#a1a1aa"
+  },
+  "light": {
+    "accent": "#2563eb",
+    "background": "#ffffff",
+    "border": "#e5e7eb",
+    "codeBackground": "#f3f4f6",
+    "foreground": "#111111",
+    "muted": "#6b7280"
+  }
+}
+---
+<BaseLayout title={config.title} description={config.description} tokens={tokens}>
+  <LandingPage config={config} />
+  <Footer name={config.name} repositoryHref={config.navItems.find((item) => item.external)?.href ?? ""} />
+</BaseLayout>

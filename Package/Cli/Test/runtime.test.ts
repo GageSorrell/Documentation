@@ -64,7 +64,7 @@ describe("Effect CLI runtime", () =>
             );
             yield* CliCommand.runWith(command, {
                 renderErrors: false,
-                version: "0.1.0"
+                version: "1.0.1"
             })([ "--name", "Ada", "--count", "3" ]).pipe(
                 Effect.provide(cliTestLayer)
             );

@@ -41,7 +41,7 @@ const record: ApiReferenceRecord = {
     packageId: "fixture",
     packageName: "@sorrell/fixture",
     summary: "A fixture API.",
-    version: "1.0.0"
+    version: "1.0.1"
 };
 describe("API-reference serialization", () =>
 {
@@ -70,7 +70,7 @@ describe("API-reference serialization", () =>
     {
         const document = recordToAgentDocument({
             ...record,
-            introductionVersion: "1.0.0"
+            introductionVersion: "1.0.1"
         });
         expect(document.kind).toBe("api-module");
         expect(document.content).toContain("Kind: function");

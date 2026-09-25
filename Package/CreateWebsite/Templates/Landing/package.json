@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "astro build",
+    "check": "astro check",
     "dev": "astro dev --host 127.0.0.1 --port 4173",
     "verify": "astro check"
   },

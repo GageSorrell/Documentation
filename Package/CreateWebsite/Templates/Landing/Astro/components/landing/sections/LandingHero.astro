@@ -28,7 +28,7 @@ const { config } = Astro.props
       </div>
       <div class="mt-14 flex flex-col items-center gap-5">
         <p class="effect-landing-label font-mono text-sm font-medium tracking-wider uppercase">{config.content.capabilityLabel}</p>
-        <ul class="effect-landing-capability-list flex flex-wrap items-end justify-center gap-x-8 gap-y-5" aria-label="Package capabilities">
+        <ul class="effect-landing-capability-list flex flex-wrap items-end justify-center gap-x-8 gap-y-5" aria-label="Documentation site capabilities">
           {config.capabilityItems.map((item) => (
             <li><strong>{item.value}</strong><span>{item.label}</span></li>
           ))}

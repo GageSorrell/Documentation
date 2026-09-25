@@ -1,4 +1,5 @@
 {
+  "buildCommand": "npm run build",
   "headers": [
     {
       "headers": [
@@ -37,7 +38,6 @@
       "source": "/storybook/agent/:path*"
     }
   ],
-  "buildCommand": "npm run build",
   "installCommand": "npm install",
   "outputDirectory": "Distribution",
   "redirects": [],

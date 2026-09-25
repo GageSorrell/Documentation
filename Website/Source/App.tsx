@@ -48,7 +48,7 @@ const record: ApiReferenceRecord = {
     packageName: "@sorrell/docs-ui",
     module: "Navigation",
     displayName: "Navigation",
-    version: "0.1.0",
+    version: "1.0.1",
     summary: "Accessible navigation primitives for documentation sites.",
     breadcrumbs: [
         { label: "API Reference", href: "/api", current: false },
@@ -68,7 +68,7 @@ const record: ApiReferenceRecord = {
             categoryId: "components",
             description: "The responsive top navigation used by documentation shells.",
             signature: "declare const DocsHeader: (props: DocsHeaderProps) => JSX.Element",
-            introductionVersion: "0.1.0",
+            introductionVersion: "1.0.1",
             source: { repositoryUrl: "https://github.com/GageSorrell/Documentation", revision: "Master", file: "Package/Ui/Source/Navigation.tsx", line: 7 }
         },
         {
@@ -78,7 +78,7 @@ const record: ApiReferenceRecord = {
             categoryId: "components",
             description: "Three-rail responsive shell with navigation and an on-this-page outline.",
             signature: "declare const DocumentationShell: (props: DocumentationShellProps) => JSX.Element",
-            introductionVersion: "0.1.0",
+            introductionVersion: "1.0.1",
             source: { repositoryUrl: "https://github.com/GageSorrell/Documentation", revision: "Master", file: "Package/Ui/Source/Navigation.tsx", line: 32 }
         },
         {
@@ -88,12 +88,12 @@ const record: ApiReferenceRecord = {
             categoryId: "models",
             description: "The supported persisted theme modes.",
             signature: "type ThemeMode = \"light\" | \"dark\" | \"system\"",
-            introductionVersion: "0.1.0",
+            introductionVersion: "1.0.1",
             source: { repositoryUrl: "https://github.com/GageSorrell/Documentation", revision: "Master", file: "Package/Ui/Source/Types.ts", line: 6 }
         }
     ],
     exportCount: 23,
-    introductionVersion: "0.1.0",
+    introductionVersion: "1.0.1",
     source: { repositoryUrl: "https://github.com/GageSorrell/Documentation", revision: "Master", file: "Package/Ui/Source/index.ts", line: 1 },
     link: { href: "/api/v0.1.0/docs-ui/Navigation", label: "Navigation", external: false }
 };

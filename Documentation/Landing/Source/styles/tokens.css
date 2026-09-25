@@ -1,0 +1,28 @@
+:root {
+  --background: #ffffff;
+  --foreground: #111111;
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  --border: #e5e7eb;
+  --border-strong: color-mix(in srgb, #e5e7eb, #111111 24%);
+  --accent: #2563eb;
+  --code-background: #f3f4f6;
+  --code-foreground: #111111;
+  --landing-soft: #6b7280;
+  --landing-panel: color-mix(in srgb, #ffffff 96%, #111111);
+  --landing-panel-strong: color-mix(in srgb, #ffffff 91%, #111111);
+}
+[data-theme="dark"], .dark {
+  --background: #09090b;
+  --foreground: #f4f4f5;
+  --muted: #18181b;
+  --muted-foreground: #a1a1aa;
+  --border: #27272a;
+  --border-strong: color-mix(in srgb, #27272a, #f4f4f5 28%);
+  --accent: #93c5fd;
+  --code-background: #18181b;
+  --code-foreground: #f4f4f5;
+  --landing-soft: #a1a1aa;
+  --landing-panel: color-mix(in srgb, #09090b 92%, #f4f4f5);
+  --landing-panel-strong: color-mix(in srgb, #09090b 86%, #f4f4f5);
+}

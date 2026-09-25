@@ -44,7 +44,7 @@ const packageManifest = (name: string): string =>
         dependencies: {
             "@gorhom/bottom-sheet": "5.2.14",
             "@react-native-async-storage/async-storage": "3.1.1",
-            "@sorrell/docs-react-native-storybook": "0.1.0",
+            "@sorrell/docs-react-native-storybook": "1.0.1",
             "@storybook/addon-ondevice-actions": "10.6.0",
             "@storybook/addon-ondevice-controls": "10.6.0",
             "@storybook/react-native": "10.6.0",
@@ -73,7 +73,7 @@ const packageManifest = (name: string): string =>
             start: "expo start",
             typecheck: "tsc --project tsconfig.json --noEmit"
         },
-        version: "0.1.0"
+        version: "1.0.1"
     });
 const appJson = (name: string, kind: NativeAppKind): string =>
     json({
@@ -87,7 +87,7 @@ const appJson = (name: string, kind: NativeAppKind): string =>
             scheme: `sorrell-${kind}-storybook`,
             slug: `sorrell-${kind}-storybook`,
             userInterfaceStyle: "automatic",
-            version: "0.1.0"
+            version: "1.0.1"
         }
     });
 const appSource = (

@@ -1,6 +1,6 @@
 {
   "name": "@sorrell/docs-api-reference",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "description": "Programmatic TypeDoc generation, validation, and snapshots for Sorrell API references.",
   "author": {
     "name": "Gage Sorrell",
@@ -34,7 +34,7 @@
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@sorrell/docs-core": "0.1.0",
+    "@sorrell/docs-core": "1.0.1",
     "effect": "4.0.0-rc.117",
     "typedoc": "0.28.20"
   },

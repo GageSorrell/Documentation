@@ -27,14 +27,14 @@ const dataset = await generateApiDataset({
             id: "core",
             name: "@sorrell/docs-core",
             tsconfig: resolve(packageRoot, "Core/tsconfig.json"),
-            version: "0.1.0"
+            version: "1.0.1"
         },
         {
             entryPoints: [ resolve(packageRoot, "Ui/Source/index.ts") ],
             id: "ui",
             name: "@sorrell/docs-ui",
             tsconfig: resolve(packageRoot, "Ui/tsconfig.json"),
-            version: "0.1.0"
+            version: "1.0.1"
         }
     ],
     referencePrefix: "/docs/api",

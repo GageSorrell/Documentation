@@ -479,7 +479,7 @@ const makeMcpLayer = (
         description: "Search and retrieve Sorrell documentation.",
         name: "sorrell-documentation",
         protocols: [ McpProtocol.v2025_06_18 ] as const,
-        version: "0.1.0",
+        version: "1.0.1",
         ...(transport === "http" ? { path } : {})
     } as const;
     const transportLayer =

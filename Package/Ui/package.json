@@ -1,6 +1,6 @@
 {
   "name": "@sorrell/docs-ui",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "description": "Responsive React UI primitives and documentation shells for Sorrell documentation sites.",
   "author": {
     "name": "Gage Sorrell",
@@ -39,7 +39,7 @@
     "react": ">=19.0.0"
   },
   "dependencies": {
-    "@sorrell/docs-core": "0.1.0"
+    "@sorrell/docs-core": "1.0.1"
   },
   "devDependencies": {
     "@types/react": "19.3.0",
