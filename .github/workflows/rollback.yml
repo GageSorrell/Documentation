@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   rollback:
-    name: Roll back Documentation
+    name: Roll back documentation site release
     runs-on: ubuntu-latest
     environment: production
     env:

@@ -68,12 +68,13 @@ describe("API-reference serialization", () =>
     });
     it("includes declaration kind and introduction metadata in the agent document", () =>
     {
+        const introductionVersion = "1.0.1";
         const document = recordToAgentDocument({
             ...record,
-            introductionVersion: "1.0.1"
+            introductionVersion
         });
         expect(document.kind).toBe("api-module");
         expect(document.content).toContain("Kind: function");
-        expect(document.content).toContain("Added in 1.0.0");
+        expect(document.content).toContain(`Added in ${introductionVersion}`);
     });
 });
