@@ -53,6 +53,14 @@ export class DocsFileSystem extends Context.Service<
             readonly prefix?: string;
             readonly suffix?: string;
         }) => Effect.Effect<string, DocsFileSystemError, Scope.Scope>;
+        readonly copy: (
+            from: string,
+            to: string,
+            options?: {
+                readonly overwrite?: boolean;
+                readonly preserveTimestamps?: boolean;
+            }
+        ) => Effect.Effect<void, DocsFileSystemError>;
         readonly readDirectory: (
             path: string
         ) => Effect.Effect<ReadonlyArray<string>, DocsFileSystemError>;
@@ -173,6 +181,23 @@ export class DocsFileSystem extends Context.Service<
                                         options?.directory ?? "",
                                         cause
                                     )
+                                )
+                            ),
+                    copy: (
+                        from: string,
+                        to: string,
+                        options:
+                            | {
+                                readonly overwrite?: boolean;
+                                readonly preserveTimestamps?: boolean;
+                            }
+                            | undefined
+                    ) =>
+                        fileSystem
+                            .copy(from, to, options)
+                            .pipe(
+                                Effect.mapError((cause: PlatformError) =>
+                                    fileSystemFailure("copy", `${from} -> ${to}`, cause)
                                 )
                             ),
                     readDirectory: (path: string) =>
