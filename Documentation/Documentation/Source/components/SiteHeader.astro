@@ -44,12 +44,15 @@ const navigation = [
             >{item.label}</a>)}
         </nav>
         <div class="landing-header-actions">
-            <button type="button" aria-label="Switch to dark theme" data-theme-toggle>
-                <span data-theme-icon="light">
-                    <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.463.402.807a6.5 6.5 0 0 0 8.268 8.268c.344-.215.829-.003.803.397" /></svg>
+            <button type="button" aria-label="Theme: System. Activate to switch to light." title="Theme: System" data-theme-mode="system" data-theme-toggle>
+                <span data-theme-icon="system">
+                    <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2" /><path d="M8 21h8m-4-4v4" /></svg>
+                </span>
+                <span class="hidden" data-theme-icon="light">
+                    <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2m4.93-17.07-1.42 1.42M6.49 17.51l-1.42 1.42M22 12h-2M4 12H2m17.07 7.07-1.42-1.42M6.49 6.49 5.07 5.07" /></svg>
                 </span>
                 <span class="hidden" data-theme-icon="dark">
-                    <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2m4.93-17.07-1.42 1.42M6.49 17.51l-1.42 1.42M22 12h-2M4 12H2m17.07 7.07-1.42-1.42M6.49 6.49 5.07 5.07" /></svg>
+                    <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.463.402.807a6.5 6.5 0 0 0 8.268 8.268c.344-.215.829-.003.803.397" /></svg>
                 </span>
             </button>
         </div>
@@ -62,12 +65,15 @@ const navigation = [
                 >{item.label}</a>)}
                 <div class="landing-mobile-theme">
                     <span>Theme</span>
-                    <button type="button" aria-label="Switch to dark theme" data-theme-toggle>
-                        <span data-theme-icon="light">
-                            <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.463.402.807a6.5 6.5 0 0 0 8.268 8.268c.344-.215.829-.003.803.397" /></svg>
+                    <button type="button" aria-label="Theme: System. Activate to switch to light." title="Theme: System" data-theme-mode="system" data-theme-toggle>
+                        <span data-theme-icon="system">
+                            <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2" /><path d="M8 21h8m-4-4v4" /></svg>
+                        </span>
+                        <span class="hidden" data-theme-icon="light">
+                            <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2m4.93-17.07-1.42 1.42M6.49 17.51l-1.42 1.42M22 12h-2M4 12H2m17.07 7.07-1.42-1.42M6.49 6.49 5.07 5.07" /></svg>
                         </span>
                         <span class="hidden" data-theme-icon="dark">
-                            <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2m4.93-17.07-1.42 1.42M6.49 17.51l-1.42 1.42M22 12h-2M4 12H2m17.07 7.07-1.42-1.42M6.49 6.49 5.07 5.07" /></svg>
+                            <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.463.402.807a6.5 6.5 0 0 0 8.268 8.268c.344-.215.829-.003.803.397" /></svg>
                         </span>
                     </button>
                 </div>
@@ -87,34 +93,50 @@ const navigation = [
 <script is:inline>
     (() => {
         const themeKey = "sorrell-docs-theme";
+        const themeModes = ["system", "light", "dark"];
+        const systemPreference = window.matchMedia("(prefers-color-scheme: dark)");
+        const readThemeMode = () => {
+            try {
+                const stored = localStorage.getItem(themeKey);
+                if (themeModes.includes(stored)) return stored;
+            } catch { /* Storage can be unavailable in restricted contexts. */ }
+            return "system";
+        };
+        let selectedMode = readThemeMode();
         const updateThemeToggles = () => {
-            const dark = document.documentElement.dataset.theme === "dark";
+            const nextMode = themeModes[(themeModes.indexOf(selectedMode) + 1) % themeModes.length];
+            const modeLabel = selectedMode[0].toUpperCase() + selectedMode.slice(1);
             document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
-                button.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
-                button.querySelector("[data-theme-icon='light']")?.classList.toggle("hidden", dark);
-                button.querySelector("[data-theme-icon='dark']")?.classList.toggle("hidden", !dark);
+                button.setAttribute("aria-label", `Theme: ${modeLabel}. Activate to switch to ${nextMode}.`);
+                button.setAttribute("title", `Theme: ${modeLabel}`);
+                button.dataset.themeMode = selectedMode;
+                button.querySelectorAll("[data-theme-icon]").forEach((icon) => {
+                    icon.classList.toggle("hidden", icon.dataset.themeIcon !== selectedMode);
+                });
             });
         };
-        const applyTheme = (theme, persist = false) => {
-            document.documentElement.dataset.theme = theme;
-            document.documentElement.classList.toggle("dark", theme === "dark");
-            document.documentElement.style.colorScheme = theme;
+        const applyTheme = (mode, persist = false) => {
+            selectedMode = mode;
+            const dark = mode === "dark" || (mode === "system" && systemPreference.matches);
+            document.documentElement.dataset.theme = dark ? "dark" : "light";
+            document.documentElement.classList.toggle("dark", dark);
+            document.documentElement.style.colorScheme = dark ? "dark" : "light";
             if (persist) {
-                try { localStorage.setItem(themeKey, theme); } catch { /* Storage can be unavailable in restricted contexts. */ }
+                try { localStorage.setItem(themeKey, mode); } catch { /* Storage can be unavailable in restricted contexts. */ }
             }
             updateThemeToggles();
         };
-        let storedTheme = null;
-        try { storedTheme = localStorage.getItem(themeKey); } catch { /* Storage can be unavailable in restricted contexts. */ }
-        const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        applyTheme(storedTheme === "light" || storedTheme === "dark" ? storedTheme : systemDark ? "dark" : "light");
+        applyTheme(selectedMode);
         document.addEventListener("click", (event) => {
             const target = event.target;
             if (!(target instanceof Element) || target.closest("[data-theme-toggle]") === null) return;
-            applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark", true);
+            const nextMode = themeModes[(themeModes.indexOf(selectedMode) + 1) % themeModes.length];
+            applyTheme(nextMode, true);
         });
+        systemPreference.addEventListener("change", () => { if (selectedMode === "system") applyTheme("system"); });
         window.addEventListener("storage", (event) => {
-            if (event.key === themeKey && (event.newValue === "light" || event.newValue === "dark")) applyTheme(event.newValue);
+            if (event.key !== themeKey) return;
+            applyTheme(themeModes.includes(event.newValue) ? event.newValue : "system");
         });
     })();
 </script>

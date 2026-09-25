@@ -27,7 +27,8 @@ import type {
 import { type LandingVercelConfig, createLandingRewrites } from "./Routing.js";
 
 /** @internal */
-export interface WebsiteDeploymentOptions {
+export interface WebsiteDeploymentOptions
+{
     readonly production?: boolean;
     readonly revision?: string;
     readonly generatedAt?: string;
@@ -35,8 +36,10 @@ export interface WebsiteDeploymentOptions {
     readonly apiSnapshot?: string;
     readonly snapshot?: boolean;
 }
+
 /** @internal */
-export interface WebsiteReleaseManifest {
+export interface WebsiteReleaseManifest
+{
     readonly version: 2;
     readonly releaseId: string;
     readonly generatedAt: string;

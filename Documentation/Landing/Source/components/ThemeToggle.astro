@@ -7,41 +7,72 @@
  * @license MIT
  */
 import Moon from "@lucide/astro/icons/moon"
+import Monitor from "@lucide/astro/icons/monitor"
 import Sun from "@lucide/astro/icons/sun"
 
 interface Props { readonly className?: string }
 const { className = "" } = Astro.props
 ---
-<button type="button" aria-label="Switch to dark theme" data-theme-toggle class={`inline-flex h-9 w-9 items-center justify-center rounded-md transition-colors hover:bg-muted ${className}`}>
-  <span data-theme-icon="light"><Moon size={17} aria-hidden="true" /></span>
-  <span data-theme-icon="dark" class="hidden"><Sun size={17} aria-hidden="true" /></span>
+<button type="button" aria-label="Theme: System. Activate to switch to light." title="Theme: System" data-theme-mode="system" data-theme-toggle class={`inline-flex h-9 w-9 items-center justify-center rounded-md transition-colors hover:bg-muted ${className}`}>
+  <span data-theme-icon="system"><Monitor size={17} aria-hidden="true" /></span>
+  <span data-theme-icon="light" class="hidden"><Sun size={17} aria-hidden="true" /></span>
+  <span data-theme-icon="dark" class="hidden"><Moon size={17} aria-hidden="true" /></span>
 </button>
 
 <script>
+  type ThemeMode = "system" | "light" | "dark"
+  const themeModes: readonly ThemeMode[] = ["system", "light", "dark"]
+  const themeKey = "sorrell-docs-theme"
+  const systemPreference = window.matchMedia("(prefers-color-scheme: dark)")
+
+  const readThemeMode = (): ThemeMode => {
+    try {
+      const stored = localStorage.getItem(themeKey)
+      if (stored === "light" || stored === "dark" || stored === "system") return stored
+    } catch { /* Storage can be unavailable in privacy-restricted contexts. */ }
+    return "system"
+  }
+
+  let selectedMode = readThemeMode()
+
   const updateThemeToggles = () => {
-    const dark = document.documentElement.classList.contains("dark")
+    const nextMode = themeModes[(themeModes.indexOf(selectedMode) + 1) % themeModes.length] ?? "system"
+    const modeLabel = selectedMode === "system" ? "System" : selectedMode === "light" ? "Light" : "Dark"
     document.querySelectorAll<HTMLElement>("[data-theme-toggle]").forEach((button) => {
-      button.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme")
-      button.querySelector<HTMLElement>("[data-theme-icon='light']")?.classList.toggle("hidden", dark)
-      button.querySelector<HTMLElement>("[data-theme-icon='dark']")?.classList.toggle("hidden", !dark)
+      button.setAttribute("aria-label", `Theme: ${modeLabel}. Activate to switch to ${nextMode}.`)
+      button.setAttribute("title", `Theme: ${modeLabel}`)
+      button.dataset.themeMode = selectedMode
+      button.querySelectorAll<HTMLElement>("[data-theme-icon]").forEach((icon) => {
+        icon.classList.toggle("hidden", icon.dataset.themeIcon !== selectedMode)
+      })
     })
   }
 
-  const setTheme = (dark: boolean) => {
+  const applyTheme = (mode: ThemeMode, persist = false) => {
+    selectedMode = mode
+    const dark = mode === "dark" || (mode === "system" && systemPreference.matches)
     document.documentElement.classList.toggle("dark", dark)
     document.documentElement.dataset.theme = dark ? "dark" : "light"
-    try { localStorage.setItem("sorrell-docs-theme", dark ? "dark" : "light") } catch { /* Storage can be unavailable in privacy-restricted contexts. */ }
+    if (persist) {
+      try { localStorage.setItem(themeKey, mode) } catch { /* Storage can be unavailable in privacy-restricted contexts. */ }
+    }
     updateThemeToggles()
     window.dispatchEvent(new Event("docs-theme:change"))
   }
 
-  updateThemeToggles()
+  applyTheme(selectedMode)
   document.addEventListener("click", (event) => {
     const target = event.target
     if (!(target instanceof Element)) return
     const button = target.closest<HTMLElement>("[data-theme-toggle]")
-    if (button) setTheme(!document.documentElement.classList.contains("dark"))
+    if (!button) return
+    const nextMode = themeModes[(themeModes.indexOf(selectedMode) + 1) % themeModes.length] ?? "system"
+    applyTheme(nextMode, true)
   })
-  window.addEventListener("storage", (event) => { if (event.key === "sorrell-docs-theme") updateThemeToggles() })
-  window.addEventListener("docs-theme:change", updateThemeToggles)
+  systemPreference.addEventListener("change", () => { if (selectedMode === "system") applyTheme("system") })
+  window.addEventListener("storage", (event) => {
+    if (event.key !== themeKey) return
+    applyTheme(event.newValue === "light" || event.newValue === "dark" || event.newValue === "system" ? event.newValue : "system")
+  })
+  window.addEventListener("docs-theme:change", () => updateThemeToggles())
 </script>
