@@ -2,7 +2,7 @@
 import { canonicalUrl, docsPath, docsVersionPath } from "@sorrell/docs-astro";
 import { DefaultDesignTokens } from "@sorrell/docs-core";
 import { createThemeCss, docsUiCss } from "@sorrell/docs-ui";
-import { documentationVersions } from "../Versions.js";
+import SiteHeader from "../components/SiteHeader.astro";
 
 interface PageSummary
 {
@@ -40,9 +40,6 @@ const pageHref = (page: PageSummary): string => {
     const pageSlug = page.id === "index" ? "" : page.slug;
     return version === undefined ? docsPath(prefix, pageSlug) : docsVersionPath(prefix, version, pageSlug);
 };
-const versionHref = (versionId: string): string => versionId === "current"
-    ? docsPath(prefix, slug)
-    : docsVersionPath(prefix, versionId, slug);
 ---
 
 <!doctype html>
@@ -60,24 +57,11 @@ const versionHref = (versionId: string): string => versionId === "current"
     </head>
     <body>
         <div class="docs-site">
-            <header class="docs-topbar">
-                <a class="docs-brand" href="/" aria-label="Sorrell Documentation home">Sorrell Docs</a>
-                <nav class="docs-topnav" aria-label="Primary navigation">
-                    <a href={docsPath(prefix)} aria-current={canonicalPath === docsPath(prefix) ? "page" : undefined}>Docs</a>
-                    <a href={docsPath(prefix, "architecture")}>Concepts</a>
-                    <a href={docsPath(prefix, "search")}>Search</a>
-                </nav>
-                <nav class="docs-version-nav" aria-label="Documentation versions">
-                    {documentationVersions.map((item) => <a
-                        aria-current={(version === item.id || (version === undefined && item.id === "current")) ? "page" : undefined}
-                        href={versionHref(item.id)}
-                    >{item.label}</a>)}
-                </nav>
-                <button class="docs-theme-toggle" type="button" data-theme-toggle aria-label="Toggle color theme">◐</button>
-            </header>
+            <SiteHeader currentVersion={version ?? "current"} slug={slug === "index" ? "" : slug} />
             <div class="docs-layout">
                 <aside class="docs-sidebar" aria-label="Documentation navigation">
                     <div class="docs-sidebar-label">CONTENTS</div>
+                    <a class="docs-search-link" href={docsPath(prefix, "search")}>Search documentation</a>
                     {groups.map((group) => <section class="docs-nav-group">
                         <h2>{group}</h2>
                         <ul>
@@ -134,15 +118,7 @@ const versionHref = (versionId: string): string => versionId === "current"
     :root { color-scheme: dark; }
     [data-theme="light"] { color-scheme: light; }
     body { margin: 0; }
-    .docs-topbar { align-items: center; border-bottom: 1px solid var(--docs-border); display: flex; gap: 2rem; min-height: 68px; padding: 0 2rem; }
-    .docs-brand { color: var(--docs-foreground); font-size: 1.25rem; font-weight: 750; letter-spacing: -0.04em; text-decoration: none; }
-    .docs-topnav { display: flex; flex: 1; gap: 1.5rem; }
-    .docs-topnav a, .docs-theme-toggle { color: var(--docs-muted); font: inherit; text-decoration: none; }
-    .docs-topnav a:hover, .docs-topnav a[aria-current="page"] { color: var(--docs-foreground); }
-    .docs-version-nav { border: 1px solid var(--docs-border); border-radius: .5rem; display: flex; gap: .2rem; padding: .2rem; }
-    .docs-version-nav a { border-radius: .3rem; color: var(--docs-muted); font-size: .8rem; padding: .3rem .5rem; text-decoration: none; }
-    .docs-version-nav a:hover, .docs-version-nav a[aria-current="page"] { background: var(--docs-code-background); color: var(--docs-foreground); }
-    .docs-theme-toggle { background: transparent; border: 1px solid var(--docs-border); border-radius: 999px; cursor: pointer; padding: .45rem .7rem; }
+    .docs-search-link { color: var(--docs-accent); display: inline-block; font-size: .85rem; margin-top: 1rem; }
     .docs-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr) 220px; margin: 0 auto; max-width: 1480px; min-height: calc(100vh - 120px); }
     .docs-sidebar, .docs-toc { padding: 3rem 1.5rem; }
     .docs-sidebar { border-right: 1px solid var(--docs-border); }
@@ -179,20 +155,10 @@ const versionHref = (versionId: string): string => versionId === "current"
     .docs-toc li { margin: .7rem 0; }
     .docs-footer { border-top: 1px solid var(--docs-border); color: var(--docs-muted); font-size: .85rem; padding: 1.5rem 2rem; text-align: center; }
     @media (max-width: 1000px) { .docs-layout { grid-template-columns: 200px minmax(0, 1fr); } .docs-toc { display: none; } }
-    @media (max-width: 700px) { .docs-topbar { gap: 1rem; padding: 0 1rem; } .docs-topnav { gap: .8rem; } .docs-topnav a:nth-child(2) { display: none; } .docs-version-nav { margin-left: auto; } .docs-layout { display: block; } .docs-sidebar { border-bottom: 1px solid var(--docs-border); border-right: 0; padding: 1rem; } .docs-nav-group { display: inline-block; margin: .6rem 1rem .2rem 0; vertical-align: top; } .docs-nav-group ul { display: none; } .docs-main { padding: 2.5rem 1rem; } .docs-heading-row { display: block; } .docs-copy-button { margin-top: 1.5rem; } }
+    @media (max-width: 700px) { .docs-layout { display: block; } .docs-sidebar { border-bottom: 1px solid var(--docs-border); border-right: 0; padding: 1rem; } .docs-nav-group { display: inline-block; margin: .6rem 1rem .2rem 0; vertical-align: top; } .docs-nav-group ul { display: none; } .docs-main { padding: 2.5rem 1rem; } .docs-heading-row { display: block; } .docs-copy-button { margin-top: 1.5rem; } }
 </style>
 
 <script is:inline>
-    const themeKey = "sorrell-docs-theme";
-    const applyTheme = (theme) => {
-        document.documentElement.dataset.theme = theme;
-        localStorage.setItem(themeKey, theme);
-    };
-    const storedTheme = localStorage.getItem(themeKey);
-    if (storedTheme === "light" || storedTheme === "dark") { applyTheme(storedTheme); }
-    document.querySelector("[data-theme-toggle]")?.addEventListener("click", () => {
-        applyTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light");
-    });
     document.querySelectorAll("[data-copy-llm]").forEach((button) => {
         button.addEventListener("click", async () => {
             const text = button.dataset.copyText ?? "";
