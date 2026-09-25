@@ -6,7 +6,7 @@
 .dark .landing-brand img { filter: invert(1) hue-rotate(180deg); }
 .landing-header-nav { display: flex; align-items: center; gap: 1.35rem; font-size: .875rem; color: var(--muted-foreground); }
 .landing-header-nav a:hover, .landing-header-nav a:focus-visible { color: var(--foreground); }
-.landing-header-actions { margin-left: auto; display: flex; align-items: center; }
+.landing-header-actions { margin-left: auto; display: flex; align-items: center; gap: .5rem; }
 .landing-mobile-menu { display: none; margin-left: auto; position: relative; }
 .landing-mobile-menu summary { display: flex; align-items: center; gap: .5rem; cursor: pointer; list-style: none; border: 1px solid var(--border); border-radius: .45rem; padding: .5rem .7rem; font-size: .875rem; }
 .landing-mobile-menu summary::-webkit-details-marker { display: none; }

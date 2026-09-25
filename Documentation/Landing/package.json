@@ -9,6 +9,7 @@
     "verify": "astro check"
   },
   "dependencies": {
+    "@pagefind/default-ui": "1.5.2",
     "@fontsource/inter": "5.3.0",
     "@fontsource/jetbrains-mono": "5.3.0",
     "@lucide/astro": "1.47.0",
