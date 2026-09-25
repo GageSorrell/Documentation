@@ -18,10 +18,10 @@ import {
 } from "@sorrell/docs-cli";
 import { type DocsConfig, decodeDocsConfigSync } from "@sorrell/docs-core";
 import { Effect, Layer, Stream } from "effect";
-
 import { buildAgentOutput, verifyAgentOutput } from "./AgentOutput.js";
 import type { GeneratedWebsite } from "./Types.js";
 import { createGeneratedWebsiteFromConfig } from "./Generator.js";
+
 const readConfig = (
     target: string
 ): Effect.Effect<DocsConfig, unknown, DocsFileSystem | DocsPath> =>
@@ -37,6 +37,7 @@ const readConfig = (
             try: () => decodeDocsConfigSync(JSON.parse(text))
         });
     });
+
 export/** @internal */
 const readGeneratedWebsite = (
     target: string
