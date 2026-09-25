@@ -58,5 +58,15 @@
   "buildCommand": "npm run build",
   "installCommand": "npm install",
   "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/docs",
+      "destination": "/"
+    },
+    {
+      "source": "/docs/:path*",
+      "destination": "/:path*"
+    }
+  ],
   "version": 2
 }

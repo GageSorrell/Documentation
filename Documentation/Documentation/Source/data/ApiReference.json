@@ -1,5 +1,5 @@
 {
-  "checksum": "bb94439fbcddbed93510a29665709875311579106952fb659c4256b36fdbbfcb",
+  "checksum": "2669771c1241b7355e2c1d2d57542d054ed15f93b183eb709f653a6e813913ec",
   "generatedAt": "2026-09-24T00:00:00.000Z",
   "version": 1,
   "sourceRevision": "Master",
@@ -13,7 +13,7 @@
         },
         {
           "current": false,
-          "href": "/docs/api/0.1.0",
+          "href": "/docs/api/1.0.1",
           "label": "1.0.1"
         },
         {
@@ -1315,7 +1315,7 @@
         },
         {
           "current": false,
-          "href": "/docs/api/0.1.0",
+          "href": "/docs/api/1.0.1",
           "label": "1.0.1"
         },
         {

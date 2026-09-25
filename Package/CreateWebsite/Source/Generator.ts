@@ -59,6 +59,12 @@ const baseTsconfig = (): string =>
         compilerOptions: { noEmit: true },
         extends: "@sorrell/tsconfig/base"
     });
+const documentationBaseRewrites = (
+    prefix: string
+): ReadonlyArray<{ readonly source: string; readonly destination: string }> => [
+    { destination: "/", source: prefix },
+    { destination: "/:path*", source: `${prefix}/:path*` }
+];
 const landingFiles = (
     config: DocsConfig
 ): ReadonlyArray<GeneratedWebsiteFile> =>
@@ -233,6 +239,9 @@ ${config.metadata.description}
             buildCommand: "npm run build",
             installCommand: "npm install",
             outputDirectory: "dist",
+            rewrites: documentationBaseRewrites(
+                config.routing.documentationPrefix
+            ),
             version: 2
         }),
         path: "Documentation/vercel.json"
@@ -269,6 +278,9 @@ ${config.metadata.description}
             ],
             installCommand: "npm install",
             outputDirectory: "dist",
+            rewrites: documentationBaseRewrites(
+                config.routing.documentationPrefix
+            ),
             version: 2
         }),
         path: "Documentation/vercel.snapshot.json"

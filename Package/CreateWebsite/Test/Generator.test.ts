@@ -122,6 +122,16 @@ describe("three-package website generation", () =>
                     file.path === "Landing/vercel.json"
             )?.content
         ).toContain("/docs/:path*");
+        const documentationVercel = JSON.parse(
+            website.files.find(
+                (file: GeneratedWebsiteFile) =>
+                    file.path === "Documentation/vercel.json"
+            )?.content ?? "{}"
+        );
+        expect(documentationVercel.rewrites).toEqual([
+            { destination: "/", source: "/docs" },
+            { destination: "/:path*", source: "/docs/:path*" }
+        ]);
         expect(
             website.files.some(
                 (file: GeneratedWebsiteFile) =>

@@ -1,16 +1,7 @@
 /**
- *
+ * Astro configuration for the Sorrell documentation dogfood site.
  *
  * @module @sorrell/documentation/astro.config
- *
- * @file      astro.config.ts
- * @author    Gage Sorrell <gage@sorrell.sh>
- * @copyright (c) 2026 Gage Sorrell
- * @license   MIT
- */
-
-/**
- * Astro configuration for the Sorrell documentation dogfood site.
  *
  * @file      astro.config.ts
  * @author    Gage Sorrell <gage@sorrell.sh>
