@@ -144,7 +144,11 @@ const prepareVercelDirectory = (
     website: GeneratedWebsite,
     directory: string,
     fileSystem: typeof DocsFileSystem.Service,
-    path: typeof DocsPath.Service
+    path: typeof DocsPath.Service,
+    staticContent?: {
+        readonly source: string;
+        readonly destination: string;
+    }
 ): Effect.Effect<string, DocsFileSystemError, import("effect").Scope.Scope> =>
     Effect.gen(function* ()
     {
@@ -163,6 +167,16 @@ const prepareVercelDirectory = (
             prefix: "sorrell-vercel-"
         });
         yield* fileSystem.copy(source, staging, { overwrite: true });
+        if (staticContent !== undefined)
+        {
+            const destination = path.join(staging, staticContent.destination);
+            yield* fileSystem.makeDirectory(destination);
+            yield* fileSystem.copy(
+                staticContent.source,
+                destination,
+                { overwrite: true }
+            );
+        }
         const stagedPackages = path.join(staging, "Package");
         yield* fileSystem.copy(packageSource, stagedPackages, {
             overwrite: true
@@ -367,11 +381,25 @@ const deployWebsite = (
                 `${JSON.stringify(landingConfig, null, 2)}\n`
             );
             const landingProject = website.config.vercel.projects.landing;
+            const documentationDistribution = path.join(
+                website.target,
+                website.config.vercel.projects.documentation.directory,
+                "dist"
+            );
             const landingDirectory = yield* prepareVercelDirectory(
                 website,
                 path.join(website.target, landingProject.directory),
                 fileSystem,
-                path
+                path,
+                {
+                    destination: path.join(
+                        "public",
+                        website.config.routing.documentationPrefix.replace(
+                            /^\/+/, ""
+                        )
+                    ),
+                    source: documentationDistribution
+                }
             );
             const landingResult = yield* vercel
                 .deploy(

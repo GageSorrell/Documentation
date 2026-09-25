@@ -101,7 +101,6 @@ const createLandingRewrites = (
         })
     ),
     rewrites: [
-        ...rewriteFor(routing.documentationPrefix, deployments.documentation),
         ...(deployments.storybook === undefined
             ? []
             : rewriteFor(routing.storybookPrefix, deployments.storybook))

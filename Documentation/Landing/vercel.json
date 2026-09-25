@@ -43,14 +43,6 @@
   "redirects": [],
   "rewrites": [
     {
-      "destination": "https://documentation.invalid/docs",
-      "source": "/docs"
-    },
-    {
-      "destination": "https://documentation.invalid/docs/:path*",
-      "source": "/docs/:path*"
-    },
-    {
       "destination": "https://storybook.invalid/storybook",
       "source": "/storybook"
     },

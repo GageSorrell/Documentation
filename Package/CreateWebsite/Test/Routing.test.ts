@@ -16,7 +16,7 @@ import {
 import { describe, expect, it } from "vitest";
 describe("generated website routing", () =>
 {
-    it("preserves child base paths and nested assets", () =>
+    it("keeps documentation local and preserves the Storybook base path", () =>
     {
         const result = createLandingRewrites(
             { documentationPrefix: "/docs", storybookPrefix: "/storybook" },
@@ -36,11 +36,6 @@ describe("generated website routing", () =>
             }
         );
         expect(result.rewrites).toEqual([
-            { destination: "https://docs.vercel.app/docs", source: "/docs" },
-            {
-                destination: "https://docs.vercel.app/docs/:path*",
-                source: "/docs/:path*"
-            },
             {
                 destination: "https://storybook.vercel.app/storybook",
                 source: "/storybook"
@@ -106,7 +101,7 @@ describe("generated website routing", () =>
                 }
             }
         );
-        expect(result.rewrites).toHaveLength(2);
+        expect(result.rewrites).toHaveLength(0);
         expect(
             result.rewrites.some((rewrite: VercelRewrite) =>
                 rewrite.source.startsWith("/workbench")

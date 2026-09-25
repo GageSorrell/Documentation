@@ -117,7 +117,7 @@ describe("website deployment orchestration", () =>
             "promote:release-1-landing"
         ]);
     });
-    it("deploys children before Landing and writes child rewrites", async () =>
+    it("deploys children before Landing and keeps Documentation local", async () =>
     {
         const target = await mkdtemp(join(tmpdir(), "sorrell-deploy-"));
         await mkdir(join(target, "Documentation"));
@@ -204,9 +204,12 @@ describe("website deployment orchestration", () =>
         expect(result.deployments.landing.url).toBe(
             "https://landing.vercel.app"
         );
-        expect(
-            await readFile(join(target, "Landing/vercel.json"), "utf8")
-        ).toContain("https://documentation.vercel.app/docs");
+        const landingConfig = await readFile(
+            join(target, "Landing/vercel.json"),
+            "utf8"
+        );
+        expect(landingConfig).toContain("https://storybook.vercel.app/storybook");
+        expect(landingConfig).not.toContain("https://documentation.vercel.app");
     });
     it("deploys the MCP child before Landing without adding a public Landing rewrite", async () =>
     {
@@ -255,7 +258,7 @@ describe("website deployment orchestration", () =>
             JSON.parse(
                 await readFile(join(target, "Landing/vercel.json"), "utf8")
             ).rewrites
-        ).toHaveLength(2);
+        ).toHaveLength(0);
     });
     it("removes child deployments when Landing fails", async () =>
     {
