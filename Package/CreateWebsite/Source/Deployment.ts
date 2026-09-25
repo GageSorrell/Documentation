@@ -237,7 +237,7 @@ const deployWebsite = (
                 website.config.vercel.projects.documentation;
             const documentationDirectory = yield* prepareVercelDirectory(
                 website,
-                path.join(website.target, "Documentation"),
+                path.join(website.target, documentationProject.directory),
                 fileSystem,
                 path
             );
@@ -259,7 +259,11 @@ const deployWebsite = (
             const storybookDirectory = website.config.storybook.enabled
                 ? yield* prepareVercelDirectory(
                     website,
-                    path.join(website.target, "Storybook"),
+                    path.join(
+                        website.target,
+                        website.config.vercel.projects.storybook?.directory ??
+                            "Storybook"
+                    ),
                     fileSystem,
                     path
                 )
@@ -300,7 +304,10 @@ const deployWebsite = (
             const mcpDirectory = website.config.agent.mcp.enabled
                 ? yield* prepareVercelDirectory(
                     website,
-                    path.join(website.target, "Mcp"),
+                    path.join(
+                        website.target,
+                        website.config.vercel.projects.mcp?.directory ?? "Mcp"
+                    ),
                     fileSystem,
                     path
                 )
@@ -362,7 +369,7 @@ const deployWebsite = (
             const landingProject = website.config.vercel.projects.landing;
             const landingDirectory = yield* prepareVercelDirectory(
                 website,
-                path.join(website.target, "Landing"),
+                path.join(website.target, landingProject.directory),
                 fileSystem,
                 path
             );
@@ -611,23 +618,8 @@ const verifyWebsiteDeployment = (
     Effect.gen(function* ()
     {
         const retry = yield* NetworkRetry;
-        const paths = options.paths ?? [
-            "/",
-            manifest.routes.documentationPrefix,
-            `${manifest.routes.documentationPrefix}/`,
-            ...(manifest.deployments.storybook === undefined
-                ? []
-                : [
-                    manifest.routes.storybookPrefix,
-                    `${manifest.routes.storybookPrefix}/`
-                ])
-        ];
-        for (const route of paths)
+        const verifyUrl = (url: string) =>
         {
-            const url = new URL(
-                route,
-                `${manifest.deployments.landing.url.replace(/\/+$/, "")}/`
-            ).toString();
             const request = Effect.tryPromise({
                 catch: (cause: unknown) =>
                     new DeploymentVerificationError({ cause, url }),
@@ -647,12 +639,42 @@ const verifyWebsiteDeployment = (
                         )
                 )
             );
-            yield* retry.run(
+            return retry.run(
                 request,
                 (cause: DeploymentVerificationError) =>
                     cause.status === undefined || cause.status >= 500,
                 { delay: "100 millis", maxRetries: 3 }
             );
+        };
+        const paths = options.paths ?? [
+            "/",
+            manifest.routes.documentationPrefix,
+            `${manifest.routes.documentationPrefix}/`,
+            ...(manifest.deployments.storybook === undefined
+                ? []
+                : [
+                    manifest.routes.storybookPrefix,
+                    `${manifest.routes.storybookPrefix}/`
+                ])
+        ];
+        for (const route of paths)
+        {
+            const url = new URL(
+                route,
+                `${manifest.deployments.landing.url.replace(/\/+$/, "")}/`
+            ).toString();
+            yield* verifyUrl(url);
+        }
+        const documentationUrl =
+            `${manifest.deployments.documentation.url.replace(/\/+$/u, "")}` +
+            `${manifest.routes.documentationPrefix}/`;
+        yield* verifyUrl(documentationUrl);
+        if (manifest.deployments.storybook !== undefined)
+        {
+            const storybookUrl =
+                `${manifest.deployments.storybook.url.replace(/\/+$/u, "")}` +
+                `${manifest.routes.storybookPrefix}/`;
+            yield* verifyUrl(storybookUrl);
         }
         if (manifest.deployments.mcp !== undefined)
         {

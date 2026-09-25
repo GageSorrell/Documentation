@@ -120,18 +120,30 @@ describe("website deployment orchestration", () =>
     it("deploys children before Landing and writes child rewrites", async () =>
     {
         const target = await mkdtemp(join(tmpdir(), "sorrell-deploy-"));
+        await mkdir(join(target, "Documentation"));
+        await mkdir(join(target, "Storybook"));
         await mkdir(join(target, "Landing"));
         const order: Array<string> = [];
+        const destinations: Array<{ directory: string; project?: string }> = [];
         const layer = Layer.succeed(
             VercelService,
             VercelService.of({
                 alias: () => Effect.void,
-                deploy: (directory: string) =>
+                deploy: (
+                    directory: string,
+                    options?: { readonly name?: string }
+                ) =>
                     Effect.sync(() =>
                     {
                         const project =
                             directory.split(/[\\/]/).at(-1) ?? "unknown";
                         order.push(project);
+                        destinations.push({
+                            directory,
+                            ...(options?.name === undefined
+                                ? {}
+                                : { project: options.name })
+                        });
                         const url = `https://${project.toLowerCase()}.vercel.app`;
                         return { deploymentId: url, raw: url, url };
                     }),
@@ -150,12 +162,45 @@ describe("website deployment orchestration", () =>
         const result = await Effect.runPromise(
             deployWebsite(
                 createGeneratedWebsite({
-                    config: { storybook: { enabled: true } },
+                    config: {
+                        storybook: { enabled: true },
+                        vercel: {
+                            projects: {
+                                documentation: {
+                                    directory: "Documentation",
+                                    project: "documentation"
+                                },
+                                landing: {
+                                    directory: "Landing",
+                                    project: "sorrell-documentation-landing"
+                                },
+                                storybook: {
+                                    directory: "Storybook",
+                                    project: "sorrell-documentation-storybook"
+                                }
+                            }
+                        }
+                    },
                     target
                 })
             ).pipe(Effect.provide(layer))
         );
         expect(order).toEqual([ "Documentation", "Storybook", "Landing" ]);
+        expect(destinations.map(({ directory, project }) => ({
+            directory: directory.split(/[\\/]/).at(-1),
+            project
+        }))).toEqual([
+            { directory: "Documentation", project: "documentation" },
+            {
+                directory: "Storybook",
+                project: "sorrell-documentation-storybook"
+            },
+            {
+                directory: "Landing",
+                project: "sorrell-documentation-landing"
+            }
+        ]);
+        expect(destinations[0]?.directory).toBe(join(target, "Documentation"));
         expect(result.deployments.landing.url).toBe(
             "https://landing.vercel.app"
         );
@@ -272,11 +317,13 @@ describe("website deployment orchestration", () =>
     it("verifies public routes with bounded retries", async () =>
     {
         let attempts = 0;
+        const urls: Array<string> = [];
         vi.stubGlobal(
             "fetch",
-            vi.fn(async () =>
+            vi.fn(async (input: string | URL | Request) =>
             {
                 attempts += 1;
+                urls.push(String(input));
                 return attempts === 1
                     ? new Response("busy", { status: 503 })
                     : new Response("ok", { status: 200 });
@@ -290,7 +337,8 @@ describe("website deployment orchestration", () =>
                     { paths: [ "/" ] }
                 ).pipe(Effect.provide(NetworkRetry.layer))
             );
-            expect(attempts).toBe(2);
+            expect(attempts).toBe(3);
+            expect(urls).toContain("https://docs.vercel.app/docs/");
         }
         finally
         {
