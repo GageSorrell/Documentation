@@ -16,10 +16,11 @@ import type {
 } from "./Types.js";
 import { type ReactNode, useCallback, useMemo, useState } from "react";
 import { ThemeToggle } from "./Theme.js";
+
 export/** @internal */
 const DocsHeader = ({
     title = "Documentation",
-    links = [],
+    links = [ ],
     repositoryHref
 }: {
     readonly title?: string;
@@ -193,9 +194,9 @@ const DocumentationShell = ({
     return (
         <div className="docs-site">
             <DocsHeader
-                { ...(title === undefined ? {} : { title }) }
+                { ...(title === undefined ? { } : { title }) }
                 links={ headerLinks }
-                { ...(repositoryHref === undefined ? {} : { repositoryHref }) }
+                { ...(repositoryHref === undefined ? { } : { repositoryHref }) }
             />
             <div className="docs-layout">
                 {navigation.length === 0 ? null : (

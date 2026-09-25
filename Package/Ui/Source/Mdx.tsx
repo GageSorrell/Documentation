@@ -72,8 +72,7 @@ const Tabs = ({
                             key={ tab.label }
                             onClick={ () => setActive(index) }
                             role="tab"
-                            type="button"
-                        >
+                            type="button">
                             {tab.label}
                         </button>
                     )
