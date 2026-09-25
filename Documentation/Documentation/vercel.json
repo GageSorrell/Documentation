@@ -55,6 +55,7 @@
       "source": "/docs/:version/llms-full.txt"
     }
   ],
+  "buildCommand": "npm run build",
   "installCommand": "npm install",
   "outputDirectory": "dist",
   "version": 2

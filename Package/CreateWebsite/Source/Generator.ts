@@ -259,53 +259,9 @@ const documentationFiles = (
         content: packageManifest(
             "@sorrell/documentation",
             {
-                build:
-                    "astro build && node " +
-                    "../../node_modules/@sorrell/docs-create-website/Distribution/bin.js " +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "agent " +
-                    "build --target ..",
+                build: "astro build",
                 dev: "astro dev",
-                verify:
-                    "astro check && node " +
-                    "../../node_modules/@sorrell/docs-create-website/Distribution/bin.js " +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "agent " +
-                    "verify --target .."
+                verify: "astro check"
             },
             {
                 "@astrojs/mdx": "8.0.2",
@@ -411,6 +367,7 @@ ${config.metadata.description}
                     source: `${config.routing.documentationPrefix}/:version/llms-full.txt`
                 }
             ],
+            buildCommand: "npm run build",
             installCommand: "npm install",
             outputDirectory: "dist",
             version: 2
@@ -419,6 +376,7 @@ ${config.metadata.description}
     },
     {
         content: json({
+            buildCommand: "npm run build",
             cleanUrls: true,
             headers: [
                 {
@@ -933,6 +891,7 @@ export const System: Story = { args: { children: null, initialMode: "system" }, 
     },
     {
         content: json({
+            buildCommand: "npm run build",
             installCommand: "npm install",
             outputDirectory: "Distribution",
             version: 2
@@ -941,6 +900,7 @@ export const System: Story = { args: { children: null, initialMode: "system" }, 
     },
     {
         content: json({
+            buildCommand: "npm run build",
             cleanUrls: true,
             installCommand: "npm install",
             outputDirectory: "Distribution",

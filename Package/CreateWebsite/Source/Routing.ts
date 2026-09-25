@@ -38,6 +38,7 @@ export interface VercelHeader {
 }
 /** @internal */
 export interface LandingVercelConfig {
+    readonly buildCommand?: "npm run build";
     readonly installCommand?: "npm install";
     readonly version: 2;
     readonly rewrites: ReadonlyArray<VercelRewrite>;
@@ -62,6 +63,7 @@ const createLandingRewrites = (
     deployments: WebsiteDeployments,
     redirects: ReadonlyArray<Redirect> = []
 ): LandingVercelConfig => ({
+    buildCommand: "npm run build",
     headers: [
         {
             headers: [ { key: "X-Robots-Tag", value: "noindex" } ],
