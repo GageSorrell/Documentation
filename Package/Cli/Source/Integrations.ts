@@ -45,6 +45,12 @@ export interface VercelDeploymentInspection {
 const ansiEscape = String.fromCharCode(27);
 const ansiPattern = new RegExp(`${ansiEscape}\\[[0-?]*[ -/]*[@-~]`, "g");
 const stripAnsi = (value: string): string => value.replace(ansiPattern, "");
+const vercelExecutable = process.platform === "win32" ? "npx.cmd" : "npx";
+const vercelCommand = (args: ReadonlyArray<string>): ReadonlyArray<string> => [
+    "--no-install",
+    "vercel",
+    ...args
+];
 const parseDeployment = (raw: string): VercelDeploymentResult =>
 {
     const cleaned = stripAnsi(raw).trim();
@@ -350,8 +356,8 @@ export class VercelService extends Context.Service<
                 ) =>
                     runner
                         .run(
-                            "vercel",
-                            args,
+                            vercelExecutable,
+                            vercelCommand(args),
                             cwd === undefined ? undefined : { cwd }
                         )
                         .pipe(
