@@ -136,6 +136,10 @@ const rewritePackageManifest = (
     }
     return `${JSON.stringify(manifest, null, 2)}\n`;
 };
+const rewriteStagedTsconfig = (text: string): string =>
+    text
+        .replaceAll("../../Configuration/", "./Configuration/")
+        .replaceAll("../../Package/", "./Package/");
 const prepareVercelDirectory = (
     website: GeneratedWebsite,
     directory: string,
@@ -180,6 +184,14 @@ const prepareVercelDirectory = (
                     yield* fileSystem.readText(siteManifest),
                     "./Package/"
                 )
+            );
+        }
+        const siteTsconfig = path.join(staging, "tsconfig.json");
+        if (yield* fileSystem.exists(siteTsconfig))
+        {
+            yield* fileSystem.writeText(
+                siteTsconfig,
+                rewriteStagedTsconfig(yield* fileSystem.readText(siteTsconfig))
             );
         }
         for (const packageDirectory of Object.values(localPackageDirectories))

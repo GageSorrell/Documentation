@@ -37,6 +37,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.4",
-    "pagefind": "1.5.2"
+    "@sorrell/tsconfig": "2.1.0",
+    "pagefind": "1.5.2",
+    "typescript": "6.0.2"
   }
 }

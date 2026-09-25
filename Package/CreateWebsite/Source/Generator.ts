@@ -272,7 +272,11 @@ const documentationFiles = (
                 "@sorrell/docs-ui": "0.1.0",
                 astro: "7.3.4"
             },
-            { "@astrojs/check": "0.9.4", "@sorrell/tsconfig": "2.1.0" }
+            {
+                "@astrojs/check": "0.9.4",
+                "@sorrell/tsconfig": "2.1.0",
+                typescript: "6.0.2"
+            }
         ),
         path: "Documentation/package.json"
     },
