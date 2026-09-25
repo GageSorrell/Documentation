@@ -143,6 +143,9 @@ const verifyWebsite = (
             yield* runPackageScript(target, "Mcp", "verify", packageManager);
         }
         yield* runPackageScript(target, "Landing", "verify", packageManager);
+        // Child verification builds may recreate the Documentation dist
+        // directory, so regenerate the agent corpus before validating it.
+        yield* buildAgentOutput(target, { revision: "working-tree" });
         yield* verifyAgentOutput(target);
     }).pipe(
         Effect.provide(

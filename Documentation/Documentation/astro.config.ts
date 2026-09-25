@@ -1,4 +1,15 @@
 /**
+ *
+ *
+ * @module @sorrell/documentation/astro.config
+ *
+ * @file      astro.config.ts
+ * @author    Gage Sorrell <gage@sorrell.sh>
+ * @copyright (c) 2026 Gage Sorrell
+ * @license   MIT
+ */
+
+/**
  * Astro configuration for the Sorrell documentation dogfood site.
  *
  * @file      astro.config.ts
@@ -12,6 +23,7 @@ import { defineConfig } from "astro/config";
 import { docsAstroIntegration } from "@sorrell/docs-astro";
 
 export default defineConfig({
+    base: "/docs/",
     build: {
         format: "directory"
     },

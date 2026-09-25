@@ -252,6 +252,7 @@ export class DocsFileSystem extends Context.Service<
             })
         ).pipe(Layer.provide(NodeServices.layer));
 }
+
 /** @internal */
 export class DocsPath extends Context.Service<
     DocsPath,
@@ -322,6 +323,7 @@ export class DocsTerminal extends Context.Service<
             })
         ).pipe(Layer.provide(NodeServices.layer));
 }
+
 /** @internal */
 export class TempDirectory extends Context.Service<
     TempDirectory,

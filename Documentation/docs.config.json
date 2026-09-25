@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "name": "sorrell-documentation",
+    "title": "Sorrell Documentation",
+    "description": "Build readable documentation sites with a shared content, theme, and publishing system.",
+    "url": "https://docs.sorrell.sh",
+    "repository": {
+      "url": "https://github.com/GageSorrell/Documentation/tree/Master#ReadMe",
+      "branch": "Master",
+      "directory": "Documentation"
+    }
+  },
+  "routing": {
+    "documentationPrefix": "/docs",
+    "storybookPrefix": "/storybook"
+  },
+  "landing": {
+    "title": "Sorrell Documentation",
+    "description": "Build readable documentation sites with a shared content, theme, and publishing system.",
+    "primaryAction": {
+      "label": "Read the docs",
+      "href": "/docs/"
+    },
+    "sections": [
+      {
+        "id": "docs",
+        "title": "Documentation",
+        "body": "Articles, API references, and durable guides for Sorrell products.",
+        "href": "/docs/"
+      },
+      {
+        "id": "components",
+        "title": "Components",
+        "body": "Explore the reusable landing-page components in Storybook.",
+        "href": "/storybook/"
+      },
+      {
+        "id": "source",
+        "title": "Open source",
+        "body": "Inspect the source, packages, and release workflow on GitHub.",
+        "href": "https://github.com/GageSorrell/Documentation"
+      }
+    ]
+  },
+  "storybook": {
+    "enabled": true,
+    "directory": "Storybook",
+    "stories": [
+      "Stories/**/*.stories.tsx",
+      "Stories/**/*.mdx"
+    ]
+  },
+  "versions": [
+    {
+      "current": true,
+      "directory": ".",
+      "id": "current",
+      "label": "Current",
+      "order": 0
+    },
+    {
+      "directory": "v1",
+      "id": "v1",
+      "label": "v1",
+      "order": 1,
+      "version": "1"
+    }
+  ],
+  "navigation": {
+    "groups": [
+      {
+        "id": "guides",
+        "label": "Guides",
+        "items": [
+          { "id": "overview", "label": "Overview", "href": "/docs/", "kind": "page" },
+          { "id": "architecture", "label": "Architecture", "href": "/docs/architecture/", "kind": "page" },
+          { "id": "authoring", "label": "Authoring", "href": "/docs/authoring/", "kind": "page" }
+        ]
+      },
+      {
+        "id": "reference",
+        "label": "Reference",
+        "items": [
+          { "id": "api", "label": "API Reference", "href": "/docs/api/", "kind": "page" }
+        ]
+      }
+    ]
+  },
+  "api": {
+    "enabled": true,
+    "entryPoints": [
+      "Package/Core/Source/index.ts",
+      "Package/Ui/Source/index.ts"
+    ],
+    "outputDirectory": "Documentation/Source/data",
+    "packages": [
+      "@sorrell/docs-core",
+      "@sorrell/docs-ui"
+    ],
+    "sourceRepository": {
+      "url": "https://github.com/GageSorrell/Documentation",
+      "branch": "Master"
+    },
+    "typedoc": {}
+  },
+  "agent": {
+    "enabled": true,
+    "essentials": []
+  },
+  "vercel": {
+    "enabled": true,
+    "domains": [
+      "docs.sorrell.sh"
+    ],
+    "productionBranch": "Master",
+    "projects": {
+      "landing": {
+        "project": "sorrell-documentation-landing"
+      },
+      "documentation": {
+        "project": "sorrell-documentation"
+      },
+      "storybook": {
+        "project": "sorrell-documentation-storybook"
+      }
+    }
+  }
+}

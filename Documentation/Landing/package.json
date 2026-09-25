@@ -1,0 +1,39 @@
+{
+  "dependencies": {
+    "@sorrell/docs-core": "0.1.0",
+    "@sorrell/docs-ui": "0.1.0",
+    "@vitejs/plugin-react": "6.1.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "vite": "8.3.0"
+  },
+  "devDependencies": {
+    "@sorrell/tsconfig": "2.1.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "typescript": "6.0.2"
+  },
+  "author": {
+    "name": "Gage Sorrell",
+    "email": "gage@sorrell.sh",
+    "url": "https://sorrell.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GageSorrell/Documentation/tree/Master#ReadMe",
+    "directory": "Documentation/Landing"
+  },
+  "bugs": {
+    "url": "https://github.com/GageSorrell/Documentation/issues"
+  },
+  "name": "generated-documentation-landing",
+  "homepage": "https://docs.sorrell.sh",
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite --host 127.0.0.1 --port 4173",
+    "verify": "vite build"
+  },
+  "type": "module",
+  "version": "0.1.0"
+}

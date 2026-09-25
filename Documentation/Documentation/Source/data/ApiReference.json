@@ -1,0 +1,1864 @@
+{
+  "checksum": "bb94439fbcddbed93510a29665709875311579106952fb659c4256b36fdbbfcb",
+  "generatedAt": "2026-09-24T00:00:00.000Z",
+  "version": 1,
+  "sourceRevision": "Master",
+  "records": [
+    {
+      "breadcrumbs": [
+        {
+          "current": false,
+          "href": "/docs/api/",
+          "label": "API Reference"
+        },
+        {
+          "current": false,
+          "href": "/docs/api/0.1.0",
+          "label": "0.1.0"
+        },
+        {
+          "current": false,
+          "href": "/docs/api/core",
+          "label": "@sorrell/docs-core"
+        },
+        {
+          "current": true,
+          "label": "@sorrell/docs-core"
+        }
+      ],
+      "categories": [
+        {
+          "collapsed": false,
+          "id": "functions",
+          "label": "Functions",
+          "order": 0
+        },
+        {
+          "collapsed": false,
+          "id": "classes",
+          "label": "Classes",
+          "order": 1
+        },
+        {
+          "collapsed": false,
+          "id": "interfaces",
+          "label": "Interfaces",
+          "order": 2
+        },
+        {
+          "collapsed": false,
+          "id": "types",
+          "label": "Types",
+          "order": 3
+        },
+        {
+          "collapsed": false,
+          "id": "constants",
+          "label": "Constants",
+          "order": 4
+        }
+      ],
+      "declarations": [
+        {
+          "categoryId": "types",
+          "description": "AgentConfig exported by @sorrell/docs-core.",
+          "id": "AgentConfig",
+          "kind": "type",
+          "name": "AgentConfig",
+          "signature": "export declare type AgentConfig",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 597
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "AgentConfigSchema exported by @sorrell/docs-core.",
+          "id": "AgentConfigSchema",
+          "kind": "variable",
+          "name": "AgentConfigSchema",
+          "signature": "export declare variable AgentConfigSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 351
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "AgentCorpus exported by @sorrell/docs-core.",
+          "id": "AgentCorpus",
+          "kind": "type",
+          "name": "AgentCorpus",
+          "signature": "export declare type AgentCorpus",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 595
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "AgentCorpusSchema exported by @sorrell/docs-core.",
+          "id": "AgentCorpusSchema",
+          "kind": "variable",
+          "name": "AgentCorpusSchema",
+          "signature": "export declare variable AgentCorpusSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 338
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "AgentDocument exported by @sorrell/docs-core.",
+          "id": "AgentDocument",
+          "kind": "type",
+          "name": "AgentDocument",
+          "signature": "export declare type AgentDocument",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 583
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "AgentDocumentSchema exported by @sorrell/docs-core.",
+          "id": "AgentDocumentSchema",
+          "kind": "variable",
+          "name": "AgentDocumentSchema",
+          "signature": "export declare variable AgentDocumentSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 298
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "AgentManifest exported by @sorrell/docs-core.",
+          "id": "AgentManifest",
+          "kind": "type",
+          "name": "AgentManifest",
+          "signature": "export declare type AgentManifest",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 589
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "AgentManifestEntry exported by @sorrell/docs-core.",
+          "id": "AgentManifestEntry",
+          "kind": "type",
+          "name": "AgentManifestEntry",
+          "signature": "export declare type AgentManifestEntry",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 585
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "AgentManifestEntrySchema exported by @sorrell/docs-core.",
+          "id": "AgentManifestEntrySchema",
+          "kind": "variable",
+          "name": "AgentManifestEntrySchema",
+          "signature": "export declare variable AgentManifestEntrySchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 311
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "AgentManifestSchema exported by @sorrell/docs-core.",
+          "id": "AgentManifestSchema",
+          "kind": "variable",
+          "name": "AgentManifestSchema",
+          "signature": "export declare variable AgentManifestSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 328
+          }
+        },
+        {
+          "categoryId": "interfaces",
+          "description": "AgentMarkdownDiagnostic exported by @sorrell/docs-core.",
+          "id": "AgentMarkdownDiagnostic",
+          "kind": "interface",
+          "name": "AgentMarkdownDiagnostic",
+          "signature": "export declare interface AgentMarkdownDiagnostic",
+          "source": {
+            "file": "Package/Core/Source/Agent.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 15
+          }
+        },
+        {
+          "categoryId": "interfaces",
+          "description": "AgentMarkdownResult exported by @sorrell/docs-core.",
+          "id": "AgentMarkdownResult",
+          "kind": "interface",
+          "name": "AgentMarkdownResult",
+          "signature": "export declare interface AgentMarkdownResult",
+          "source": {
+            "file": "Package/Core/Source/Agent.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 21
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "AgentSearchIndex exported by @sorrell/docs-core.",
+          "id": "AgentSearchIndex",
+          "kind": "type",
+          "name": "AgentSearchIndex",
+          "signature": "export declare type AgentSearchIndex",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 591
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "AgentSearchIndexEntrySchema exported by @sorrell/docs-core.",
+          "id": "AgentSearchIndexEntrySchema",
+          "kind": "variable",
+          "name": "AgentSearchIndexEntrySchema",
+          "signature": "export declare variable AgentSearchIndexEntrySchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 190
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "AgentSearchIndexSchema exported by @sorrell/docs-core.",
+          "id": "AgentSearchIndexSchema",
+          "kind": "variable",
+          "name": "AgentSearchIndexSchema",
+          "signature": "export declare variable AgentSearchIndexSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 196
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "AgentSkillArtifact exported by @sorrell/docs-core.",
+          "id": "AgentSkillArtifact",
+          "kind": "type",
+          "name": "AgentSkillArtifact",
+          "signature": "export declare type AgentSkillArtifact",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 603
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "AgentSkillArtifactSchema exported by @sorrell/docs-core.",
+          "id": "AgentSkillArtifactSchema",
+          "kind": "variable",
+          "name": "AgentSkillArtifactSchema",
+          "signature": "export declare variable AgentSkillArtifactSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 321
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "AgentSkillConfig exported by @sorrell/docs-core.",
+          "id": "AgentSkillConfig",
+          "kind": "type",
+          "name": "AgentSkillConfig",
+          "signature": "export declare type AgentSkillConfig",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 599
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "AgentSkillConfigSchema exported by @sorrell/docs-core.",
+          "id": "AgentSkillConfigSchema",
+          "kind": "variable",
+          "name": "AgentSkillConfigSchema",
+          "signature": "export declare variable AgentSkillConfigSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 346
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "ApiGenerationConfig exported by @sorrell/docs-core.",
+          "id": "ApiGenerationConfig",
+          "kind": "type",
+          "name": "ApiGenerationConfig",
+          "signature": "export declare type ApiGenerationConfig",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 537
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "ApiGenerationConfigSchema exported by @sorrell/docs-core.",
+          "id": "ApiGenerationConfigSchema",
+          "kind": "variable",
+          "name": "ApiGenerationConfigSchema",
+          "signature": "export declare variable ApiGenerationConfigSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 145
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "ApiReferenceBreadcrumb exported by @sorrell/docs-core.",
+          "id": "ApiReferenceBreadcrumb",
+          "kind": "type",
+          "name": "ApiReferenceBreadcrumb",
+          "signature": "export declare type ApiReferenceBreadcrumb",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 561
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "ApiReferenceBreadcrumbSchema exported by @sorrell/docs-core.",
+          "id": "ApiReferenceBreadcrumbSchema",
+          "kind": "variable",
+          "name": "ApiReferenceBreadcrumbSchema",
+          "signature": "export declare variable ApiReferenceBreadcrumbSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 235
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "ApiReferenceCategory exported by @sorrell/docs-core.",
+          "id": "ApiReferenceCategory",
+          "kind": "type",
+          "name": "ApiReferenceCategory",
+          "signature": "export declare type ApiReferenceCategory",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 565
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "ApiReferenceCategorySchema exported by @sorrell/docs-core.",
+          "id": "ApiReferenceCategorySchema",
+          "kind": "variable",
+          "name": "ApiReferenceCategorySchema",
+          "signature": "export declare variable ApiReferenceCategorySchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 241
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "ApiReferenceDeclaration exported by @sorrell/docs-core.",
+          "id": "ApiReferenceDeclaration",
+          "kind": "type",
+          "name": "ApiReferenceDeclaration",
+          "signature": "export declare type ApiReferenceDeclaration",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 575
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "ApiReferenceDeclarationSchema exported by @sorrell/docs-core.",
+          "id": "ApiReferenceDeclarationSchema",
+          "kind": "variable",
+          "name": "ApiReferenceDeclarationSchema",
+          "signature": "export declare variable ApiReferenceDeclarationSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 262
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "ApiReferenceRecord exported by @sorrell/docs-core.",
+          "id": "ApiReferenceRecord",
+          "kind": "type",
+          "name": "ApiReferenceRecord",
+          "signature": "export declare type ApiReferenceRecord",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 579
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "ApiReferenceRecordSchema exported by @sorrell/docs-core.",
+          "id": "ApiReferenceRecordSchema",
+          "kind": "variable",
+          "name": "ApiReferenceRecordSchema",
+          "signature": "export declare variable ApiReferenceRecordSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 282
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "apiReferenceRecordToAgentDocument exported by @sorrell/docs-core.",
+          "id": "apiReferenceRecordToAgentDocument",
+          "kind": "function",
+          "name": "apiReferenceRecordToAgentDocument",
+          "signature": "{ content: string; context?: string; description?: string; id: string; kind: \"article\" | \"api-module\" | \"component\"; metadata?: { [key: string]: unknown }; source?: { endLine?: number; file: string; line?: number; repositoryUrl: string; revision: string }; title: string; url: string; version?: string }",
+          "source": {
+            "file": "Package/Core/Source/Agent.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 116
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "ApiReferenceSource exported by @sorrell/docs-core.",
+          "id": "ApiReferenceSource",
+          "kind": "type",
+          "name": "ApiReferenceSource",
+          "signature": "export declare type ApiReferenceSource",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 569
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "ApiReferenceSourceSchema exported by @sorrell/docs-core.",
+          "id": "ApiReferenceSourceSchema",
+          "kind": "variable",
+          "name": "ApiReferenceSourceSchema",
+          "signature": "export declare variable ApiReferenceSourceSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 248
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "ColorTokensSchema exported by @sorrell/docs-core.",
+          "id": "ColorTokensSchema",
+          "kind": "variable",
+          "name": "ColorTokensSchema",
+          "signature": "export declare variable ColorTokensSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 33
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "ConfigPathSegment exported by @sorrell/docs-core.",
+          "id": "ConfigPathSegment",
+          "kind": "type",
+          "name": "ConfigPathSegment",
+          "signature": "export declare type ConfigPathSegment",
+          "source": {
+            "file": "Package/Core/Source/Errors.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 15
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "decodeDocsConfig exported by @sorrell/docs-core.",
+          "id": "decodeDocsConfig",
+          "kind": "function",
+          "name": "decodeDocsConfig",
+          "signature": "Result<DocsConfig, DocsConfigError>",
+          "source": {
+            "file": "Package/Core/Source/Config.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 697
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "decodeDocsConfigEffect exported by @sorrell/docs-core.",
+          "id": "decodeDocsConfigEffect",
+          "kind": "function",
+          "name": "decodeDocsConfigEffect",
+          "signature": "Effect<DocsConfig, DocsConfigError>",
+          "source": {
+            "file": "Package/Core/Source/Config.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 723
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "decodeDocsConfigSync exported by @sorrell/docs-core.",
+          "id": "decodeDocsConfigSync",
+          "kind": "function",
+          "name": "decodeDocsConfigSync",
+          "signature": "DocsConfig",
+          "source": {
+            "file": "Package/Core/Source/Config.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 712
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "DefaultDesignTokens exported by @sorrell/docs-core.",
+          "id": "DefaultDesignTokens",
+          "kind": "variable",
+          "name": "DefaultDesignTokens",
+          "signature": "export declare variable DefaultDesignTokens",
+          "source": {
+            "file": "Package/Core/Source/Config.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 95
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "DesignTokens exported by @sorrell/docs-core.",
+          "id": "DesignTokens",
+          "kind": "type",
+          "name": "DesignTokens",
+          "signature": "export declare type DesignTokens",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 521
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "DesignTokensSchema exported by @sorrell/docs-core.",
+          "id": "DesignTokensSchema",
+          "kind": "variable",
+          "name": "DesignTokensSchema",
+          "signature": "export declare variable DesignTokensSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 42
+          }
+        },
+        {
+          "categoryId": "interfaces",
+          "description": "DocsConfig exported by @sorrell/docs-core.",
+          "id": "DocsConfig",
+          "kind": "interface",
+          "name": "DocsConfig",
+          "signature": "export declare interface DocsConfig",
+          "source": {
+            "file": "Package/Core/Source/Config.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 63
+          }
+        },
+        {
+          "categoryId": "interfaces",
+          "description": "DocsConfigDiagnostic exported by @sorrell/docs-core.",
+          "id": "DocsConfigDiagnostic",
+          "kind": "interface",
+          "name": "DocsConfigDiagnostic",
+          "signature": "export declare interface DocsConfigDiagnostic",
+          "source": {
+            "file": "Package/Core/Source/Errors.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 18
+          }
+        },
+        {
+          "categoryId": "classes",
+          "description": "DocsConfigError exported by @sorrell/docs-core.",
+          "id": "DocsConfigError",
+          "kind": "class",
+          "name": "DocsConfigError",
+          "signature": "export declare class DocsConfigError",
+          "source": {
+            "file": "Package/Core/Source/Errors.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 27
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "DocsConfigInput exported by @sorrell/docs-core.",
+          "id": "DocsConfigInput",
+          "kind": "type",
+          "name": "DocsConfigInput",
+          "signature": "export declare type DocsConfigInput",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 607
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "DocsConfigInputSchema exported by @sorrell/docs-core.",
+          "id": "DocsConfigInputSchema",
+          "kind": "variable",
+          "name": "DocsConfigInputSchema",
+          "signature": "export declare variable DocsConfigInputSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 503
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "DocumentationVersion exported by @sorrell/docs-core.",
+          "id": "DocumentationVersion",
+          "kind": "type",
+          "name": "DocumentationVersion",
+          "signature": "export declare type DocumentationVersion",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 523
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "DocumentationVersionSchema exported by @sorrell/docs-core.",
+          "id": "DocumentationVersionSchema",
+          "kind": "variable",
+          "name": "DocumentationVersionSchema",
+          "signature": "export declare variable DocumentationVersionSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 93
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "formatAgentDocument exported by @sorrell/docs-core.",
+          "id": "formatAgentDocument",
+          "kind": "function",
+          "name": "formatAgentDocument",
+          "signature": "string",
+          "source": {
+            "file": "Package/Core/Source/Agent.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 83
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "formatConfigPath exported by @sorrell/docs-core.",
+          "id": "formatConfigPath",
+          "kind": "function",
+          "name": "formatConfigPath",
+          "signature": "string",
+          "source": {
+            "file": "Package/Core/Source/Errors.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 38
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "formatDiagnostic exported by @sorrell/docs-core.",
+          "id": "formatDiagnostic",
+          "kind": "function",
+          "name": "formatDiagnostic",
+          "signature": "string",
+          "source": {
+            "file": "Package/Core/Source/Errors.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 56
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "GeneratedManifest exported by @sorrell/docs-core.",
+          "id": "GeneratedManifest",
+          "kind": "type",
+          "name": "GeneratedManifest",
+          "signature": "export declare type GeneratedManifest",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 557
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "GeneratedManifestSchema exported by @sorrell/docs-core.",
+          "id": "GeneratedManifestSchema",
+          "kind": "variable",
+          "name": "GeneratedManifestSchema",
+          "signature": "export declare variable GeneratedManifestSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 227
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "LandingContent exported by @sorrell/docs-core.",
+          "id": "LandingContent",
+          "kind": "type",
+          "name": "LandingContent",
+          "signature": "export declare type LandingContent",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 531
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "LandingContentSchema exported by @sorrell/docs-core.",
+          "id": "LandingContentSchema",
+          "kind": "variable",
+          "name": "LandingContentSchema",
+          "signature": "export declare variable LandingContentSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 119
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "LandingSectionSchema exported by @sorrell/docs-core.",
+          "id": "LandingSectionSchema",
+          "kind": "variable",
+          "name": "LandingSectionSchema",
+          "signature": "export declare variable LandingSectionSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 112
+          }
+        },
+        {
+          "categoryId": "interfaces",
+          "description": "Navigation exported by @sorrell/docs-core.",
+          "id": "Navigation",
+          "kind": "interface",
+          "name": "Navigation",
+          "signature": "export declare interface Navigation",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 61
+          }
+        },
+        {
+          "categoryId": "interfaces",
+          "description": "NavigationGroup exported by @sorrell/docs-core.",
+          "id": "NavigationGroup",
+          "kind": "interface",
+          "name": "NavigationGroup",
+          "signature": "export declare interface NavigationGroup",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 55
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "NavigationGroupSchema exported by @sorrell/docs-core.",
+          "id": "NavigationGroupSchema",
+          "kind": "variable",
+          "name": "NavigationGroupSchema",
+          "signature": "export declare variable NavigationGroupSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 83
+          }
+        },
+        {
+          "categoryId": "interfaces",
+          "description": "NavigationItem exported by @sorrell/docs-core.",
+          "id": "NavigationItem",
+          "kind": "interface",
+          "name": "NavigationItem",
+          "signature": "export declare interface NavigationItem",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 47
+          }
+        },
+        {
+          "categoryId": "interfaces",
+          "description": "NavigationItemInput exported by @sorrell/docs-core.",
+          "id": "NavigationItemInput",
+          "kind": "interface",
+          "name": "NavigationItemInput",
+          "signature": "export declare interface NavigationItemInput",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 65
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "NavigationItemSchema exported by @sorrell/docs-core.",
+          "id": "NavigationItemSchema",
+          "kind": "variable",
+          "name": "NavigationItemSchema",
+          "signature": "export declare variable NavigationItemSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 73
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "NavigationSchema exported by @sorrell/docs-core.",
+          "id": "NavigationSchema",
+          "kind": "variable",
+          "name": "NavigationSchema",
+          "signature": "export declare variable NavigationSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 89
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "normalizeAgentMarkdown exported by @sorrell/docs-core.",
+          "id": "normalizeAgentMarkdown",
+          "kind": "function",
+          "name": "normalizeAgentMarkdown",
+          "signature": "AgentMarkdownResult",
+          "source": {
+            "file": "Package/Core/Source/Agent.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 40
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "normalizeDocsConfig exported by @sorrell/docs-core.",
+          "id": "normalizeDocsConfig",
+          "kind": "function",
+          "name": "normalizeDocsConfig",
+          "signature": "DocsConfig",
+          "source": {
+            "file": "Package/Core/Source/Config.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 369
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "PackageReference exported by @sorrell/docs-core.",
+          "id": "PackageReference",
+          "kind": "type",
+          "name": "PackageReference",
+          "signature": "export declare type PackageReference",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 527
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "PackageReferenceSchema exported by @sorrell/docs-core.",
+          "id": "PackageReferenceSchema",
+          "kind": "variable",
+          "name": "PackageReferenceSchema",
+          "signature": "export declare variable PackageReferenceSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 103
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "Redirect exported by @sorrell/docs-core.",
+          "id": "Redirect",
+          "kind": "type",
+          "name": "Redirect",
+          "signature": "export declare type Redirect",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 533
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "RedirectSchema exported by @sorrell/docs-core.",
+          "id": "RedirectSchema",
+          "kind": "variable",
+          "name": "RedirectSchema",
+          "signature": "export declare variable RedirectSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 131
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "RepositorySchema exported by @sorrell/docs-core.",
+          "id": "RepositorySchema",
+          "kind": "variable",
+          "name": "RepositorySchema",
+          "signature": "export declare variable RepositorySchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 18
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "SiteMetadata exported by @sorrell/docs-core.",
+          "id": "SiteMetadata",
+          "kind": "type",
+          "name": "SiteMetadata",
+          "signature": "export declare type SiteMetadata",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 519
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "SiteMetadataSchema exported by @sorrell/docs-core.",
+          "id": "SiteMetadataSchema",
+          "kind": "variable",
+          "name": "SiteMetadataSchema",
+          "signature": "export declare variable SiteMetadataSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 24
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "SiteRouting exported by @sorrell/docs-core.",
+          "id": "SiteRouting",
+          "kind": "type",
+          "name": "SiteRouting",
+          "signature": "export declare type SiteRouting",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 541
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "SiteRoutingSchema exported by @sorrell/docs-core.",
+          "id": "SiteRoutingSchema",
+          "kind": "variable",
+          "name": "SiteRoutingSchema",
+          "signature": "export declare variable SiteRoutingSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 154
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "StableLink exported by @sorrell/docs-core.",
+          "id": "StableLink",
+          "kind": "type",
+          "name": "StableLink",
+          "signature": "export declare type StableLink",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 573
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "StableLinkSchema exported by @sorrell/docs-core.",
+          "id": "StableLinkSchema",
+          "kind": "variable",
+          "name": "StableLinkSchema",
+          "signature": "export declare variable StableLinkSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 256
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "StorybookConfig exported by @sorrell/docs-core.",
+          "id": "StorybookConfig",
+          "kind": "type",
+          "name": "StorybookConfig",
+          "signature": "export declare type StorybookConfig",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 535
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "StorybookConfigSchema exported by @sorrell/docs-core.",
+          "id": "StorybookConfigSchema",
+          "kind": "variable",
+          "name": "StorybookConfigSchema",
+          "signature": "export declare variable StorybookConfigSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 137
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "VercelConfig exported by @sorrell/docs-core.",
+          "id": "VercelConfig",
+          "kind": "type",
+          "name": "VercelConfig",
+          "signature": "export declare type VercelConfig",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 555
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "VercelConfigSchema exported by @sorrell/docs-core.",
+          "id": "VercelConfigSchema",
+          "kind": "variable",
+          "name": "VercelConfigSchema",
+          "signature": "export declare variable VercelConfigSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 217
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "VercelDeployment exported by @sorrell/docs-core.",
+          "id": "VercelDeployment",
+          "kind": "type",
+          "name": "VercelDeployment",
+          "signature": "export declare type VercelDeployment",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 547
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "VercelDeploymentSchema exported by @sorrell/docs-core.",
+          "id": "VercelDeploymentSchema",
+          "kind": "variable",
+          "name": "VercelDeploymentSchema",
+          "signature": "export declare variable VercelDeploymentSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 176
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "VercelDeploymentsSchema exported by @sorrell/docs-core.",
+          "id": "VercelDeploymentsSchema",
+          "kind": "variable",
+          "name": "VercelDeploymentsSchema",
+          "signature": "export declare variable VercelDeploymentsSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 183
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "VercelProject exported by @sorrell/docs-core.",
+          "id": "VercelProject",
+          "kind": "type",
+          "name": "VercelProject",
+          "signature": "export declare type VercelProject",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 543
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "VercelProjects exported by @sorrell/docs-core.",
+          "id": "VercelProjects",
+          "kind": "type",
+          "name": "VercelProjects",
+          "signature": "export declare type VercelProjects",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 545
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "VercelProjectSchema exported by @sorrell/docs-core.",
+          "id": "VercelProjectSchema",
+          "kind": "variable",
+          "name": "VercelProjectSchema",
+          "signature": "export declare variable VercelProjectSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 159
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "VercelProjectsSchema exported by @sorrell/docs-core.",
+          "id": "VercelProjectsSchema",
+          "kind": "variable",
+          "name": "VercelProjectsSchema",
+          "signature": "export declare variable VercelProjectsSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 169
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "VercelReleaseManifest exported by @sorrell/docs-core.",
+          "id": "VercelReleaseManifest",
+          "kind": "type",
+          "name": "VercelReleaseManifest",
+          "signature": "export declare type VercelReleaseManifest",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 551
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "VercelReleaseManifestSchema exported by @sorrell/docs-core.",
+          "id": "VercelReleaseManifestSchema",
+          "kind": "variable",
+          "name": "VercelReleaseManifestSchema",
+          "signature": "export declare variable VercelReleaseManifestSchema",
+          "source": {
+            "file": "Package/Core/Source/Schemas.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 202
+          }
+        }
+      ],
+      "displayName": "@sorrell/docs-core",
+      "exportCount": 88,
+      "introductionVersion": "0.1.0",
+      "module": "core",
+      "packageId": "core",
+      "packageName": "@sorrell/docs-core",
+      "summary": "API reference for @sorrell/docs-core.",
+      "version": "0.1.0",
+      "link": {
+        "external": false,
+        "href": "/docs/api/core",
+        "label": "@sorrell/docs-core"
+      }
+    },
+    {
+      "breadcrumbs": [
+        {
+          "current": false,
+          "href": "/docs/api/",
+          "label": "API Reference"
+        },
+        {
+          "current": false,
+          "href": "/docs/api/0.1.0",
+          "label": "0.1.0"
+        },
+        {
+          "current": false,
+          "href": "/docs/api/ui",
+          "label": "@sorrell/docs-ui"
+        },
+        {
+          "current": true,
+          "label": "@sorrell/docs-ui"
+        }
+      ],
+      "categories": [
+        {
+          "collapsed": false,
+          "id": "functions",
+          "label": "Functions",
+          "order": 0
+        },
+        {
+          "collapsed": false,
+          "id": "interfaces",
+          "label": "Interfaces",
+          "order": 2
+        },
+        {
+          "collapsed": false,
+          "id": "types",
+          "label": "Types",
+          "order": 3
+        },
+        {
+          "collapsed": false,
+          "id": "constants",
+          "label": "Constants",
+          "order": 4
+        }
+      ],
+      "declarations": [
+        {
+          "categoryId": "functions",
+          "description": "ApiReferencePage exported by @sorrell/docs-ui.",
+          "id": "ApiReferencePage",
+          "kind": "function",
+          "name": "ApiReferencePage",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/ApiReference.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 155
+          }
+        },
+        {
+          "categoryId": "interfaces",
+          "description": "ApiReferencePageProps exported by @sorrell/docs-ui.",
+          "id": "ApiReferencePageProps",
+          "kind": "interface",
+          "name": "ApiReferencePageProps",
+          "signature": "export declare interface ApiReferencePageProps",
+          "source": {
+            "file": "Ui/Source/Types.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 83
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "ArticlePage exported by @sorrell/docs-ui.",
+          "id": "ArticlePage",
+          "kind": "function",
+          "name": "ArticlePage",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Sections.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 46
+          }
+        },
+        {
+          "categoryId": "interfaces",
+          "description": "ArticlePageProps exported by @sorrell/docs-ui.",
+          "id": "ArticlePageProps",
+          "kind": "interface",
+          "name": "ArticlePageProps",
+          "signature": "export declare interface ArticlePageProps",
+          "source": {
+            "file": "Ui/Source/Types.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 66
+          }
+        },
+        {
+          "categoryId": "interfaces",
+          "description": "BreadcrumbItem exported by @sorrell/docs-ui.",
+          "id": "BreadcrumbItem",
+          "kind": "interface",
+          "name": "BreadcrumbItem",
+          "signature": "export declare interface BreadcrumbItem",
+          "source": {
+            "file": "Ui/Source/Types.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 55
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "Breadcrumbs exported by @sorrell/docs-ui.",
+          "id": "Breadcrumbs",
+          "kind": "function",
+          "name": "Breadcrumbs",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Navigation.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 133
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "Callout exported by @sorrell/docs-ui.",
+          "id": "Callout",
+          "kind": "function",
+          "name": "Callout",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Mdx.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 29
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "CopyForLlmButton exported by @sorrell/docs-ui.",
+          "id": "CopyForLlmButton",
+          "kind": "function",
+          "name": "CopyForLlmButton",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/CopyForLlm.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 37
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "createThemeCss exported by @sorrell/docs-ui.",
+          "id": "createThemeCss",
+          "kind": "function",
+          "name": "createThemeCss",
+          "signature": "string",
+          "source": {
+            "file": "Ui/Source/Theme.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 50
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "Cta exported by @sorrell/docs-ui.",
+          "id": "Cta",
+          "kind": "function",
+          "name": "Cta",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Sections.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 126
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "DocCode exported by @sorrell/docs-ui.",
+          "id": "DocCode",
+          "kind": "function",
+          "name": "DocCode",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Mdx.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 14
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "DocsFooter exported by @sorrell/docs-ui.",
+          "id": "DocsFooter",
+          "kind": "function",
+          "name": "DocsFooter",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Sections.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 149
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "DocsHeader exported by @sorrell/docs-ui.",
+          "id": "DocsHeader",
+          "kind": "function",
+          "name": "DocsHeader",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Navigation.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 21
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "DocsSidebar exported by @sorrell/docs-ui.",
+          "id": "DocsSidebar",
+          "kind": "function",
+          "name": "DocsSidebar",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Navigation.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 113
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "docsUiCss exported by @sorrell/docs-ui.",
+          "id": "docsUiCss",
+          "kind": "variable",
+          "name": "docsUiCss",
+          "signature": "export declare variable docsUiCss",
+          "source": {
+            "file": "Ui/Source/index.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 20
+          }
+        },
+        {
+          "categoryId": "interfaces",
+          "description": "DocumentationNavGroup exported by @sorrell/docs-ui.",
+          "id": "DocumentationNavGroup",
+          "kind": "interface",
+          "name": "DocumentationNavGroup",
+          "signature": "export declare interface DocumentationNavGroup",
+          "source": {
+            "file": "Ui/Source/Types.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 36
+          }
+        },
+        {
+          "categoryId": "interfaces",
+          "description": "DocumentationNavItem exported by @sorrell/docs-ui.",
+          "id": "DocumentationNavItem",
+          "kind": "interface",
+          "name": "DocumentationNavItem",
+          "signature": "export declare interface DocumentationNavItem",
+          "source": {
+            "file": "Ui/Source/Types.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 27
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "DocumentationShell exported by @sorrell/docs-ui.",
+          "id": "DocumentationShell",
+          "kind": "function",
+          "name": "DocumentationShell",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Navigation.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 174
+          }
+        },
+        {
+          "categoryId": "interfaces",
+          "description": "DocumentationShellProps exported by @sorrell/docs-ui.",
+          "id": "DocumentationShellProps",
+          "kind": "interface",
+          "name": "DocumentationShellProps",
+          "signature": "export declare interface DocumentationShellProps",
+          "source": {
+            "file": "Ui/Source/Types.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 43
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "Faq exported by @sorrell/docs-ui.",
+          "id": "Faq",
+          "kind": "function",
+          "name": "Faq",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Sections.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 97
+          }
+        },
+        {
+          "categoryId": "constants",
+          "description": "formatLlmDocument exported by @sorrell/docs-ui.",
+          "id": "formatLlmDocument",
+          "kind": "variable",
+          "name": "formatLlmDocument",
+          "signature": "export declare variable formatLlmDocument",
+          "source": {
+            "file": "Ui/Source/CopyForLlm.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 17
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "Heading exported by @sorrell/docs-ui.",
+          "id": "Heading",
+          "kind": "function",
+          "name": "Heading",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Mdx.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 89
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "InstallCommand exported by @sorrell/docs-ui.",
+          "id": "InstallCommand",
+          "kind": "function",
+          "name": "InstallCommand",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Sections.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 17
+          }
+        },
+        {
+          "categoryId": "interfaces",
+          "description": "InstallCommandProps exported by @sorrell/docs-ui.",
+          "id": "InstallCommandProps",
+          "kind": "interface",
+          "name": "InstallCommandProps",
+          "signature": "export declare interface InstallCommandProps",
+          "source": {
+            "file": "Ui/Source/Types.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 76
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "LandingPage exported by @sorrell/docs-ui.",
+          "id": "LandingPage",
+          "kind": "function",
+          "name": "LandingPage",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Landing.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 17
+          }
+        },
+        {
+          "categoryId": "interfaces",
+          "description": "LandingPageProps exported by @sorrell/docs-ui.",
+          "id": "LandingPageProps",
+          "kind": "interface",
+          "name": "LandingPageProps",
+          "signature": "export declare interface LandingPageProps",
+          "source": {
+            "file": "Ui/Source/Types.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 90
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "LandingSection exported by @sorrell/docs-ui.",
+          "id": "LandingSection",
+          "kind": "function",
+          "name": "LandingSection",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Landing.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 62
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "LlmDocument exported by @sorrell/docs-ui.",
+          "id": "LlmDocument",
+          "kind": "type",
+          "name": "LlmDocument",
+          "signature": "export declare type LlmDocument",
+          "source": {
+            "file": "Ui/Source/Types.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 63
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "OnThisPage exported by @sorrell/docs-ui.",
+          "id": "OnThisPage",
+          "kind": "function",
+          "name": "OnThisPage",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Navigation.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 162
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "QuoteRail exported by @sorrell/docs-ui.",
+          "id": "QuoteRail",
+          "kind": "function",
+          "name": "QuoteRail",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Sections.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 83
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "Tabs exported by @sorrell/docs-ui.",
+          "id": "Tabs",
+          "kind": "function",
+          "name": "Tabs",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Mdx.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 44
+          }
+        },
+        {
+          "categoryId": "types",
+          "description": "ThemeMode exported by @sorrell/docs-ui.",
+          "id": "ThemeMode",
+          "kind": "type",
+          "name": "ThemeMode",
+          "signature": "export declare type ThemeMode",
+          "source": {
+            "file": "Ui/Source/Types.ts",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 21
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "ThemeProvider exported by @sorrell/docs-ui.",
+          "id": "ThemeProvider",
+          "kind": "function",
+          "name": "ThemeProvider",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Theme.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 70
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "ThemeToggle exported by @sorrell/docs-ui.",
+          "id": "ThemeToggle",
+          "kind": "function",
+          "name": "ThemeToggle",
+          "signature": "Element",
+          "source": {
+            "file": "Ui/Source/Theme.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 120
+          }
+        },
+        {
+          "categoryId": "functions",
+          "description": "useTheme exported by @sorrell/docs-ui.",
+          "id": "useTheme",
+          "kind": "function",
+          "name": "useTheme",
+          "signature": "ThemeContextValue",
+          "source": {
+            "file": "Ui/Source/Theme.tsx",
+            "repositoryUrl": "https://github.com/GageSorrell/Documentation",
+            "revision": "Master",
+            "line": 112
+          }
+        }
+      ],
+      "displayName": "@sorrell/docs-ui",
+      "exportCount": 35,
+      "introductionVersion": "0.1.0",
+      "module": "ui",
+      "packageId": "ui",
+      "packageName": "@sorrell/docs-ui",
+      "summary": "API reference for @sorrell/docs-ui.",
+      "version": "0.1.0",
+      "link": {
+        "external": false,
+        "href": "/docs/api/ui",
+        "label": "@sorrell/docs-ui"
+      }
+    }
+  ]
+}

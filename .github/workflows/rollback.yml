@@ -19,7 +19,6 @@ jobs:
     env:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -30,12 +29,12 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Install pinned Vercel CLI
-        run: npm install --global vercel@60.0.1
+      - name: Build website CLI
+        run: npm run build:website-cli
       - name: Roll back Documentation deployment
         run: |
           if [ -n "${{ inputs.release }}" ]; then
-            vercel rollback "${{ inputs.release }}" --token="$VERCEL_TOKEN" --yes
+            node Package/CreateWebsite/Distribution/bin.js deploy rollback "${{ inputs.release }}" --target Documentation
           else
-            vercel rollback --token="$VERCEL_TOKEN" --yes
+            node Package/CreateWebsite/Distribution/bin.js deploy rollback --target Documentation
           fi

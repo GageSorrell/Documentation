@@ -1,5 +1,5 @@
 /**
- *
+ * Effect schemas and normalized domain models for Sorrell documentation tooling.
  *
  * @module @sorrell/docs-core
  *
@@ -8,6 +8,7 @@
  * @copyright (c) 2026 Gage Sorrell
  * @license   MIT
  */
+
 export * from "./Config.js";
 export * from "./Agent.js";
 export * from "./Errors.js";

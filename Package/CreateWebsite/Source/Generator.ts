@@ -47,7 +47,9 @@ const packageManifest = (
         devDependencies,
         name,
         private: true,
-        scripts,
+        scripts: name === "@sorrell/documentation"
+            ? { ...scripts, build: "astro build", verify: "astro check" }
+            : scripts,
         type: "module",
         version: "0.1.0"
     });
@@ -66,35 +68,29 @@ const landingFiles = (
         ...(config.storybook.enabled ? [ "Storybook" ] : []),
         ...(config.agent.mcp.enabled ? [ "Mcp" ] : [])
     ];
-    const sections = config.landing.sections
-        .map(
-            (section: {
-                readonly id: string;
-                readonly title: string;
-                readonly body: string;
-                readonly href?: string;
-            }) =>
-                [
-                    `<a href="${html(section.href ?? "#")}">`,
-                    `<h2>${html(section.title)}</h2>`,
-                    `<p>${html(section.body)}</p></a>`
-                ].join("")
-        )
-        .join("\n");
-    const storybookLink = config.storybook.enabled
-        ? `<a href="${config.routing.storybookPrefix}/">Storybook</a>`
-        : "";
     return [
         {
             content: packageManifest(
                 "generated-documentation-landing",
                 {
-                    build: "node Build.mjs",
-                    dev: "node Dev.mjs",
-                    verify: "node Verify.mjs"
+                    build: "vite build",
+                    dev: "vite --host 127.0.0.1 --port 4173",
+                    verify: "vite build"
                 },
-                {},
-                { "@sorrell/tsconfig": "2.1.0" }
+                {
+                    "@sorrell/docs-core": "0.1.0",
+                    "@sorrell/docs-ui": "0.1.0",
+                    "@vitejs/plugin-react": "6.1.1",
+                    react: "19.2.3",
+                    "react-dom": "19.2.3",
+                    vite: "8.3.0"
+                },
+                {
+                    "@sorrell/tsconfig": "2.1.0",
+                    "@types/react": "19.3.0",
+                    "@types/react-dom": "19.3.0",
+                    typescript: "6.0.2"
+                }
             ),
             path: "Landing/package.json"
         },
@@ -108,31 +104,113 @@ const landingFiles = (
         <title>${html(config.landing.title)}</title>
     </head>
     <body>
-        <main>
-            <p>Documentation</p>
-            <h1>${html(config.landing.title)}</h1>
-            <p>${html(config.landing.description)}</p>
-            <nav><a href="${config.routing.documentationPrefix}/">Docs</a>${storybookLink}</nav>
-            <section>${sections}</section>
-        </main>
+        <div id="root"></div>
+        <script type="module" src="/Source/main.tsx"></script>
     </body>
 </html>`,
             path: "Landing/index.html"
         },
         {
-            content:
-                "import { cp, mkdir } from \"node:fs/promises\"; await mkdir(\"Distribution\", { " +
-                "recursive: true }); await cp(\"index.html\", \"Distribution/index.html\");\n",
-            path: "Landing/Build.mjs"
+            content: `import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+    base: "/",
+    build: { outDir: "Distribution" },
+    plugins: [react()],
+    server: {
+        proxy: {
+            "${config.routing.documentationPrefix}": "http://localhost:4321",
+            "${config.routing.storybookPrefix}": {
+                target: "http://localhost:6006",
+                rewrite: (path) => path.replace(${JSON.stringify(config.routing.storybookPrefix)}, "")
+            }
+        }
+    }
+});
+`,
+            path: "Landing/vite.config.ts"
         },
         {
-            content: `import { createServer, request } from "node:http"; import { readFile } from "node:fs/promises"; const routes = [["${config.routing.documentationPrefix}", 4321], ${config.storybook.enabled ? `["${config.routing.storybookPrefix}", 6006]` : ""}]; const server = createServer(async (incoming, response) => { const pathname = incoming.url ?? "/"; const route = routes.find(([prefix]) => pathname === prefix || pathname.startsWith(prefix + "/")); if (route !== undefined) { const proxy = request({ hostname: "127.0.0.1", port: route[1], path: pathname, method: incoming.method, headers: incoming.headers }, (child) => { response.writeHead(child.statusCode ?? 502, child.headers); child.pipe(response); }); proxy.on("error", () => { response.writeHead(502); response.end("Child development server unavailable"); }); incoming.pipe(proxy); return; } response.setHeader("content-type", "text/html"); response.end(await readFile("index.html")); }); server.listen(4173, "127.0.0.1");\n`,
-            path: "Landing/Dev.mjs"
+            content: `import { createRoot } from "react-dom/client";
+import {
+    Cta,
+    createThemeCss,
+    DocsFooter,
+    DocsHeader,
+    Faq,
+    LandingPage,
+    LandingSection,
+    QuoteRail,
+    ThemeProvider,
+    docsUiCss
+} from "@sorrell/docs-ui";
+import { content, tokens } from "./Content.js";
+import "./Tokens.css";
+
+const links = ${JSON.stringify([
+    { href: `${config.routing.documentationPrefix}/`, label: "Docs" },
+    ...(config.storybook.enabled
+        ? [ { href: `${config.routing.storybookPrefix}/`, label: "Storybook" } ]
+        : [])
+])};
+
+const Landing = () => (
+    <ThemeProvider initialMode="system">
+        <style>{docsUiCss}</style>
+        <style>{createThemeCss(tokens)}</style>
+        <div className="docs-site">
+            <DocsHeader
+                links={ links }
+                repositoryHref={ ${JSON.stringify(config.metadata.repository?.url ?? "")} }
+                title={ ${JSON.stringify(config.metadata.title)} } />
+            <main>
+                <LandingPage
+                    content={ content }
+                    installCommand="npm install ${config.metadata.name}"
+                >
+                {content.sections.map((section) => (
+                    <LandingSection key={ section.id } title={ section.title }>
+                        <p>{ section.body }</p>
+                    </LandingSection>
+                ))}
+                <LandingSection eyebrow="From the community" title="Built to be read">
+                    <QuoteRail
+                        author="Sorrell Documentation"
+                        quote="A single source of truth for people and the tools that help them build."
+                    />
+                </LandingSection>
+                <LandingSection title="Frequently asked questions">
+                    <Faq items={[
+                        { question: "Where do I start?", answer: "Read the documentation, then explore the component stories." },
+                        { question: "Can I copy pages for an LLM?", answer: "Every article and reference page exposes a Copy for LLM action." }
+                    ]} />
+                </LandingSection>
+                <Cta href={ content.primaryAction?.href ?? "${config.routing.documentationPrefix}/" }
+                    label={ content.primaryAction?.label ?? "Read the docs" }
+                    title="Build something worth documenting." />
+                    <DocsFooter>{ ${JSON.stringify(config.metadata.description)} }</DocsFooter>
+                </LandingPage>
+            </main>
+        </div>
+    </ThemeProvider>
+);
+
+createRoot(document.getElementById("root")!).render(<Landing />);
+`,
+            path: "Landing/Source/main.tsx"
         },
         {
-            content:
-                "import { access } from \"node:fs/promises\"; await access(\"index.html\");\n",
-            path: "Landing/Verify.mjs"
+            content: `import type { DesignTokens, LandingContent } from "@sorrell/docs-core";
+
+export const content = ${JSON.stringify(config.landing, null, 4)} as const satisfies LandingContent;
+export const tokens = ${JSON.stringify(config.tokens, null, 4)} as const satisfies DesignTokens;
+`,
+            path: "Landing/Source/Content.ts"
+        },
+        {
+            content: ":root { color-scheme: light dark; }\n",
+            path: "Landing/Source/Tokens.css"
         },
         {
             content: json(config.vercel.projects.landing),
@@ -179,11 +257,11 @@ const documentationFiles = (
 ): ReadonlyArray<GeneratedWebsiteFile> => [
     {
         content: packageManifest(
-            "generated-documentation-site",
+            "@sorrell/documentation",
             {
                 build:
                     "astro build && node " +
-                    "../node_modules/@sorrell/docs-create-website/Distribution/bin.js " +
+                    "../../node_modules/@sorrell/docs-create-website/Distribution/bin.js " +
                     "" +
                     "" +
                     "" +
@@ -207,7 +285,7 @@ const documentationFiles = (
                 dev: "astro dev",
                 verify:
                     "astro check && node " +
-                    "../node_modules/@sorrell/docs-create-website/Distribution/bin.js " +
+                    "../../node_modules/@sorrell/docs-create-website/Distribution/bin.js " +
                     "" +
                     "" +
                     "" +
@@ -231,8 +309,11 @@ const documentationFiles = (
             },
             {
                 "@astrojs/mdx": "8.0.2",
+                "@sorrell/docs-api-reference": "0.1.0",
+                "@sorrell/docs-core": "0.1.0",
                 "@sorrell/docs-astro": "0.1.0",
                 "@sorrell/docs-create-website": "0.1.0",
+                "@sorrell/docs-ui": "0.1.0",
                 astro: "7.3.4"
             },
             { "@astrojs/check": "0.9.4", "@sorrell/tsconfig": "2.1.0" }
@@ -246,6 +327,7 @@ import { defineConfig } from "astro/config";
 import { docsAstroIntegration } from "@sorrell/docs-astro";
 
 export default defineConfig({
+    base: "${config.routing.documentationPrefix}/",
     build: { format: "directory" },
     integrations: [
         mdx(),
@@ -350,13 +432,16 @@ const storybookFiles = (
 ): ReadonlyArray<GeneratedWebsiteFile> => [
     {
         content: packageManifest(
-            "generated-documentation-storybook",
+            "@sorrell/docs-storybook-web",
             {
                 build: "storybook build --output-dir Distribution && node GenerateManifest.mjs",
                 dev: "storybook dev -p 6006",
+                typecheck: "tsc --project tsconfig.json --noEmit",
                 verify: "storybook build --output-dir Distribution && node GenerateManifest.mjs"
             },
             {
+                "@sorrell/docs-core": "0.1.0",
+                "@sorrell/docs-ui": "0.1.0",
                 "@storybook/addon-docs": "10.6.0",
                 "@storybook/addon-themes": "10.6.0",
                 "@storybook/react-vite": "10.6.0",
@@ -598,16 +683,85 @@ const storybookFiles = (
             "\"utf8\");\n",
         path: "Storybook/GenerateManifest.mjs"
     },
-    { content: baseTsconfig(), path: "Storybook/tsconfig.json" },
+    {
+        content: `/**
+ * Generates the Storybook component manifest consumed by the agent output.
+ *
+ * @file GenerateManifest.mjs
+ */
+
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
+
+const directory = resolve("Stories");
+const output = resolve("Distribution/agent/components.json");
+const files = (await readdir(directory))
+    .filter((file) =>
+        file.endsWith(".stories.tsx") ||
+        file.endsWith(".stories.ts") ||
+        file.endsWith(".stories.jsx")
+    )
+    .sort();
+const components = [];
+
+for (const file of files) {
+    const source = await readFile(resolve(directory, file), "utf8");
+    const title =
+        source.match(/title:\\s*["']([^"']+)["']/)?.[1] ??
+        file.replace(/\\.stories\\.[^.]+$/, "");
+    const stories = [...source.matchAll(/export const ([A-Za-z_$][\\w$]*)/g)].map(
+        (match) => ({ id: match[1], title: match[1] })
+    );
+    const props = [...source.matchAll(/args:\\s*{([\\s\\S]*?)}/g)].flatMap(
+        (match) =>
+            [...(match[1] ?? "").matchAll(/^\\s*([A-Za-z_$][\\w$]*):/gmu)].map(
+                (prop) => ({ name: prop[1], type: "story arg" })
+            )
+    );
+    components.push({
+        id: title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
+        title,
+        props: [...new Map(props.map((prop) => [prop.name, prop])).values()],
+        stories
+    });
+}
+
+await mkdir(dirname(output), { recursive: true });
+await writeFile(
+    output,
+    \`\${JSON.stringify({ version: 1, components }, null, 2)}\\n\`,
+    "utf8"
+);
+`,
+        path: "Storybook/GenerateManifest.mjs"
+    },
+    {
+        content: json({
+            compilerOptions: {
+                jsx: "react-jsx",
+                lib: [ "ES2022", "DOM" ],
+                noEmit: true
+            },
+            extends: "@sorrell/tsconfig/base"
+        }),
+        path: "Storybook/tsconfig.json"
+    },
     {
         content: `import type { StorybookConfig } from "@storybook/react-vite";
 
 const config: StorybookConfig = {
     addons: ["@storybook/addon-docs", "@storybook/addon-themes"],
     framework: { name: "@storybook/react-vite", options: {} },
-    stories: ["../Stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+    stories: ["../Stories/**/*.mdx", "../Stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+    typescript: { reactDocgen: "react-docgen-typescript" },
     async viteFinal(value) {
-        return { ...value, base: "${config.routing.storybookPrefix}/" };
+        return {
+            ...value,
+            base: process.env.NODE_ENV === "production"
+                ? "${config.routing.storybookPrefix}/"
+                : "/",
+            server: { ...value.server, allowedHosts: true }
+        };
     }
 };
 
@@ -616,18 +770,132 @@ export default config;
         path: "Storybook/.storybook/main.ts"
     },
     {
-        content:
-            "import type { Preview } from \"@storybook/react\"; const preview: Preview = { " +
-            "parameters: { layout: \"centered\" } }; export default preview;\n",
+        content: `import type { Preview } from "@storybook/react";
+import { withThemeByClassName } from "@storybook/addon-themes";
+import { createThemeCss, docsUiCss } from "@sorrell/docs-ui";
+
+const preview: Preview = {
+    decorators: [
+        (Story) => <><style>{docsUiCss}</style><style>{createThemeCss(${JSON.stringify(config.tokens)})}</style><Story /></>,
+        withThemeByClassName({
+            defaultTheme: "light",
+            themes: { light: "light", dark: "dark", system: "system" }
+        })
+    ],
+    parameters: { layout: "fullscreen" },
+    globalTypes: {
+        theme: {
+            defaultValue: "light",
+            toolbar: {
+                icon: "paintbrush",
+                items: [ "light", "dark", "system" ]
+            }
+        }
+    }
+};
+
+export default preview;
+`,
         path: "Storybook/.storybook/preview.tsx"
     },
     {
-        content: `export default { title: "Welcome" };
+        content: `import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+    Cta,
+    DocsFooter,
+    Faq,
+    InstallCommand,
+    LandingPage,
+    LandingSection,
+    QuoteRail
+} from "@sorrell/docs-ui";
 
-export const Documentation = () =>
-    <p>Generated Storybook at ${config.routing.storybookPrefix}/.</p>;
+const meta = {
+    component: LandingPage,
+    title: "Landing/LandingPage"
+} satisfies Meta<typeof LandingPage>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const FullComposition: Story = {
+    args: {
+        content: {
+            description: "Documentation designed for people and agents.",
+            sections: [
+                { body: "Readable articles and stable links.", id: "01", title: "Docs", href: "#docs" },
+                { body: "Shared React primitives for every surface.", id: "02", title: "Components", href: "#components" }
+            ],
+            title: "Sorrell Documentation"
+        },
+        installCommand: "npm install @sorrell/docs-ui"
+    },
+    render: (args) => <LandingPage {...args}>
+        <LandingSection title="Components">
+            <div style={{ display: "grid", gap: 24 }}>
+                <InstallCommand command="npm install @sorrell/docs-ui" />
+                <QuoteRail author="Sorrell" quote="Make the useful path the obvious path." />
+                <Faq items={[{ question: "Is this keyboard friendly?", answer: "The controls use native focusable elements." }]} />
+            </div>
+        </LandingSection>
+        <Cta href="/docs/" label="Read the docs" title="Build something worth documenting." />
+        <DocsFooter />
+    </LandingPage>
+};
+
+export const LongContent: Story = {
+    ...FullComposition,
+    args: {
+        ...FullComposition.args,
+        content: {
+            description: "A deliberately long description demonstrates responsive wrapping and readable line lengths across viewports.",
+            sections: Array.from({ length: 6 }, (_, index) => ({
+                body: "A representative landing-page section with enough content to exercise the layout.",
+                id: String(index + 1).padStart(2, "0"),
+                title: "Section " + (index + 1)
+            })),
+            title: "A Longer Landing Page Title"
+        }
+    }
+};
 `,
-        path: "Storybook/Stories/Welcome.stories.tsx"
+        path: "Storybook/Stories/LandingPage.stories.tsx"
+    },
+    {
+        content: `import type { Meta, StoryObj } from "@storybook/react-vite";
+import { LandingSection } from "@sorrell/docs-ui";
+
+const meta = { component: LandingSection, title: "Landing/LandingSection" } satisfies Meta<typeof LandingSection>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export const Default: Story = { args: { children: null, title: "A focused section" }, render: (args) => <LandingSection {...args}><p>Section content remains readable and composable.</p></LandingSection> };
+export const WithEyebrow: Story = { args: { children: null, eyebrow: "Featured", title: "An emphasized section" }, render: (args) => <LandingSection {...args}><p>Eyebrows provide a small semantic cue above the heading.</p></LandingSection> };
+`,
+        path: "Storybook/Stories/LandingSection.stories.tsx"
+    },
+    {
+        content: `import type { Meta, StoryObj } from "@storybook/react-vite";
+import { DocsHeader } from "@sorrell/docs-ui";
+
+const meta = { component: DocsHeader, title: "Landing/DocsHeader" } satisfies Meta<typeof DocsHeader>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export const Navigation: Story = { args: { links: [{ href: "/docs/", label: "Docs" }, { href: "${config.routing.storybookPrefix}/", label: "Storybook" }], title: "Sorrell Documentation" } };
+export const KeyboardFocus: Story = { ...Navigation };
+`,
+        path: "Storybook/Stories/DocsHeader.stories.tsx"
+    },
+    {
+        content: `import type { Meta, StoryObj } from "@storybook/react-vite";
+import { ThemeProvider, ThemeToggle } from "@sorrell/docs-ui";
+
+const meta = { component: ThemeProvider, title: "Landing/ThemeProvider" } satisfies Meta<typeof ThemeProvider>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export const Light: Story = { args: { children: null, initialMode: "light" }, render: (args) => <ThemeProvider {...args}><ThemeToggle /></ThemeProvider> };
+export const Dark: Story = { args: { children: null, initialMode: "dark" }, render: (args) => <ThemeProvider {...args}><ThemeToggle /></ThemeProvider> };
+export const System: Story = { args: { children: null, initialMode: "system" }, render: (args) => <ThemeProvider {...args}><ThemeToggle /></ThemeProvider> };
+`,
+        path: "Storybook/Stories/ThemeProvider.stories.tsx"
     },
     {
         content: json(config.vercel.projects.storybook),
@@ -1050,7 +1318,7 @@ const createWebsiteFromConfig = (
         {
             directory: "Documentation",
             kind: "documentation",
-            name: "generated-documentation-site",
+            name: "@sorrell/documentation",
             routePrefix: config.routing.documentationPrefix
         },
         ...(config.storybook.enabled
@@ -1058,7 +1326,7 @@ const createWebsiteFromConfig = (
                 {
                     directory: "Storybook",
                     kind: "storybook" as const,
-                    name: "generated-documentation-storybook",
+                    name: "@sorrell/docs-storybook-web",
                     routePrefix: config.routing.storybookPrefix
                 }
             ]

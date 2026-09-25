@@ -8,6 +8,7 @@
  * @copyright (c) 2026 Gage Sorrell
  * @license   MIT
  */
+
 /** @internal */
 export type NativeAppKind = "development" | "demonstration";
 

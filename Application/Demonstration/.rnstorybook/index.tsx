@@ -1,6 +1,4 @@
 /**
- *
- *
  * @module @sorrell/application-demonstration/.rnstorybook
  *
  * @file      index.tsx
@@ -9,12 +7,15 @@
  * @license   MIT
  */
 
-/** @module @sorrell/application-demonstration/.rnstorybook/index */
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { view } from "./storybook.requires";
 
 const StorybookUIRoot = view.getStorybookUI({
-    storage: { getItem: AsyncStorage.getItem, setItem: AsyncStorage.setItem }
+    storage:
+    {
+        getItem: AsyncStorage.getItem,
+        setItem: AsyncStorage.setItem
+    }
+
 });
 export default StorybookUIRoot;

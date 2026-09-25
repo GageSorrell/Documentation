@@ -116,13 +116,13 @@ export/** @internal */
 const apiReferenceRecordToAgentDocument = (
     record: ApiReferenceRecord
 ): AgentDocument => ({
-    context: `${record.packageName} ${record.version}`,
-    id: `${record.packageId}:${record.module}`,
+    context: `${ record.packageName } ${ record.version }`,
+    id: `${ record.packageId }:${ record.module }`,
     kind: "api-module",
     title: record.displayName,
-    url: record.link?.href ?? `/docs/api/${record.packageId}/${record.module}`,
+    url: record.link?.href ?? `/docs/api/${ record.packageId }/${ record.module }`,
     version: record.version,
-    ...(record.source === undefined ? {} : { source: record.source }),
+    ...(record.source === undefined ? { } : { source: record.source }),
     content: [
         record.summary,
         `Exports: ${record.exportCount}`,

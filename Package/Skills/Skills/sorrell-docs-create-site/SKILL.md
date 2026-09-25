@@ -5,7 +5,7 @@ description: Create and configure a Sorrell documentation website with the sorre
 
 # Create a Sorrell documentation site
 
-Use `sorrell-docs init --target <directory>` to create an empty site. Add
+Use `sorrell-docs create --config docs.config.json --target <directory>` to create a generated site. Add
 `--storybook` when the site needs web Storybook. Use `sorrell-docs dev` while
 authoring and `sorrell-docs verify` before publishing.
 

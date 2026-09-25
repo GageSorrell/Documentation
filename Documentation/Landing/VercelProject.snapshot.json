@@ -1,0 +1,6 @@
+{
+  "directory": "Landing",
+  "productionBranch": "Master",
+  "project": "sorrell-documentation-landing-snapshot",
+  "routePrefix": "/"
+}

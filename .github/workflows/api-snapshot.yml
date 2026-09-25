@@ -31,6 +31,6 @@ jobs:
         run: >
           node --input-type=module -e "import { readFile } from 'node:fs/promises';
           import { assertValidApiDataset } from '@sorrell/docs-api-reference';
-          const path = 'Documentation/Source/data/ApiReference.json';
+          const path = 'Documentation/Documentation/Source/data/ApiReference.json';
           assertValidApiDataset(JSON.parse(await readFile(path, 'utf8')));
           console.log('API snapshot is valid.');"

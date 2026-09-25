@@ -1,5 +1,5 @@
 /**
- *
+ * MCP server for Sorrell documentation agent corpora.
  *
  * @module @sorrell/docs-mcp
  *
@@ -8,4 +8,5 @@
  * @copyright (c) 2026 Gage Sorrell
  * @license   MIT
  */
+
 export * from "./Server.js";

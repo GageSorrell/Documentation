@@ -1,5 +1,5 @@
 /**
- *
+ * MCP transport and tool definitions for documentation corpora.
  *
  * @module @sorrell/docs-mcp/Server
  *
@@ -19,13 +19,6 @@ import {
     type AgentSearchIndex,
     AgentSearchIndexSchema
 } from "@sorrell/docs-core";
-
-/**
- * MCP transport and tool definitions for documentation corpora.
- *
- * @module @sorrell/docs-mcp/Server
- */
-
 import { Context, Effect, Layer, Schema } from "effect";
 import {
     HttpRouter,
@@ -47,22 +40,27 @@ export class McpCorpus extends Context.Service<
         readonly manifest: AgentManifest;
         readonly index: AgentSearchIndex;
     }
->()("sorrell/docs-mcp/McpCorpus") {}
+>()("sorrell/docs-mcp/McpCorpus") { }
+
 /** @internal */
-export interface McpSource {
+export interface McpSource
+{
     readonly corpus: AgentCorpus;
     readonly manifest: AgentManifest;
     readonly index: AgentSearchIndex;
 }
+
 const wordPattern = /[a-z0-9][a-z0-9_-]*/giu;
+
 const termsFor = (document: AgentDocument): ReadonlyArray<string> =>
     [
         ...new Set(
             `${document.id} ${document.title} ${document.description ?? ""} ${document.content}`
                 .toLocaleLowerCase()
-                .match(wordPattern) ?? []
+                .match(wordPattern) ?? [ ]
         )
     ].sort();
+
 export/** @internal */
 const buildSearchIndex = (
     corpus: AgentCorpus,
@@ -117,6 +115,7 @@ const buildSearchIndex = (
         ),
     version: 1
 });
+
 const score = (document: AgentDocument, query: string): number =>
 {
     const terms = termsFor(document);
@@ -135,6 +134,7 @@ const score = (document: AgentDocument, query: string): number =>
             0
         );
 };
+
 export/** @internal */
 const searchDocuments = (
     corpus: AgentCorpus,

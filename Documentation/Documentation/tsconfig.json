@@ -1,0 +1,23 @@
+{
+  "extends": "../../Configuration/tsconfig.base.json",
+  "compilerOptions":
+  {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "jsx": "react-jsx",
+    "moduleResolution": "NodeNext",
+    "noEmit": true,
+    "paths": {
+      "@sorrell/docs-astro": [ "../../Package/Astro/Source/index.ts" ],
+      "@sorrell/docs-api-reference": [ "../../Package/ApiReference/Source/index.ts" ],
+      "@sorrell/docs-core": [ "../../Package/Core/Source/index.ts" ],
+      "@sorrell/docs-ui": [ "../../Package/Ui/Source/index.ts" ]
+    }
+  },
+  "include": [
+    ".astro/types.d.ts",
+    "Source/**/*.ts",
+    "Source/**/*.astro"
+  ]
+}

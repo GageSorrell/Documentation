@@ -1,5 +1,5 @@
 /**
- *
+ * Expo and React Native Storybook project templates.
  *
  * @module @sorrell/docs-create-website/NativeGenerator
  *
@@ -15,13 +15,6 @@ import {
     DocsPath,
     SafeTargetValidation
 } from "@sorrell/docs-cli";
-
-/**
- * Expo and React Native Storybook project templates.
- *
- * @module @sorrell/docs-create-website/NativeGenerator
- */
-
 import { Effect, Layer } from "effect";
 import type {
     NativeAppGenerationOptions,
@@ -30,11 +23,14 @@ import type {
     NativeGeneratedApp,
     NativeGeneratedFile
 } from "./NativeTypes.js";
+
 const json = (value: unknown): string => `${JSON.stringify(value, null, 2)}\n`;
+
 const packageNameFor = (
     options: NativeAppGenerationOptions,
     kind: NativeAppKind
-): string => options.packageName ?? `@sorrell/application-${kind}`;
+): string => options.packageName ?? `@sorrell/application-${ kind }`;
+
 const displayNameFor = (
     options: NativeAppGenerationOptions,
     kind: NativeAppKind

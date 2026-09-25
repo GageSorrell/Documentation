@@ -1,0 +1,41 @@
+{
+  "dependencies": {
+    "@sorrell/docs-core": "0.1.0",
+    "@sorrell/docs-ui": "0.1.0",
+    "@storybook/addon-docs": "10.6.0",
+    "@storybook/addon-themes": "10.6.0",
+    "@storybook/react-vite": "10.6.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "storybook": "10.6.0"
+  },
+  "devDependencies": {
+    "@sorrell/tsconfig": "2.1.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "typescript": "6.0.2"
+  },
+  "author": {
+    "name": "Gage Sorrell",
+    "email": "gage@sorrell.sh",
+    "url": "https://sorrell.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GageSorrell/Documentation/tree/Master#ReadMe",
+    "directory": "Documentation/Storybook"
+  },
+  "bugs": {
+    "url": "https://github.com/GageSorrell/Documentation/issues"
+  },
+  "name": "@sorrell/docs-storybook-web",
+  "private": true,
+  "scripts": {
+    "build": "storybook build --output-dir Distribution && node GenerateManifest.mjs",
+    "dev": "storybook dev -p 6006",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "verify": "storybook build --output-dir Distribution && node GenerateManifest.mjs"
+  },
+  "type": "module",
+  "version": "0.1.0"
+}

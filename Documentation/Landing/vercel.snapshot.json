@@ -1,0 +1,60 @@
+{
+  "headers": [
+    {
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ],
+      "source": "/llms.txt"
+    },
+    {
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ],
+      "source": "/docs/agent/:path*"
+    },
+    {
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ],
+      "source": "/docs/:path*.md"
+    },
+    {
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ],
+      "source": "/storybook/agent/:path*"
+    }
+  ],
+  "redirects": [],
+  "rewrites": [
+    {
+      "destination": "https://documentation-snapshot.invalid/docs",
+      "source": "/docs"
+    },
+    {
+      "destination": "https://documentation-snapshot.invalid/docs/:path*",
+      "source": "/docs/:path*"
+    },
+    {
+      "destination": "https://storybook-snapshot.invalid/storybook",
+      "source": "/storybook"
+    },
+    {
+      "destination": "https://storybook-snapshot.invalid/storybook/:path*",
+      "source": "/storybook/:path*"
+    }
+  ],
+  "version": 2
+}

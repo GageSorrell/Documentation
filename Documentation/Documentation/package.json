@@ -1,0 +1,43 @@
+{
+  "name": "@sorrell/documentation",
+  "version": "0.1.0",
+  "private": true,
+  "author": {
+    "name": "Gage Sorrell",
+    "email": "gage@sorrell.sh",
+    "url": "https://sorrell.sh"
+  },
+  "homepage": "https://docs.sorrell.sh",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GageSorrell/Documentation/tree/Master#ReadMe",
+    "directory": "Documentation/Documentation"
+  },
+  "bugs": {
+    "url": "https://github.com/GageSorrell/Documentation/issues"
+  },
+  "type": "module",
+  "description": "The published dogfood documentation site.",
+  "scripts": {
+    "api:generate": "node GenerateApi.mjs",
+    "build": "npm run api:generate && astro build && pagefind --site dist --output-path dist/pagefind",
+    "dev": "npm run api:generate && astro dev",
+    "preview": "astro preview",
+    "typecheck": "npm run api:generate && astro check",
+    "verify": "npm run typecheck && astro build && pagefind --site dist --output-path dist/pagefind"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "8.0.2",
+    "@pagefind/default-ui": "1.5.2",
+    "@sorrell/docs-api-reference": "0.1.0",
+    "@sorrell/docs-astro": "0.1.0",
+    "@sorrell/docs-create-website": "0.1.0",
+    "@sorrell/docs-core": "0.1.0",
+    "@sorrell/docs-mcp": "0.1.0",
+    "astro": "7.3.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.4",
+    "pagefind": "1.5.2"
+  }
+}

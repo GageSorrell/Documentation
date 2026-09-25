@@ -10,7 +10,8 @@
  */
 
 import { type CommandResult, CommandRunner } from "./services.js";
-import { Context, Effect, Layer, Schedule } from "effect";
+import { Context, Effect, Layer, Redacted, Schedule } from "effect";
+import { DeploymentEnvironment } from "./Environment.js";
 import {
     DocsArchiveError,
     DocsIntegrationError,
@@ -295,7 +296,7 @@ export class VercelService extends Context.Service<
             options?: {
                 readonly production?: boolean;
                 readonly name?: string;
-                readonly scope?: string;
+                readonly team?: string;
             }
         ) => Effect.Effect<VercelDeploymentResult, DocsIntegrationError>;
         readonly inspect: (
@@ -323,6 +324,25 @@ export class VercelService extends Context.Service<
             Effect.gen(function* ()
             {
                 const runner = yield* CommandRunner;
+                const environment = yield* DeploymentEnvironment;
+                const withAuth = (args: ReadonlyArray<string>) =>
+                    environment.requireVercel.pipe(
+                        Effect.map((credentials) => [
+                            ...args,
+                            "--token",
+                            Redacted.value(credentials.token),
+                            "--team",
+                            credentials.orgId
+                        ]),
+                        Effect.mapError(
+                            (cause) =>
+                                new DocsIntegrationError({
+                                    cause,
+                                    operation: "authentication",
+                                    provider: "vercel"
+                                })
+                        )
+                    );
                 const run = (
                     args: ReadonlyArray<string>,
                     operation: string,
@@ -346,71 +366,72 @@ export class VercelService extends Context.Service<
                         );
                 return VercelService.of({
                     alias: (deployment: string, alias: string) =>
-                        run(
-                            [ "alias", "set", deployment, alias, "--yes" ],
-                            "alias",
-                            undefined
-                        ).pipe(Effect.asVoid),
+                        withAuth([ "alias", "set", deployment, alias ]).pipe(
+                            Effect.flatMap((args) => run([ ...args, "--yes" ], "alias")),
+                            Effect.asVoid
+                        ),
                     deploy: (
                         directory: string,
                         options:
                             | {
                                 readonly production?: boolean;
                                 readonly name?: string;
-                                readonly scope?: string;
+                                readonly team?: string;
                             }
                             | undefined
                     ) =>
-                        run(
-                            [
-                                "deploy",
-                                ...(options?.production === true
-                                    ? [ "--prod" ]
-                                    : []),
-                                ...(options?.name === undefined
-                                    ? []
-                                    : [ "--name", options.name ]),
-                                ...(options?.scope === undefined
-                                    ? []
-                                    : [ "--scope", options.scope ]),
-                                "--yes",
-                                "--json"
-                            ],
+                        withAuth([
                             "deploy",
-                            directory
-                        ).pipe(
+                            ...(options?.production === true
+                                ? [ "--prod" ]
+                                : []),
+                            ...(options?.name === undefined
+                                ? []
+                                : [ "--name", options.name ]),
+                            ...(options?.team === undefined
+                                ? []
+                                : [ "--team", options.team ]),
+                            "--yes",
+                            "--json"
+                        ]).pipe(
+                            Effect.flatMap((args) => run(args, "deploy", directory)),
                             Effect.map((result: CommandResult) =>
                                 parseDeployment(result.stdout)
                             )
                         ),
                     inspect: (deployment: string) =>
-                        run([ "inspect", deployment, "--json" ], "inspect").pipe(
+                        withAuth([ "inspect", deployment, "--json" ]).pipe(
+                            Effect.flatMap((args) => run(args, "inspect")),
                             Effect.map((result: CommandResult) =>
                                 parseInspection(result.stdout, deployment)
                             )
                         ),
                     promote: (deployment: string) =>
-                        run([ "promote", deployment, "--yes" ], "promote").pipe(
+                        withAuth([ "promote", deployment ]).pipe(
+                            Effect.flatMap((args) => run([ ...args, "--yes" ], "promote")),
                             Effect.asVoid
                         ),
                     remove: (deployment: string) =>
-                        run([ "remove", deployment, "--yes" ], "remove").pipe(
+                        withAuth([ "remove", deployment ]).pipe(
+                            Effect.flatMap((args) => run([ ...args, "--yes" ], "remove")),
                             Effect.asVoid
                         ),
                     rollback: (deployment: string | undefined) =>
-                        run(
-                            [
-                                "rollback",
-                                ...(deployment === undefined
-                                    ? []
-                                    : [ deployment ]),
-                                "--yes"
-                            ],
-                            "rollback"
-                        ).pipe(Effect.asVoid)
+                        withAuth([
+                            "rollback",
+                            ...(deployment === undefined
+                                ? []
+                                : [ deployment ])
+                        ]).pipe(
+                            Effect.flatMap((args) => run([ ...args, "--yes" ], "rollback")),
+                            Effect.asVoid
+                        )
                 });
             })
-        ).pipe(Layer.provide(CommandRunner.layer));
+        ).pipe(
+            Layer.provide(CommandRunner.layer),
+            Layer.provide(DeploymentEnvironment.layer)
+        );
 }
 /** @internal */
 export class ArchiveService extends Context.Service<

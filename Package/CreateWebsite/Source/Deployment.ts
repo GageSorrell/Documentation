@@ -83,8 +83,9 @@ const projectOptions = (
     production: boolean
 ) => ({
     production,
-    ...(project.project === undefined ? {} : { name: project.project }),
-    ...(project.team === undefined ? {} : { scope: project.team })
+    ...(project.project === undefined ? {} : { name: project.project })
+    // VercelService authenticates with VERCEL_ORG_ID via --team. Keeping the
+    // project map's team field for metadata avoids emitting duplicate flags.
 });
 export/** @internal */
 const deployWebsite = (

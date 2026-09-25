@@ -51,27 +51,52 @@ import { NodeServices } from "@effect/platform-node";
 import type { ProductSkillResult } from "./ProductSkill.js";
 import { buildPackageProductSkill } from "./ProductSkill.js";
 import { runMcpSource } from "./McpSource.js";
+import { readFile } from "node:fs/promises";
 const targetFlag = Flag.String("target").pipe(Flag.withDefault("."));
 const storybookFlag = Flag.Boolean("storybook").pipe(Flag.withDefault(false));
+const configFlag = Flag.String("config").pipe(Flag.withDefault("docs.config.json"));
 const packageIdFlag = Flag.String("package");
 const outputDirectoryFlag = Flag.String("out");
 const mcpSourceFlag = Flag.String("source").pipe(Flag.withDefault("."));
+const createWebsite = ({
+    target,
+    storybook
+}: {
+    readonly storybook: boolean;
+    readonly target: string;
+}) =>
+    writeGeneratedWebsite(
+        createGeneratedWebsite({
+            config: { storybook: { enabled: storybook } },
+            target
+        })
+    );
+const create = Command.make(
+    "create",
+    { config: configFlag, target: targetFlag },
+    ({ config, target }: { readonly config: string; readonly target: string }) =>
+        Effect.gen(function* ()
+        {
+            const input = yield* Effect.tryPromise({
+                catch: (cause: unknown) => cause,
+                try: () => readFile(config, "utf8")
+            }).pipe(
+                Effect.flatMap((text) =>
+                    Effect.try({
+                        catch: (cause: unknown) => cause,
+                        try: () => JSON.parse(text)
+                    })
+                )
+            );
+            yield* writeGeneratedWebsite(
+                createGeneratedWebsite({ config: input, target })
+            );
+        })
+);
 const init = Command.make(
     "init",
     { storybook: storybookFlag, target: targetFlag },
-    ({
-        target,
-        storybook
-    }: {
-        readonly storybook: boolean;
-        readonly target: string;
-    }) =>
-        writeGeneratedWebsite(
-            createGeneratedWebsite({
-                config: { storybook: { enabled: storybook } },
-                target
-            })
-        )
+    createWebsite
 );
 const build = Command.make(
     "build",
@@ -509,6 +534,7 @@ const story = Command.make("story").pipe(
 export/** @internal */
 const docsCommand = Command.make("sorrell-docs").pipe(
     Command.withSubcommands([
+        create,
         init,
         dev,
         build,

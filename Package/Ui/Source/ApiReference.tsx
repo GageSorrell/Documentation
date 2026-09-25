@@ -17,7 +17,7 @@ import type {
 import { Breadcrumbs, DocsSidebar, OnThisPage } from "./Navigation.js";
 import { CopyForLlmButton } from "./CopyForLlm.js";
 import { DocCode } from "./Mdx.js";
-import { apiReferenceRecordToAgentDocument } from "@sorrell/docs-core";
+import { apiReferenceRecordToAgentDocument, type ApiReferenceCategory, type ApiReferenceDeclaration } from "@sorrell/docs-core";
 const declarationHref = (id: string): string => `#${id}`;
 type SourceLink = {
     readonly repositoryUrl: string;
@@ -36,42 +36,11 @@ const apiNavigation = (
     record: ApiReferencePageProps["record"]
 ): ReadonlyArray<DocumentationNavGroup> =>
     record.categories.map(
-        (category: {
-            readonly id: string;
-            readonly label: string;
-            readonly order: number;
-            readonly collapsed: boolean;
-        }) => ({
+        (category: ApiReferenceCategory) => ({
             items: record.declarations
                 .filter(
-                    (declaration: {
-                        readonly id: string;
-                        readonly name: string;
-                        readonly kind:
-                            | "function"
-                            | "const"
-                            | "class"
-                            | "interface"
-                            | "type"
-                            | "variable"
-                            | "namespace";
-                        readonly categoryId: string;
-                        readonly description: string;
-                        readonly signature: string;
-                        readonly introductionVersion?: string;
-                        readonly source?: {
-                            readonly repositoryUrl: string;
-                            readonly revision: string;
-                            readonly file: string;
-                            readonly line?: number;
-                            readonly endLine?: number;
-                        };
-                        readonly link?: {
-                            readonly href: string;
-                            readonly external: boolean;
-                            readonly label?: string;
-                        };
-                    }) => declaration.categoryId === category.id
+                    (declaration: ApiReferenceDeclaration) =>
+                        declaration.categoryId === category.id
                 )
                 .map(
                     (declaration: {
@@ -122,64 +91,10 @@ const tocItems = (
         }) => ({
             children: record.declarations
                 .filter(
-                    (declaration: {
-                        readonly id: string;
-                        readonly name: string;
-                        readonly kind:
-                            | "function"
-                            | "const"
-                            | "class"
-                            | "interface"
-                            | "type"
-                            | "variable"
-                            | "namespace";
-                        readonly categoryId: string;
-                        readonly description: string;
-                        readonly signature: string;
-                        readonly introductionVersion?: string;
-                        readonly source?: {
-                            readonly repositoryUrl: string;
-                            readonly revision: string;
-                            readonly file: string;
-                            readonly line?: number;
-                            readonly endLine?: number;
-                        };
-                        readonly link?: {
-                            readonly href: string;
-                            readonly external: boolean;
-                            readonly label?: string;
-                        };
-                    }) => declaration.categoryId === category.id
+                    (declaration: ApiReferenceDeclaration) => declaration.categoryId === category.id
                 )
                 .map(
-                    (declaration: {
-                        readonly id: string;
-                        readonly name: string;
-                        readonly kind:
-                            | "function"
-                            | "const"
-                            | "class"
-                            | "interface"
-                            | "type"
-                            | "variable"
-                            | "namespace";
-                        readonly categoryId: string;
-                        readonly description: string;
-                        readonly signature: string;
-                        readonly introductionVersion?: string;
-                        readonly source?: {
-                            readonly repositoryUrl: string;
-                            readonly revision: string;
-                            readonly file: string;
-                            readonly line?: number;
-                            readonly endLine?: number;
-                        };
-                        readonly link?: {
-                            readonly href: string;
-                            readonly external: boolean;
-                            readonly label?: string;
-                        };
-                    }) => ({
+                    (declaration: ApiReferenceDeclaration) => ({
                         href: declarationHref(declaration.id),
                         label: declaration.name
                     })

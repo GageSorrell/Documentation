@@ -1,0 +1,6 @@
+{
+  "directory": "Storybook",
+  "productionBranch": "Master",
+  "project": "sorrell-documentation-storybook",
+  "routePrefix": "/storybook"
+}

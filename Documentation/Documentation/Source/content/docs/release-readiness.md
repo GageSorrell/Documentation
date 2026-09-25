@@ -13,7 +13,7 @@ agent surfaces before a public deployment is promoted.
 
 ## Generated workspace
 
-`sorrell-docs init` creates these applications:
+`sorrell-docs create` creates these applications:
 
 | Package | Public surface | Responsibility |
 | --- | --- | --- |

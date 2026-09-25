@@ -1,0 +1,9 @@
+{
+  "documentationPrefix": "/docs",
+  "packages": [
+    "Landing",
+    "Documentation",
+    "Storybook"
+  ],
+  "storybookPrefix": "/storybook"
+}

@@ -72,7 +72,9 @@ describe("three-package website generation", () =>
             (file: GeneratedWebsiteFile) =>
                 file.path === "Storybook/.storybook/main.ts"
         )?.content;
-        expect(storybookConfig).toContain("base: \"/workbench/\"");
+        expect(storybookConfig).toContain(
+            "? \"/workbench/\""
+        );
         expect(website.config.vercel.projects.storybook?.routePrefix).toBe(
             "/workbench"
         );
