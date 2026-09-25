@@ -19,9 +19,77 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: .node-version
+          node-version-file: .nvmrc
           cache: npm
       - name: Install dependencies
         run: npm ci
       - name: Run baseline checks
         run: npm run check
+
+  workspace-matrix:
+    name: ${{ matrix.workspace }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - workspace: '@sorrell/docs-core'
+            build: true
+            test: true
+          - workspace: '@sorrell/docs-cli'
+            build: true
+            test: true
+          - workspace: '@sorrell/docs-ui'
+            build: true
+            test: false
+          - workspace: '@sorrell/docs-react-native-storybook'
+            build: true
+            test: true
+          - workspace: '@sorrell/docs-astro'
+            build: true
+            test: false
+          - workspace: '@sorrell/docs-api-reference'
+            build: true
+            test: true
+          - workspace: '@sorrell/docs-skills'
+            build: true
+            test: true
+          - workspace: '@sorrell/docs-mcp'
+            build: true
+            test: true
+          - workspace: '@sorrell/docs-create-website'
+            build: true
+            test: true
+          - workspace: '@sorrell/docs-storybook-web'
+            build: true
+            test: false
+          - workspace: '@sorrell/application-development'
+            build: false
+            test: false
+          - workspace: '@sorrell/application-demonstration'
+            build: false
+            test: false
+          - workspace: '@sorrell/documentation'
+            build: true
+            test: false
+          - workspace: '@sorrell/website'
+            build: true
+            test: false
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Typecheck workspace
+        run: npm run typecheck --workspace "${{ matrix.workspace }}"
+      - name: Build workspace
+        if: matrix.build
+        run: npm run build --workspace "${{ matrix.workspace }}"
+      - name: Test workspace
+        if: matrix.test
+        run: npm test --workspace "${{ matrix.workspace }}"

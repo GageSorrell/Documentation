@@ -16,3 +16,6 @@ The first useful path is deliberately small: write a page, organize it into a ve
 - Markdown and MDX content collections with deterministic ordering.
 - A responsive documentation shell with navigation, table of contents, and previous/next links.
 - Canonical URLs, metadata, theme persistence, and a Copy for LLM control on every article.
+
+For the complete build, packaging, routing, and agent-access checklist, read
+[Release readiness](./release-readiness/).

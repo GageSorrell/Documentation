@@ -9,15 +9,73 @@
  * @license   MIT
  */
 
-import { createElement, Fragment, useEffect, useState, type ComponentType, type ReactNode } from "react";
+import {
+    type ComponentType,
+    Fragment,
+    type ReactNode,
+    createElement,
+    useEffect,
+    useState
+} from "react";
+export/** @internal */
+const View: ComponentType<{
+    readonly children?: ReactNode;
+    readonly style?: unknown;
+}> = ({
+    children
+}: {
+    readonly children?: ReactNode;
+    readonly style?: unknown;
+}) => createElement("div", null, children);
+export/** @internal */
+const Text: ComponentType<{
+    readonly children?: ReactNode;
+    readonly style?: unknown;
+}> = ({
+    children
+}: {
+    readonly children?: ReactNode;
+    readonly style?: unknown;
+}) => createElement("span", null, children);
+export/** @internal */
+const ScrollView: ComponentType<{
+    readonly children?: ReactNode;
+    readonly style?: unknown;
+    readonly contentContainerStyle?: unknown;
+}> = ({
+    children
+}: {
+    readonly children?: ReactNode;
+    readonly style?: unknown;
+    readonly contentContainerStyle?: unknown;
+}) => createElement("div", null, children);
+export/** @internal */
+const KeyboardAvoidingView: ComponentType<{
+    readonly children?: ReactNode;
+    readonly style?: unknown;
+    readonly behavior?: string;
+}> = ({
+    children
+}: {
+    readonly children?: ReactNode;
+    readonly style?: unknown;
+    readonly behavior?: string;
+}) => createElement("div", null, children);
+export/** @internal */
+const StyleSheet = {
+    create: <StyleMap extends Record<string, unknown>>(
+        styles: StyleMap
+    ): StyleMap => styles
+};
+export/** @internal */
+const Platform = { OS: "web" } as const;
+export/** @internal */
+const Appearance = {
+    addChangeListener: () => ({ remove: () => undefined })
+};
+export/** @internal */
+const useColorScheme = (): "light" => "light";
 
-export const View: ComponentType<{ readonly children?: ReactNode; readonly style?: unknown }> = ({ children }) => createElement("div", null, children);
-export const Text: ComponentType<{ readonly children?: ReactNode; readonly style?: unknown }> = ({ children }) => createElement("span", null, children);
-export const ScrollView: ComponentType<{ readonly children?: ReactNode; readonly style?: unknown; readonly contentContainerStyle?: unknown }> = ({ children }) => createElement("div", null, children);
-export const KeyboardAvoidingView: ComponentType<{ readonly children?: ReactNode; readonly style?: unknown; readonly behavior?: string }> = ({ children }) => createElement("div", null, children);
-export const StyleSheet = { create: <StyleMap extends Record<string, unknown>>(styles: StyleMap): StyleMap => styles };
-export const Platform = { OS: "web" } as const;
-export const Appearance = { addChangeListener: () => ({ remove: () => undefined }) };
-export const useColorScheme = (): "light" => "light";
+/** @internal */
 export type ViewStyle = Record<string, unknown>;
 export { Fragment, useEffect, useState };

@@ -1,5 +1,5 @@
 /**
- *
+ * Shared Effect runtime services for Sorrell documentation tooling.
  *
  * @module @sorrell/docs-cli
  *
@@ -10,8 +10,9 @@
  */
 
 export * from "./errors.js";
-export * from "./fixture-command.js";
-export * from "./logging.js";
+export * from "./Environment.js";
+export * from "./FixtureCommand.js";
+export * from "./Log.js";
 export * from "./runtime.js";
 export * from "./services.js";
 export * from "./Workspace.js";

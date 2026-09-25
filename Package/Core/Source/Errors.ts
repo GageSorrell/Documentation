@@ -9,36 +9,57 @@
  * @license   MIT
  */
 
-/** @module @sorrell/docs-core/Errors */
-
 import { Data } from "effect";
 
+/** @internal */
 export type ConfigPathSegment = string | number;
 
-export interface DocsConfigDiagnostic {
+/** @internal */
+export interface DocsConfigDiagnostic
+{
     readonly path: ReadonlyArray<ConfigPathSegment>;
     readonly message: string;
     readonly expected?: string;
     readonly actual?: unknown;
 }
 
+/** @internal */
 export class DocsConfigError extends Data.TaggedError("DocsConfigError")<{
     readonly diagnostics: ReadonlyArray<DocsConfigDiagnostic>;
-}> {
-    override get message(): string {
+}>
+{
+    override get message(): string
+    {
         return this.diagnostics.map(formatDiagnostic).join("\n");
     }
 }
 
-export const formatConfigPath = (path: ReadonlyArray<ConfigPathSegment>): string => {
-    if (path.length === 0) {return "$";}
+export/** @internal */
+const formatConfigPath = (
+    path: ReadonlyArray<ConfigPathSegment>
+): string =>
+{
+    if (path.length === 0)
+    {
+        return "$";
+    }
     return path.reduce<string>(
-        (result, segment) => typeof segment === "number" ? `${result}[${segment}]` : `${result}.${String(segment)}`,
+        (result: string, segment: ConfigPathSegment) =>
+            typeof segment === "number"
+                ? `${result}[${segment}]`
+                : `${result}.${String(segment)}`,
         "$"
     );
 };
 
-export const formatDiagnostic = (diagnostic: DocsConfigDiagnostic): string => {
-    const expected = diagnostic.expected === undefined ? "" : ` (expected ${diagnostic.expected})`;
+export/** @internal */
+const formatDiagnostic = (
+    diagnostic: DocsConfigDiagnostic
+): string =>
+{
+    const expected =
+        diagnostic.expected === undefined
+            ? ""
+            : ` (expected ${diagnostic.expected})`;
     return `${formatConfigPath(diagnostic.path)}: ${diagnostic.message}${expected}`;
 };

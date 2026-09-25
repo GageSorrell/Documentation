@@ -9,11 +9,12 @@
  * @license   MIT
  */
 
-import { describe, expect, it } from "vitest";
 import * as NativeStorybook from "../Source/index.js";
-
-describe("public native Storybook exports", () => {
-    it("exposes the provider, decorators, articles, and Metro helpers", () => {
+import { describe, expect, it } from "vitest";
+describe("public native Storybook exports", () =>
+{
+    it("exposes the provider, decorators, articles, and Metro helpers", () =>
+    {
         expect(NativeStorybook.NativeStorybookProvider).toBeTypeOf("function");
         expect(NativeStorybook.createNativeDecorators).toBeTypeOf("function");
         expect(NativeStorybook.Article).toBeTypeOf("function");

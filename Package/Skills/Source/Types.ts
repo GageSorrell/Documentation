@@ -8,16 +8,19 @@
  * @copyright (c) 2026 Gage Sorrell
  * @license   MIT
  */
-
+/** @internal */
 export type SkillAgent = "claude" | "codex";
+
+/** @internal */
 export type SkillScope = "project" | "user";
 
+/** @internal */
 export interface SkillDefinition {
     readonly name: string;
     readonly description: string;
     readonly directory: string;
 }
-
+/** @internal */
 export interface SkillInstallOptions {
     readonly agent?: SkillAgent;
     readonly scope?: SkillScope;
@@ -25,7 +28,7 @@ export interface SkillInstallOptions {
     readonly homeDirectory?: string;
     readonly codexHome?: string;
 }
-
+/** @internal */
 export interface InstalledSkill {
     readonly name: string;
     readonly description: string;
@@ -35,7 +38,7 @@ export interface InstalledSkill {
     readonly checksum: string;
     readonly installedAt: string;
 }
-
+/** @internal */
 export interface SkillRegistryEntry {
     readonly name: string;
     readonly checksum: string;

@@ -1,0 +1,15 @@
+{
+  "name": "@sorrell/docs-release",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "npm run clean && tsc --project tsconfig.json",
+    "clean": "node ../../Script/Release/CleanBuild.mjs",
+    "typecheck": "tsc --project tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@sorrell/docs-cli": "0.1.0",
+    "effect": "4.0.0-rc.117"
+  }
+}

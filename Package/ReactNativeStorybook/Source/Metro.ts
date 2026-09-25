@@ -9,30 +9,45 @@
  * @license   MIT
  */
 
-/** @module @sorrell/docs-react-native-storybook/Metro */
-
 import type { MetroConfig, MetroStorybookOptions } from "./Types.js";
-
-const appendUnique = (values: ReadonlyArray<string> | undefined, additions: ReadonlyArray<string>): Array<string> => Array.from(new Set([ ...(values ?? []), ...additions ]));
-
-export const createMetroConfig = (config: MetroConfig = {}, options: MetroStorybookOptions = {}): MetroConfig => {
+const appendUnique = (
+    values: ReadonlyArray<string> | undefined,
+    additions: ReadonlyArray<string>
+): Array<string> => Array.from(new Set([ ...(values ?? []), ...additions ]));
+export/** @internal */
+const createMetroConfig = (
+    config: MetroConfig = {},
+    options: MetroStorybookOptions = {}
+): MetroConfig =>
+{
     const next: MetroConfig = {
         ...config,
         resolver: {
             ...(config.resolver ?? {}),
-            sourceExts: appendUnique((config.resolver?.sourceExts as ReadonlyArray<string> | undefined), [ "ts", "tsx" ])
+            sourceExts: appendUnique(
+                config.resolver?.sourceExts as
+                    | ReadonlyArray<string>
+                    | undefined,
+                [ "ts", "tsx" ]
+            )
+        },
+        storybook: {
+            configPath: options.configPath ?? ".storybook",
+            enabled: options.enabled ?? true,
+            storybookEntrypoint:
+                options.storybookEntrypoint ?? "storybook.requires"
         },
         transformer: {
             ...(config.transformer ?? {}),
             unstable_allowRequireContext: true
-        },
-        storybook: {
-            enabled: options.enabled ?? true,
-            configPath: options.configPath ?? ".storybook",
-            storybookEntrypoint: options.storybookEntrypoint ?? "storybook.requires"
         }
     };
-    return options.withStorybook === undefined ? next : options.withStorybook(next, options);
+    return options.withStorybook === undefined
+        ? next
+        : options.withStorybook(next, options);
 };
-
-export const withStorybookMetro = (config: MetroConfig, options: MetroStorybookOptions = {}): MetroConfig => createMetroConfig(config, options);
+export/** @internal */
+const withStorybookMetro = (
+    config: MetroConfig,
+    options: MetroStorybookOptions = {}
+): MetroConfig => createMetroConfig(config, options);

@@ -9,21 +9,58 @@
  * @license   MIT
  */
 
+import {
+    createNativeAuthoringFile,
+    createNativeStorybookApp
+} from "../Source/NativeGenerator.js";
 import { describe, expect, it } from "vitest";
-import { createNativeAuthoringFile, createNativeStorybookApp } from "../Source/NativeGenerator.js";
-
-describe("native Storybook generator", () => {
-    it("creates a development Expo app with public native Storybook wiring", () => {
-        const app = createNativeStorybookApp({ target: "fixture", kind: "development" });
-        const paths = app.files.map(({ path }) => path);
+describe("native Storybook generator", () =>
+{
+    it("creates a development Expo app with public native Storybook wiring", () =>
+    {
+        const app = createNativeStorybookApp({
+            kind: "development",
+            target: "fixture"
+        });
+        const paths = app.files.map(({ path }: NativeGeneratedFile) => path);
         expect(app.packageName).toBe("@sorrell/application-development");
-        expect(paths).toEqual(expect.arrayContaining([ "app.json", "metro.config.cjs", ".rnstorybook/main.ts", "Stories/index.tsx", "App.tsx" ]));
-        expect(app.files.find(({ path }) => path === "metro.config.cjs")?.content).toContain("withStorybook");
+        expect(paths).toEqual(
+            expect.arrayContaining([
+                "app.json",
+                "metro.config.cjs",
+                ".rnstorybook/main.ts",
+                "Stories/index.tsx",
+                "App.tsx"
+            ])
+        );
+        expect(
+            app.files.find(
+                ({ path }: NativeGeneratedFile) => path === "metro.config.cjs"
+            )?.content
+        ).toContain("withStorybook");
     });
-
-    it("creates native authoring templates in stable directories", () => {
-        expect(createNativeAuthoringFile({ target: "fixture", kind: "story", name: "Button" }).path).toBe("Stories/Button.stories.tsx");
-        expect(createNativeAuthoringFile({ target: "fixture", kind: "example", name: "States" }).path).toBe("Examples/States.tsx");
-        expect(createNativeAuthoringFile({ target: "fixture", kind: "article", name: "GettingStarted" }).path).toBe("Articles/GettingStarted.tsx");
+    it("creates native authoring templates in stable directories", () =>
+    {
+        expect(
+            createNativeAuthoringFile({
+                kind: "story",
+                name: "Button",
+                target: "fixture"
+            }).path
+        ).toBe("Stories/Button.stories.tsx");
+        expect(
+            createNativeAuthoringFile({
+                kind: "example",
+                name: "States",
+                target: "fixture"
+            }).path
+        ).toBe("Examples/States.tsx");
+        expect(
+            createNativeAuthoringFile({
+                kind: "article",
+                name: "GettingStarted",
+                target: "fixture"
+            }).path
+        ).toBe("Articles/GettingStarted.tsx");
     });
 });

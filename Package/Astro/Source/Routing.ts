@@ -10,28 +10,55 @@
  */
 
 import type { SiteRouting } from "@sorrell/docs-core";
-
-export const normalizeDocsPrefix = (prefix: string = "/docs"): string => {
-    if (prefix === "/") {return "/";}
+export/** @internal */
+const normalizeDocsPrefix = (
+    prefix: string = "/docs"
+): string =>
+{
+    if (prefix === "/")
+    {
+        return "/";
+    }
     return `/${prefix.replace(/^\/+/, "").replace(/\/+$/, "")}`;
 };
-
-export const docsPath = (prefix: string, path: string = ""): string => {
+export/** @internal */
+const docsPath = (
+    prefix: string,
+    path: string = ""
+): string =>
+{
     const normalizedPrefix = normalizeDocsPrefix(prefix);
     const normalizedPath = path.replace(/^\/+/, "");
-    return normalizedPath === "" ? `${normalizedPrefix}/` : `${normalizedPrefix}/${normalizedPath}`;
+    return normalizedPath === ""
+        ? `${normalizedPrefix}/`
+        : `${normalizedPrefix}/${normalizedPath}`;
 };
-
-export const docsVersionPath = (prefix: string, version: string, path: string = ""): string =>
-    docsPath(prefix, `${version.replace(/^\/+|\/+$/g, "")}/${path.replace(/^\/+/, "")}`);
-
-export const canonicalUrl = (siteUrl: string, path: string): string => {
+export/** @internal */
+const docsVersionPath = (
+    prefix: string,
+    version: string,
+    path: string = ""
+): string =>
+    docsPath(
+        prefix,
+        `${version.replace(/^\/+|\/+$/g, "")}/${path.replace(/^\/+/, "")}`
+    );
+export/** @internal */
+const canonicalUrl = (
+    siteUrl: string,
+    path: string
+): string =>
+{
     const normalizedSite = siteUrl.replace(/\/+$/, "");
     const normalizedPath = path.startsWith("/") ? path : `/${path}`;
     return `${normalizedSite}${normalizedPath}`;
 };
-
-export const documentationRouting = (routing?: Partial<SiteRouting>): SiteRouting => ({
+export/** @internal */
+const documentationRouting = (
+    routing?: Partial<SiteRouting>
+): SiteRouting => ({
     documentationPrefix: normalizeDocsPrefix(routing?.documentationPrefix),
-    storybookPrefix: normalizeDocsPrefix(routing?.storybookPrefix ?? "/storybook")
+    storybookPrefix: normalizeDocsPrefix(
+        routing?.storybookPrefix ?? "/storybook"
+    )
 });

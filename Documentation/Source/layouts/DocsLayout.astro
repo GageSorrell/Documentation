@@ -3,7 +3,8 @@ import { canonicalUrl, docsPath, docsVersionPath } from "@sorrell/docs-astro";
 import { docsUiCss } from "@sorrell/docs-ui";
 import { documentationVersions } from "../Versions.js";
 
-interface PageSummary {
+interface PageSummary
+{
     readonly description: string;
     readonly group: string;
     readonly id: string;
@@ -11,13 +12,15 @@ interface PageSummary {
     readonly title: string;
 }
 
-interface Heading {
+interface Heading
+{
     readonly depth: number;
     readonly slug: string;
     readonly text: string;
 }
 
-interface Props {
+interface Props
+{
     readonly canonicalPath: string;
     readonly copyText: string;
     readonly description: string;
@@ -31,7 +34,7 @@ interface Props {
 const { canonicalPath, copyText, description, headings, pages, slug, title, version } = Astro.props;
 const prefix = "/docs";
 const groups = [ ...new Set(pages.map((page) => page.group)) ];
-const canonical = canonicalUrl("https://sorrell.sh", canonicalPath);
+const canonical = canonicalUrl("https://docs.sorrell.sh", canonicalPath);
 const pageHref = (page: PageSummary): string => {
     const pageSlug = page.id === "index" ? "" : page.slug;
     return version === undefined ? docsPath(prefix, pageSlug) : docsVersionPath(prefix, version, pageSlug);
@@ -51,6 +54,7 @@ const versionHref = (versionId: string): string => versionId === "current"
         <meta property="og:title" content={`${title} · Sorrell Documentation`} />
         <meta property="og:type" content="article" />
         <link rel="canonical" href={canonical} />
+        <link rel="alternate" type="text/markdown" href={`${canonicalPath.endsWith("/") ? `${canonicalPath}index` : canonicalPath}.md`} />
         <title>{title} · Sorrell Documentation</title>
     </head>
     <body>

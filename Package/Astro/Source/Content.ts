@@ -9,7 +9,9 @@
  * @license   MIT
  */
 
-export interface DocumentationFrontmatter {
+/** @internal */
+export interface DocumentationFrontmatter
+{
     readonly title: string;
     readonly description: string;
     readonly group: string;
@@ -17,15 +19,36 @@ export interface DocumentationFrontmatter {
     readonly draft: boolean;
 }
 
-export interface DocumentationPageSummary extends DocumentationFrontmatter {
+/** @internal */
+export interface DocumentationPageSummary extends DocumentationFrontmatter
+{
     readonly id: string;
     readonly slug: string;
 }
 
-export const documentationSlug = (id: string): string => id.replace(/(?:^|\/)index$/, "");
+export/** @internal */
+const documentationSlug = (id: string): string =>
+    id.replace(/(?:^|\/)index$/, "");
 
-export const sortDocumentationPages = <Page extends DocumentationPageSummary>(pages: ReadonlyArray<Page>): ReadonlyArray<Page> =>
-    [ ...pages ].sort((left, right) => left.order - right.order || left.title.localeCompare(right.title) || left.id.localeCompare(right.id));
+export/** @internal */
+const sortDocumentationPages = <
+    Page extends DocumentationPageSummary
+>(
+    pages: ReadonlyArray<Page>
+): ReadonlyArray<Page> =>
+    [ ...pages ].sort((left: Page, right: Page) =>
+    {
+        return (
+            left.order - right.order ||
+            left.title.localeCompare(right.title) ||
+            left.id.localeCompare(right.id)
+        );
+    });
 
-export const visibleDocumentationPages = <Page extends DocumentationPageSummary>(pages: ReadonlyArray<Page>): ReadonlyArray<Page> =>
-    sortDocumentationPages(pages.filter((page) => !page.draft));
+export/** @internal */
+const visibleDocumentationPages = <
+    Page extends DocumentationPageSummary
+>(
+    pages: ReadonlyArray<Page>
+): ReadonlyArray<Page> =>
+    sortDocumentationPages(pages.filter((page: Page) => !page.draft));

@@ -9,52 +9,299 @@
  * @license   MIT
  */
 
-import { mkdir, mkdtemp, readFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
+import {
+    AtomicWriter,
+    DocsFileSystem,
+    DocsIntegrationError,
+    DocsPath,
+    NetworkRetry,
+    VercelService
+} from "@sorrell/docs-cli";
 import { Effect, Layer } from "effect";
-import { describe, expect, it } from "vitest";
-import { DocsIntegrationError, VercelService } from "@sorrell/docs-cli";
+import {
+    type WebsiteReleaseManifest,
+    deployWebsite,
+    rollbackWebsite,
+    verifyWebsiteDeployment,
+    writeReleaseManifest
+} from "../Source/Deployment.js";
+import { describe, expect, it, vi } from "vitest";
+import { mkdir, mkdtemp, readFile, rm } from "node:fs/promises";
 import { createGeneratedWebsite } from "../Source/Generator.js";
-import { deployWebsite } from "../Source/Deployment.js";
-
-describe("website deployment orchestration", () => {
-    it("deploys children before Landing and writes child rewrites", async () => {
+import { join } from "node:path";
+import { tmpdir } from "node:os";
+const manifest = (
+    releaseId: string,
+    landingUrl: string
+): WebsiteReleaseManifest => ({
+    deployments: {
+        documentation: {
+            deploymentId: `${releaseId}-docs`,
+            project: "documentation",
+            url: "https://docs.vercel.app"
+        },
+        landing: {
+            deploymentId: `${releaseId}-landing`,
+            project: "landing",
+            url: landingUrl
+        }
+    },
+    generatedAt: "2026-09-24T00:00:00.000Z",
+    landingConfig: { redirects: [], rewrites: [], version: 2 },
+    mode: "production",
+    publicUrl: landingUrl,
+    releaseId,
+    revision: releaseId,
+    routes: { documentationPrefix: "/docs", storybookPrefix: "/storybook" },
+    version: 2
+});
+describe("website deployment orchestration", () =>
+{
+    it("deploys children before Landing and writes child rewrites", async () =>
+    {
         const target = await mkdtemp(join(tmpdir(), "sorrell-deploy-"));
         await mkdir(join(target, "Landing"));
         const order: Array<string> = [];
-        const layer = Layer.succeed(VercelService, VercelService.of({
-            deploy: (directory) => Effect.sync(() => {
-                const project = directory.split(/[\\/]/).at(-1) ?? "unknown";
-                order.push(project);
-                return `https://${project.toLowerCase()}.vercel.app`;
-            }),
-            inspect: () => Effect.succeed("ready"),
-            promote: () => Effect.void,
-            rollback: () => Effect.void,
-            remove: () => Effect.void
-        }));
-        const result = await Effect.runPromise(deployWebsite(createGeneratedWebsite({ target, config: { storybook: { enabled: true } } })).pipe(Effect.provide(layer)));
+        const layer = Layer.succeed(
+            VercelService,
+            VercelService.of({
+                alias: () => Effect.void,
+                deploy: (directory: string) =>
+                    Effect.sync(() =>
+                    {
+                        const project =
+                            directory.split(/[\\/]/).at(-1) ?? "unknown";
+                        order.push(project);
+                        const url = `https://${project.toLowerCase()}.vercel.app`;
+                        return { deploymentId: url, raw: url, url };
+                    }),
+                inspect: (deployment: string) =>
+                    Effect.succeed({
+                        deploymentId: deployment,
+                        raw: "ready",
+                        state: "READY" as const,
+                        url: deployment
+                    }),
+                promote: () => Effect.void,
+                remove: () => Effect.void,
+                rollback: () => Effect.void
+            })
+        );
+        const result = await Effect.runPromise(
+            deployWebsite(
+                createGeneratedWebsite({
+                    config: { storybook: { enabled: true } },
+                    target
+                })
+            ).pipe(Effect.provide(layer))
+        );
         expect(order).toEqual([ "Documentation", "Storybook", "Landing" ]);
-        expect(result.deployments.landing.url).toBe("https://landing.vercel.app");
-        expect(await readFile(join(target, "Landing/vercel.json"), "utf8")).toContain("https://documentation.vercel.app/docs");
+        expect(result.deployments.landing.url).toBe(
+            "https://landing.vercel.app"
+        );
+        expect(
+            await readFile(join(target, "Landing/vercel.json"), "utf8")
+        ).toContain("https://documentation.vercel.app/docs");
     });
-
-    it("removes child deployments when Landing fails", async () => {
+    it("deploys the MCP child before Landing without adding a public Landing rewrite", async () =>
+    {
+        const target = await mkdtemp(join(tmpdir(), "sorrell-deploy-mcp-"));
+        await mkdir(join(target, "Landing"));
+        const order: Array<string> = [];
+        const layer = Layer.succeed(
+            VercelService,
+            VercelService.of({
+                alias: () => Effect.void,
+                deploy: (directory: string) =>
+                    Effect.sync(() =>
+                    {
+                        const project =
+                            directory.split(/[\\/]/u).at(-1) ?? "unknown";
+                        order.push(project);
+                        const url = `https://${project.toLowerCase()}.vercel.app`;
+                        return { deploymentId: url, raw: url, url };
+                    }),
+                inspect: (deployment: string) =>
+                    Effect.succeed({
+                        deploymentId: deployment,
+                        raw: "ready",
+                        state: "READY" as const,
+                        url: deployment
+                    }),
+                promote: () => Effect.void,
+                remove: () => Effect.void,
+                rollback: () => Effect.void
+            })
+        );
+        const result = await Effect.runPromise(
+            deployWebsite(
+                createGeneratedWebsite({
+                    config: {
+                        agent: { mcp: { enabled: true } },
+                        metadata: { url: "https://example.test" }
+                    },
+                    target
+                })
+            ).pipe(Effect.provide(layer))
+        );
+        expect(order).toEqual([ "Documentation", "Mcp", "Landing" ]);
+        expect(result.deployments.mcp?.url).toBe("https://mcp.vercel.app");
+        expect(
+            JSON.parse(
+                await readFile(join(target, "Landing/vercel.json"), "utf8")
+            ).rewrites
+        ).toHaveLength(2);
+    });
+    it("removes child deployments when Landing fails", async () =>
+    {
         const target = await mkdtemp(join(tmpdir(), "sorrell-deploy-fail-"));
         await mkdir(join(target, "Landing"));
         const removed: Array<string> = [];
-        const layer = Layer.succeed(VercelService, VercelService.of({
-            deploy: (directory) => directory.endsWith("Landing")
-                ? Effect.fail(new DocsIntegrationError({ provider: "vercel", operation: "deploy", cause: "failure" }))
-                : Effect.succeed(directory.endsWith("Storybook") ? "https://storybook.vercel.app" : "https://documentation.vercel.app"),
-            inspect: () => Effect.succeed("ready"),
-            promote: () => Effect.void,
-            rollback: () => Effect.void,
-            remove: (deployment) => Effect.sync(() => { removed.push(deployment); })
-        }));
-        const result = await Effect.runPromiseExit(deployWebsite(createGeneratedWebsite({ target, config: { storybook: { enabled: true } } })).pipe(Effect.provide(layer)));
+        const layer = Layer.succeed(
+            VercelService,
+            VercelService.of({
+                alias: () => Effect.void,
+                deploy: (directory: string) =>
+                    directory.endsWith("Landing")
+                        ? Effect.fail(
+                            new DocsIntegrationError({
+                                cause: "failure",
+                                operation: "deploy",
+                                provider: "vercel"
+                            })
+                        )
+                        : Effect.succeed(
+                            (() =>
+                            {
+                                const url = directory.endsWith("Storybook")
+                                    ? "https://storybook.vercel.app"
+                                    : "https://documentation.vercel.app";
+                                return { deploymentId: url, raw: url, url };
+                            })()
+                        ),
+                inspect: (deployment: string) =>
+                    Effect.succeed({
+                        deploymentId: deployment,
+                        raw: "ready",
+                        state: "READY" as const,
+                        url: deployment
+                    }),
+                promote: () => Effect.void,
+                remove: (deployment: string) =>
+                    Effect.sync(() =>
+                    {
+                        removed.push(deployment);
+                    }),
+                rollback: () => Effect.void
+            })
+        );
+        const result = await Effect.runPromiseExit(
+            deployWebsite(
+                createGeneratedWebsite({
+                    config: { storybook: { enabled: true } },
+                    target
+                })
+            ).pipe(Effect.provide(layer))
+        );
         expect(result._tag).toBe("Failure");
-        expect(removed).toEqual([ "https://documentation.vercel.app", "https://storybook.vercel.app" ]);
+        expect(removed).toEqual([
+            "https://documentation.vercel.app",
+            "https://storybook.vercel.app"
+        ]);
+    });
+    it("verifies public routes with bounded retries", async () =>
+    {
+        let attempts = 0;
+        vi.stubGlobal(
+            "fetch",
+            vi.fn(async () =>
+            {
+                attempts += 1;
+                return attempts === 1
+                    ? new Response("busy", { status: 503 })
+                    : new Response("ok", { status: 200 });
+            })
+        );
+        try
+        {
+            await Effect.runPromise(
+                verifyWebsiteDeployment(
+                    manifest("release-1", "https://landing.vercel.app"),
+                    { paths: [ "/" ] }
+                ).pipe(Effect.provide(NetworkRetry.layer))
+            );
+            expect(attempts).toBe(2);
+        }
+        finally
+        {
+            vi.unstubAllGlobals();
+        }
+    });
+    it("archives releases and rolls back Landing to the exact previous manifest", async () =>
+    {
+        const target = await mkdtemp(join(tmpdir(), "sorrell-release-"));
+        try
+        {
+            await Effect.runPromise(
+                writeReleaseManifest(
+                    target,
+                    manifest("release-1", "https://landing-1.vercel.app")
+                )
+            );
+            await Effect.runPromise(
+                writeReleaseManifest(
+                    target,
+                    manifest("release-2", "https://landing-2.vercel.app")
+                )
+            );
+            const promoted: Array<string> = [];
+            const layer = Layer.succeed(
+                VercelService,
+                VercelService.of({
+                    alias: () => Effect.void,
+                    deploy: () => Effect.die("unused"),
+                    inspect: (deployment: string) =>
+                        Effect.succeed({
+                            deploymentId: deployment,
+                            raw: "ready",
+                            state: "READY" as const,
+                            url: deployment
+                        }),
+                    promote: (deployment: string) =>
+                        Effect.sync(() =>
+                        {
+                            promoted.push(deployment);
+                        }),
+                    remove: () => Effect.void,
+                    rollback: () => Effect.void
+                })
+            );
+            const restored = await Effect.runPromise(
+                rollbackWebsite(target).pipe(
+                    Effect.provide(
+                        Layer.mergeAll(
+                            layer,
+                            AtomicWriter.layer,
+                            DocsFileSystem.layer,
+                            DocsPath.layer
+                        )
+                    )
+                )
+            );
+            expect(restored.releaseId).toBe("release-1");
+            expect(promoted).toEqual([ "release-1-landing" ]);
+            expect(
+                JSON.parse(
+                    await readFile(
+                        join(target, "ReleaseManifest.json"),
+                        "utf8"
+                    )
+                ).releaseId
+            ).toBe("release-1");
+        }
+        finally
+        {
+            await rm(target, { force: true, recursive: true });
+        }
     });
 });

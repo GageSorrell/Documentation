@@ -8,29 +8,37 @@
  * @copyright (c) 2026 Gage Sorrell
  * @license   MIT
  */
-
-export class ApiReferenceError extends Error {
+/** @internal */
+export class ApiReferenceError extends Error
+{
     readonly _tag: string = "ApiReferenceError";
-
-    constructor(message: string, options?: ErrorOptions) {
+    constructor(message: string, options?: ErrorOptions)
+    {
         super(message, options);
         this.name = "ApiReferenceError";
     }
 }
-
-export class ApiReferenceValidationError extends ApiReferenceError {
-    override readonly _tag = "ApiReferenceValidationError";
-
-    constructor(public readonly errors: ReadonlyArray<string>) {
+/** @internal */
+export class ApiReferenceValidationError extends ApiReferenceError
+{
+    override readonly _tag: "ApiReferenceValidationError" =
+        "ApiReferenceValidationError" as const;
+    constructor(public readonly errors: ReadonlyArray<string>)
+    {
         super(`Invalid API-reference dataset: ${errors.join("; ")}`);
         this.name = "ApiReferenceValidationError";
     }
 }
-
-export class ApiReferenceSnapshotError extends ApiReferenceError {
-    override readonly _tag = "ApiReferenceSnapshotError";
-
-    constructor(public readonly path: string, cause: unknown) {
+/** @internal */
+export class ApiReferenceSnapshotError extends ApiReferenceError
+{
+    override readonly _tag: "ApiReferenceSnapshotError" =
+        "ApiReferenceSnapshotError" as const;
+    constructor(
+        public readonly path: string,
+        cause: unknown
+    )
+    {
         super(`API-reference snapshot operation failed for ${path}`, { cause });
         this.name = "ApiReferenceSnapshotError";
     }

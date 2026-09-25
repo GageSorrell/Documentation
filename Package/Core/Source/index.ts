@@ -8,9 +8,7 @@
  * @copyright (c) 2026 Gage Sorrell
  * @license   MIT
  */
-
-/** @module @sorrell/docs-core */
-
 export * from "./Config.js";
+export * from "./Agent.js";
 export * from "./Errors.js";
 export * from "./Schemas.js";

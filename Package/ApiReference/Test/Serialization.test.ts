@@ -9,34 +9,71 @@
  * @license   MIT
  */
 
+import {
+    createApiDataset,
+    recordToAgentDocument,
+    recordToLlmDocument,
+    validateApiDataset
+} from "../Source/Serialization.js";
 import { describe, expect, it } from "vitest";
-import { createApiDataset, recordToLlmDocument, validateApiDataset } from "../Source/Serialization.js";
 import type { ApiReferenceRecord } from "@sorrell/docs-core";
-
 const record: ApiReferenceRecord = {
+    breadcrumbs: [
+        { current: false, label: "API Reference" },
+        { current: true, label: "fixture" }
+    ],
+    categories: [
+        { collapsed: false, id: "functions", label: "Functions", order: 0 }
+    ],
+    declarations: [
+        {
+            categoryId: "functions",
+            description: "Says hello.",
+            id: "hello",
+            kind: "function",
+            name: "hello",
+            signature: "declare function hello(): string"
+        }
+    ],
+    displayName: "fixture",
+    exportCount: 1,
+    module: "fixture",
     packageId: "fixture",
     packageName: "@sorrell/fixture",
-    module: "fixture",
-    displayName: "fixture",
-    version: "1.0.0",
     summary: "A fixture API.",
-    breadcrumbs: [ { label: "API Reference", current: false }, { label: "fixture", current: true } ],
-    categories: [ { id: "functions", label: "Functions", order: 0, collapsed: false } ],
-    declarations: [ { id: "hello", name: "hello", kind: "function", categoryId: "functions", description: "Says hello.", signature: "declare function hello(): string" } ],
-    exportCount: 1
+    version: "1.0.0"
 };
-
-describe("API-reference serialization", () => {
-    it("creates a deterministic, validated dataset", () => {
-        const dataset = createApiDataset([ record ], { generatedAt: "2026-09-24T00:00:00.000Z", sourceRevision: "Master" });
+describe("API-reference serialization", () =>
+{
+    it("creates a deterministic, validated dataset", () =>
+    {
+        const dataset = createApiDataset([ record ], {
+            generatedAt: "2026-09-24T00:00:00.000Z",
+            sourceRevision: "Master"
+        });
         expect(validateApiDataset(dataset).valid).toBe(true);
         expect(dataset.checksum).toHaveLength(64);
-        expect(createApiDataset([ record ], { generatedAt: dataset.generatedAt, sourceRevision: dataset.sourceRevision }).checksum).toBe(dataset.checksum);
+        expect(
+            createApiDataset([ record ], {
+                generatedAt: dataset.generatedAt,
+                sourceRevision: dataset.sourceRevision
+            }).checksum
+        ).toBe(dataset.checksum);
     });
-
-    it("creates an LLM document from a reference record", () => {
+    it("creates an LLM document from a reference record", () =>
+    {
         const document = recordToLlmDocument(record);
         expect(document.title).toBe("fixture");
         expect(document.content).toContain("declare function hello(): string");
+    });
+    it("includes declaration kind and introduction metadata in the agent document", () =>
+    {
+        const document = recordToAgentDocument({
+            ...record,
+            introductionVersion: "1.0.0"
+        });
+        expect(document.kind).toBe("api-module");
+        expect(document.content).toContain("Kind: function");
+        expect(document.content).toContain("Added in 1.0.0");
     });
 });

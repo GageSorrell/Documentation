@@ -1,7 +1,7 @@
 {
     "editor.codeActionsOnSave": { },
     "eslint.options": {
-        "overrideConfigFile": "/Documentation/Configuration/eslint.config.js"
+        "overrideConfigFile": "/SorrellDocumentation/Configuration/eslint.config.js"
     },
     "eslint.enable": true,
     "eslint.nodePath": "node_modules",

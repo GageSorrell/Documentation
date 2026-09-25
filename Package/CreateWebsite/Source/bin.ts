@@ -9,7 +9,6 @@
  * @license   MIT
  */
 
-import { runMain } from "@sorrell/docs-cli";
 import { runDocsCli } from "./Cli.js";
-
+import { runMain } from "@sorrell/docs-cli";
 runMain(runDocsCli(process.argv.slice(2)));

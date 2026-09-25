@@ -10,5 +10,9 @@
  */
 
 import { ArticleExample, ArticleText } from "../../Source/index.js";
-
-export const example = <ArticleExample title="Fixture example"><ArticleText>Example state</ArticleText></ArticleExample>;
+export/** @internal */
+const example = (
+    <ArticleExample title="Fixture example">
+        <ArticleText>Example state</ArticleText>
+    </ArticleExample>
+);

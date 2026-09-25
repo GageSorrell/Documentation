@@ -9,21 +9,17 @@
  * @license   MIT
  */
 
-/** @module @sorrell/docs-ui/CopyForLlm */
+import type { AgentDocument } from "@sorrell/docs-core";
+import { formatAgentDocument } from "@sorrell/docs-core";
+import { useCallback, useState } from "react";
 
-import { useState } from "react";
-import type { LlmDocument } from "./Types.js";
+export/** @internal */
+const formatLlmDocument = formatAgentDocument;
 
-export const formatLlmDocument = (document: LlmDocument): string => [
-    `# ${document.title}`,
-    document.context === undefined ? undefined : `Context: ${document.context}`,
-    document.url === undefined ? undefined : `URL: ${document.url}`,
-    "",
-    document.content.trim()
-].filter((line): line is string => line !== undefined).join("\n");
-
-const copyWithFallback = async (value: string): Promise<void> => {
-    if (typeof navigator !== "undefined" && navigator.clipboard !== undefined) {
+const copyWithFallback = async (value: string): Promise<void> =>
+{
+    if (typeof navigator !== "undefined" && navigator.clipboard !== undefined)
+    {
         await navigator.clipboard.writeText(value);
         return;
     }
@@ -37,18 +33,32 @@ const copyWithFallback = async (value: string): Promise<void> => {
     textarea.remove();
 };
 
-export const CopyForLlmButton = ({ document }: { readonly document: LlmDocument }) => {
+export/** @internal */
+const CopyForLlmButton = ({
+    document
+}: {
+    readonly document: AgentDocument;
+}) =>
+{
     const [ copied, setCopied ] = useState(false);
-    const onCopy = async () => {
-        await copyWithFallback(formatLlmDocument(document));
+
+    const onCopy = useCallback(async () =>
+    {
+        await copyWithFallback(formatAgentDocument(document));
         setCopied(true);
         window.setTimeout(() => setCopied(false), 1600);
-    };
-    return <button aria-live="polite"
-        className="docs-copy-button"
-        onClick={ onCopy }
-        type="button">
-        <span aria-hidden="true">{copied ? "✓" : "⧉"}</span>
-        {copied ? "Copied" : "Copy for LLM"}
-    </button>;
+    }, [ document ]);
+
+    return (
+        <button
+            aria-live="polite"
+            className="docs-copy-button"
+            onClick={ onCopy }
+            type="button">
+            <span aria-hidden="true">
+                { copied ? "✓" : "⧉" }
+            </span>
+            { copied ? "Copied" : "Copy for LLM" }
+        </button>
+    );
 };

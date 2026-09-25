@@ -19,7 +19,7 @@
   "description": "The published dogfood documentation site.",
   "scripts": {
     "api:generate": "node GenerateApi.mjs",
-    "build": "npm run api:generate && astro build && pagefind --site dist --output-path dist/pagefind",
+    "build": "npm run api:generate && astro build && pagefind --site dist --output-path dist/pagefind && node ../node_modules/@sorrell/docs-create-website/Distribution/bin.js agent build --target ..",
     "dev": "npm run api:generate && astro dev",
     "preview": "astro preview",
     "typecheck": "npm run api:generate && astro check"
@@ -29,7 +29,9 @@
     "@pagefind/default-ui": "1.5.2",
     "@sorrell/docs-api-reference": "0.1.0",
     "@sorrell/docs-astro": "0.1.0",
+    "@sorrell/docs-create-website": "0.1.0",
     "@sorrell/docs-core": "0.1.0",
+    "@sorrell/docs-mcp": "0.1.0",
     "astro": "7.3.4"
   },
   "devDependencies": {

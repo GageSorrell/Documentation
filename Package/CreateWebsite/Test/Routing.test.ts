@@ -9,33 +9,107 @@
  * @license   MIT
  */
 
+import {
+    createLandingRewrites,
+    createSnapshotProjects
+} from "../Source/Routing.js";
 import { describe, expect, it } from "vitest";
-import { createLandingRewrites } from "../Source/Routing.js";
-
-describe("generated website routing", () => {
-    it("preserves child base paths and nested assets", () => {
+describe("generated website routing", () =>
+{
+    it("preserves child base paths and nested assets", () =>
+    {
         const result = createLandingRewrites(
             { documentationPrefix: "/docs", storybookPrefix: "/storybook" },
             {
-                documentation: { deploymentId: "docs-1", url: "https://docs.vercel.app/" },
-                landing: { deploymentId: "landing-1", url: "https://landing.vercel.app" },
-                storybook: { deploymentId: "storybook-1", url: "https://storybook.vercel.app/" }
+                documentation: {
+                    deploymentId: "docs-1",
+                    url: "https://docs.vercel.app/"
+                },
+                landing: {
+                    deploymentId: "landing-1",
+                    url: "https://landing.vercel.app"
+                },
+                storybook: {
+                    deploymentId: "storybook-1",
+                    url: "https://storybook.vercel.app/"
+                }
             }
         );
         expect(result.rewrites).toEqual([
-            { source: "/docs", destination: "https://docs.vercel.app/docs" },
-            { source: "/docs/:path*", destination: "https://docs.vercel.app/docs/:path*" },
-            { source: "/storybook", destination: "https://storybook.vercel.app/storybook" },
-            { source: "/storybook/:path*", destination: "https://storybook.vercel.app/storybook/:path*" }
+            { destination: "https://docs.vercel.app/docs", source: "/docs" },
+            {
+                destination: "https://docs.vercel.app/docs/:path*",
+                source: "/docs/:path*"
+            },
+            {
+                destination: "https://storybook.vercel.app/storybook",
+                source: "/storybook"
+            },
+            {
+                destination: "https://storybook.vercel.app/storybook/:path*",
+                source: "/storybook/:path*"
+            }
         ]);
+        expect(result.redirects).toEqual([]);
     });
-
-    it("omits Storybook rewrites when no Storybook deployment exists", () => {
+    it("keeps redirects in the Landing configuration and derives snapshot projects", () =>
+    {
         const result = createLandingRewrites(
-            { documentationPrefix: "/reference", storybookPrefix: "/workbench" },
-            { documentation: { deploymentId: "docs-1", url: "https://docs.vercel.app" }, landing: { deploymentId: "landing-1", url: "https://landing.vercel.app" } }
+            { documentationPrefix: "/docs", storybookPrefix: "/storybook" },
+            {
+                documentation: {
+                    deploymentId: "docs-1",
+                    url: "https://docs.vercel.app"
+                },
+                landing: {
+                    deploymentId: "landing-1",
+                    url: "https://landing.vercel.app"
+                }
+            },
+            [ { from: "/old", status: 301, to: "/docs/new" } ]
+        );
+        expect(result.redirects).toEqual([
+            { destination: "/docs/new", source: "/old", statusCode: 301 }
+        ]);
+        const config = {
+            metadata: { url: "https://example.com" },
+            vercel: {
+                projects: {
+                    documentation: { project: "documentation" },
+                    landing: { project: "landing" }
+                }
+            }
+        } as never;
+        expect(createSnapshotProjects(config).landing.project).toBe(
+            "landing-snapshot"
+        );
+        expect(createSnapshotProjects(config).documentation.project).toBe(
+            "documentation-snapshot"
+        );
+    });
+    it("omits Storybook rewrites when no Storybook deployment exists", () =>
+    {
+        const result = createLandingRewrites(
+            {
+                documentationPrefix: "/reference",
+                storybookPrefix: "/workbench"
+            },
+            {
+                documentation: {
+                    deploymentId: "docs-1",
+                    url: "https://docs.vercel.app"
+                },
+                landing: {
+                    deploymentId: "landing-1",
+                    url: "https://landing.vercel.app"
+                }
+            }
         );
         expect(result.rewrites).toHaveLength(2);
-        expect(result.rewrites.some((rewrite) => rewrite.source.startsWith("/workbench"))).toBe(false);
+        expect(
+            result.rewrites.some((rewrite: VercelRewrite) =>
+                rewrite.source.startsWith("/workbench")
+            )
+        ).toBe(false);
     });
 });

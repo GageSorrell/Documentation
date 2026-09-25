@@ -9,18 +9,25 @@
  * @license   MIT
  */
 
-/** @module @sorrell/docs-react-native-storybook/Controls */
-
 import type { ControlsDefaults } from "./Types.js";
-
-export const defaultControls: Required<Pick<ControlsDefaults, "expanded" | "sort" | "hideNoControlsWarning">> & Pick<ControlsDefaults, "exclude"> = {
-    expanded: true,
-    sort: "requiredFirst",
-    hideNoControlsWarning: true,
-    exclude: []
-};
-
-export const createControlsDefaults = (overrides: ControlsDefaults = {}): ControlsDefaults => {
-    if (overrides.exclude === undefined) { return { ...defaultControls, ...overrides }; }
+export/** @internal */
+const defaultControls: Required<
+    Pick<ControlsDefaults, "expanded" | "sort" | "hideNoControlsWarning">
+> &
+    Pick<ControlsDefaults, "exclude"> = {
+        exclude: [],
+        expanded: true,
+        hideNoControlsWarning: true,
+        sort: "requiredFirst"
+    };
+export/** @internal */
+const createControlsDefaults = (
+    overrides: ControlsDefaults = {}
+): ControlsDefaults =>
+{
+    if (overrides.exclude === undefined)
+    {
+        return { ...defaultControls, ...overrides };
+    }
     return { ...defaultControls, ...overrides, exclude: overrides.exclude };
 };

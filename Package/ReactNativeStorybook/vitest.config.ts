@@ -9,13 +9,14 @@
  * @license   MIT
  */
 
-import { fileURLToPath, URL } from "node:url";
+import { URL, fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
-
 export default defineConfig({
     resolve: {
         alias: {
-            "react-native": fileURLToPath(new URL("./Test/ReactNativeStub.ts", import.meta.url))
+            "react-native": fileURLToPath(
+                new URL("./Test/ReactNativeStub.ts", import.meta.url)
+            )
         }
     },
     test: {

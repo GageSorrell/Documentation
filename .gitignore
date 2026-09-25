@@ -36,3 +36,5 @@ Thumbs.db
 *.har
 *.webm
 screenshots/
+
+.vercel

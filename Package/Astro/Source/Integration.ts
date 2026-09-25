@@ -9,19 +9,27 @@
  * @license   MIT
  */
 
-import type { AstroIntegration } from "astro";
+import type { AstroConfig, AstroIntegration } from "astro";
 import { normalizeDocsPrefix } from "./Routing.js";
 
+/** @internal */
 export interface DocsAstroIntegrationOptions {
     readonly prefix?: string;
     readonly site?: string;
 }
-
-export const docsAstroIntegration = (options: DocsAstroIntegrationOptions = {}): AstroIntegration => {
+export/** @internal */
+const docsAstroIntegration = (
+    options: DocsAstroIntegrationOptions = {}
+): AstroIntegration =>
+{
     const prefix = normalizeDocsPrefix(options.prefix);
+    interface HookArg {
+        readonly updateConfig: (newConfig: Partial<AstroConfig>) => AstroConfig;
+    }
     return {
         hooks: {
-            "astro:config:setup": ({ updateConfig }) => {
+            "astro:config:setup": ({ updateConfig }: HookArg) =>
+            {
                 updateConfig({
                     base: prefix,
                     site: options.site

@@ -1,0 +1,5 @@
+{
+  "extends": "../../Configuration/tsconfig.base.json",
+  "compilerOptions": { "declaration": true, "declarationMap": true, "emitDeclarationOnly": false, "noEmit": false, "outDir": "Distribution", "rootDir": "Source", "tsBuildInfoFile": "../../.cache/mcp.tsbuildinfo" },
+  "include": ["Source/**/*.ts"]
+}

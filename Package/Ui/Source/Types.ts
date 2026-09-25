@@ -9,26 +9,39 @@
  * @license   MIT
  */
 
-/** @module @sorrell/docs-ui/Types */
-
+import type {
+    AgentDocument,
+    ApiReferenceRecord,
+    DesignTokens,
+    LandingContent
+} from "@sorrell/docs-core";
 import type { ReactNode } from "react";
-import type { ApiReferenceRecord, DesignTokens, LandingContent } from "@sorrell/docs-core";
 
-export type ThemeMode = "light" | "dark" | "system";
+/** @internal */
+export type ThemeMode =
+    | "light"
+    | "dark"
+    | "system";
 
-export interface DocumentationNavItem {
+/** @internal */
+export interface DocumentationNavItem
+{
     readonly label: string;
     readonly href: string;
     readonly active?: boolean;
     readonly children?: ReadonlyArray<DocumentationNavItem>;
 }
 
-export interface DocumentationNavGroup {
+/** @internal */
+export interface DocumentationNavGroup
+{
     readonly label: string;
     readonly items: ReadonlyArray<DocumentationNavItem>;
 }
 
-export interface DocumentationShellProps {
+/** @internal */
+export interface DocumentationShellProps
+{
     readonly children: ReactNode;
     readonly title?: string;
     readonly headerLinks?: ReadonlyArray<DocumentationNavItem>;
@@ -38,38 +51,44 @@ export interface DocumentationShellProps {
     readonly repositoryHref?: string;
 }
 
-export interface BreadcrumbItem {
+/** @internal */
+export interface BreadcrumbItem
+{
     readonly label: string;
     readonly href?: string;
     readonly current?: boolean;
 }
 
-export interface LlmDocument {
-    readonly title: string;
-    readonly context?: string;
-    readonly url?: string;
-    readonly content: string;
-}
+/** @internal */
+export type LlmDocument = AgentDocument;
 
-export interface ArticlePageProps {
+/** @internal */
+export interface ArticlePageProps
+{
     readonly title: string;
     readonly description?: string;
     readonly breadcrumbs?: ReadonlyArray<BreadcrumbItem>;
-    readonly document: LlmDocument;
+    readonly document: AgentDocument;
     readonly children: ReactNode;
 }
 
-export interface InstallCommandProps {
+/** @internal */
+export interface InstallCommandProps
+{
     readonly command: string;
     readonly packageName?: string;
 }
 
-export interface ApiReferencePageProps {
+/** @internal */
+export interface ApiReferencePageProps
+{
     readonly record: ApiReferenceRecord;
     readonly navigation?: ReadonlyArray<DocumentationNavGroup>;
 }
 
-export interface LandingPageProps {
+/** @internal */
+export interface LandingPageProps
+{
     readonly content: LandingContent;
     readonly tokens?: DesignTokens;
     readonly installCommand?: string;

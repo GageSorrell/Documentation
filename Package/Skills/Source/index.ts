@@ -8,7 +8,6 @@
  * @copyright (c) 2026 Gage Sorrell
  * @license   MIT
  */
-
 export * from "./Catalog.js";
 export * from "./Errors.js";
 export * from "./Installer.js";

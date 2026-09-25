@@ -15,7 +15,7 @@ export default defineConfig({
     build: {
         format: "directory"
     },
-    integrations: [ mdx(), docsAstroIntegration({ prefix: "/docs", site: "https://sorrell.sh" }) ],
+    integrations: [ mdx(), docsAstroIntegration({ prefix: "/docs", site: "https://docs.sorrell.sh" }) ],
     output: "static",
     srcDir: "./Source"
 });

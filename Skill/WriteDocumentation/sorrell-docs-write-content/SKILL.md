@@ -18,6 +18,18 @@ the page in context and use `sorrell-docs verify` after editing.
 4. Use MDX only when the site's supported primitives add reader value.
 5. Put a Copy for LLM control at the top through the site's standard layout;
    do not add a second page-specific implementation.
+6. Keep the article's Markdown twin agent-readable: supported inline MDX is
+   converted to Markdown during the agent build, while unresolved components
+   are reported as build diagnostics and must be resolved before publishing.
+
+When the `agent` block is enabled, add curated article ids to `agent.essentials`
+only when they belong in the site's short agent index. The generated Markdown
+twin and Copy for LLM output are produced from the same normalized document.
+
+To publish a product skill, set `agent.skill.enabled: true`, provide a
+kebab-case `agent.skill.name`, and write an explicit `agent.description`.
+Descriptions are author-owned: builds reject enabled product skills without
+one.
 
 Use `sorrell-docs story add article` only for native Storybook articles. Web
 documentation belongs in the Documentation application.

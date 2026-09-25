@@ -4,7 +4,7 @@ import { documentationSlug, docsPath, visibleDocumentationPages } from "@sorrell
 import { getCollection } from "astro:content";
 import DocsLayout from "../layouts/DocsLayout.astro";
 
-const copyText = "Search the Sorrell Documentation at https://sorrell.sh/docs/search/";
+const copyText = "Search the Sorrell Documentation at https://docs.sorrell.sh/docs/search/";
 const entries = await getCollection("documentation", ({ data }) => !data.draft);
 const pages = visibleDocumentationPages(entries.map((entry) => ({ ...entry.data, id: entry.id, slug: documentationSlug(entry.id) })));
 ---

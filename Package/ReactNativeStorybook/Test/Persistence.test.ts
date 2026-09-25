@@ -9,20 +9,34 @@
  * @license   MIT
  */
 
+import {
+    createMemorySelectionStorage,
+    decodeSelection,
+    encodeSelection,
+    readSelection,
+    writeSelection
+} from "../Source/Persistence.js";
 import { describe, expect, it } from "vitest";
-import { createMemorySelectionStorage, decodeSelection, encodeSelection, readSelection, writeSelection } from "../Source/Persistence.js";
-
-describe("native Storybook persistence", () => {
-    it("round-trips a story and theme selection", async () => {
+describe("native Storybook persistence", () =>
+{
+    it("round-trips a story and theme selection", async () =>
+    {
         const storage = createMemorySelectionStorage();
-        const selection = { storyId: "article/getting-started", themeMode: "dark" as const };
+        const selection = {
+            storyId: "article/getting-started",
+            themeMode: "dark" as const
+        };
         await writeSelection(storage, "selection", selection);
-        await expect(readSelection(storage, "selection")).resolves.toEqual(selection);
+        await expect(readSelection(storage, "selection")).resolves.toEqual(
+            selection
+        );
         expect(decodeSelection(encodeSelection(selection))).toEqual(selection);
     });
-
-    it("ignores malformed persisted values", () => {
+    it("ignores malformed persisted values", () =>
+    {
         expect(decodeSelection("not-json")).toEqual({});
-        expect(decodeSelection(JSON.stringify({ storyId: 42, themeMode: "neon" }))).toEqual({});
+        expect(
+            decodeSelection(JSON.stringify({ storyId: 42, themeMode: "neon" }))
+        ).toEqual({});
     });
 });

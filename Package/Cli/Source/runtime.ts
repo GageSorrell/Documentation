@@ -12,9 +12,11 @@
 import { NodeRuntime, NodeServices } from "@effect/platform-node";
 import { Effect } from "effect";
 
-export const nodeServicesLayer = NodeServices.layer;
-
-export const provideNodeServices = <A, E, R>(program: Effect.Effect<A, E, R>) =>
-    program.pipe(Effect.provide(NodeServices.layer));
-
-export const runMain = NodeRuntime.runMain;
+export/** @internal */
+const nodeServicesLayer = NodeServices.layer;
+export/** @internal */
+const provideNodeServices = <A, E, R>(
+    program: Effect.Effect<A, E, R>
+) => program.pipe(Effect.provide(NodeServices.layer));
+export/** @internal */
+const runMain = NodeRuntime.runMain;

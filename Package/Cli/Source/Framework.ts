@@ -9,21 +9,30 @@
  * @license   MIT
  */
 
-/** @module @sorrell/docs-cli/Framework */
+import type { Effect, Layer } from "effect";
+import { ManagedRuntime } from "effect";
 
-import { Effect, ManagedRuntime, Layer } from "effect";
-
+/** @internal */
 export interface PromiseHook<Value, Error, Requirements = never> {
-    readonly run: (effect: Effect.Effect<Value, Error, Requirements>) => Promise<Value>;
+    readonly run: (
+        effect: Effect.Effect<Value, Error, Requirements>
+    ) => Promise<Value>;
     readonly dispose: () => Promise<void>;
 }
 
-export const makePromiseHook = <Requirements, LayerError, Value, Error>(
+export/** @internal */
+const makePromiseHook = <
+    Requirements,
+    LayerError,
+    Value,
+    Error
+>(
     layer: Layer.Layer<Requirements, LayerError, never>
-): PromiseHook<Value, Error, Requirements> => {
+): PromiseHook<Value, Error, Requirements> =>
+{
     const runtime = ManagedRuntime.make(layer);
     return {
-        run: (effect) => runtime.runPromise(effect),
-        dispose: () => runtime.dispose()
+        dispose: runtime.dispose,
+        run: runtime.runPromise
     };
 };

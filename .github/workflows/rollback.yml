@@ -1,0 +1,38 @@
+name: Vercel Rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Optional release id from the target Releases directory
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  rollback:
+    name: Restore an exact release manifest
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      SORRELL_DOCS_TARGET: ${{ vars.SORRELL_DOCS_TARGET || '.' }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Install pinned Vercel CLI
+        run: npm install --global vercel@48.10.2
+      - name: Build CLI
+        run: npm run build --workspace @sorrell/docs-create-website
+      - name: Roll back Landing to the recorded release
+        run: node Package/CreateWebsite/Distribution/bin.js deploy rollback ${{ inputs.release }} --target "$SORRELL_DOCS_TARGET"

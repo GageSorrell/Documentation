@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
+import { formatAgentDocument, normalizeAgentMarkdown } from "@sorrell/docs-core";
 import { documentationSlug, docsPath, docsVersionPath, visibleDocumentationPages } from "@sorrell/docs-astro";
 import DocsLayout from "../layouts/DocsLayout.astro";
 import { documentationVersions } from "../Versions.js";
@@ -26,7 +27,15 @@ const entries = await getCollection("documentation", ({ data }) => !data.draft);
 const pages = visibleDocumentationPages(entries.map((item) => ({ ...item.data, id: item.id, slug: documentationSlug(item.id) })));
 const slug = documentationSlug(entry.id);
 const canonicalPath = version === undefined ? docsPath("/docs", slug) : docsVersionPath("/docs", version, slug);
-const copyText = `# ${entry.data.title}\n\nURL: ${new URL(canonicalPath, "https://sorrell.sh").toString()}\n\n${entry.body}`;
+const copyText = formatAgentDocument({
+    id: `article:${version ?? "current"}:${slug || "index"}`,
+    kind: "article",
+    title: entry.data.title,
+    description: entry.data.description,
+    version: version ?? "current",
+    url: new URL(canonicalPath, "https://docs.sorrell.sh").toString(),
+    content: normalizeAgentMarkdown(entry.body ?? "").markdown
+});
 ---
 
 <DocsLayout

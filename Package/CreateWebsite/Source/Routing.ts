@@ -9,44 +9,189 @@
  * @license   MIT
  */
 
-import type { DocsConfig, SiteRouting } from "@sorrell/docs-core";
 import type { DeploymentTarget, WebsiteDeployments } from "./Types.js";
+import type {
+    DocsConfig,
+    Redirect,
+    SiteRouting,
+    VercelProjects
+} from "@sorrell/docs-core";
 
+/** @internal */
 export interface VercelRewrite {
     readonly source: string;
     readonly destination: string;
 }
-
+/** @internal */
+export interface VercelRedirect {
+    readonly source: string;
+    readonly destination: string;
+    readonly statusCode: 301 | 302;
+}
+/** @internal */
+export interface VercelHeader {
+    readonly source: string;
+    readonly headers: ReadonlyArray<{
+        readonly key: string;
+        readonly value: string;
+    }>;
+}
+/** @internal */
 export interface LandingVercelConfig {
     readonly version: 2;
     readonly rewrites: ReadonlyArray<VercelRewrite>;
+    readonly redirects: ReadonlyArray<VercelRedirect>;
+    readonly headers: ReadonlyArray<VercelHeader>;
 }
-
 const normalizedUrl = (url: string): string => url.replace(/\/+$/, "");
-
-const rewriteFor = (prefix: string, deployment: DeploymentTarget): ReadonlyArray<VercelRewrite> => {
+const rewriteFor = (
+    prefix: string,
+    deployment: DeploymentTarget
+): ReadonlyArray<VercelRewrite> =>
+{
     const destination = `${normalizedUrl(deployment.url)}${prefix}`;
     return [
-        { source: prefix, destination },
-        { source: `${prefix}/:path*`, destination: `${destination}/:path*` }
+        { destination, source: prefix },
+        { destination: `${destination}/:path*`, source: `${prefix}/:path*` }
     ];
 };
-
-export const createLandingRewrites = (routing: SiteRouting, deployments: WebsiteDeployments): LandingVercelConfig => ({
-    version: 2,
+export/** @internal */
+const createLandingRewrites = (
+    routing: SiteRouting,
+    deployments: WebsiteDeployments,
+    redirects: ReadonlyArray<Redirect> = []
+): LandingVercelConfig => ({
+    headers: [
+        {
+            headers: [ { key: "X-Robots-Tag", value: "noindex" } ],
+            source: "/llms.txt"
+        },
+        {
+            headers: [ { key: "X-Robots-Tag", value: "noindex" } ],
+            source: `${routing.documentationPrefix}/agent/:path*`
+        },
+        {
+            headers: [ { key: "X-Robots-Tag", value: "noindex" } ],
+            source: `${routing.documentationPrefix}/:path*.md`
+        },
+        ...(deployments.storybook === undefined
+            ? []
+            : [
+                {
+                    headers: [ { key: "X-Robots-Tag", value: "noindex" } ],
+                    source: `${routing.storybookPrefix}/agent/:path*`
+                }
+            ])
+    ],
+    redirects: redirects.map(
+        (redirect: {
+            readonly from: string;
+            readonly to: string;
+            readonly status: 301 | 302;
+        }) => ({
+            destination: redirect.to,
+            source: redirect.from,
+            statusCode: redirect.status
+        })
+    ),
     rewrites: [
         ...rewriteFor(routing.documentationPrefix, deployments.documentation),
-        ...(deployments.storybook === undefined ? [] : rewriteFor(routing.storybookPrefix, deployments.storybook))
-    ]
+        ...(deployments.storybook === undefined
+            ? []
+            : rewriteFor(routing.storybookPrefix, deployments.storybook))
+    ],
+    version: 2
 });
-
-export const createPlaceholderDeployments = (config: DocsConfig): WebsiteDeployments => ({
-    documentation: { deploymentId: "pending-documentation", url: "https://documentation.invalid" },
-    landing: { deploymentId: "pending-landing", url: config.metadata.url || "https://landing.invalid" },
-    ...(config.storybook.enabled ? { storybook: { deploymentId: "pending-storybook", url: "https://storybook.invalid" } } : {})
+export/** @internal */
+const createPlaceholderDeployments = (
+    config: DocsConfig,
+    snapshot: boolean = false
+): WebsiteDeployments => ({
+    documentation: {
+        deploymentId: snapshot
+            ? "snapshot-documentation"
+            : "pending-documentation",
+        url: snapshot
+            ? "https://documentation-snapshot.invalid"
+            : "https://documentation.invalid"
+    },
+    landing: {
+        deploymentId: "pending-landing",
+        url: config.metadata.url || "https://landing.invalid"
+    },
+    ...(config.storybook.enabled
+        ? {
+            storybook: {
+                deploymentId: snapshot
+                    ? "snapshot-storybook"
+                    : "pending-storybook",
+                url: snapshot
+                    ? "https://storybook-snapshot.invalid"
+                    : "https://storybook.invalid"
+            }
+        }
+        : {}),
+    ...(config.agent.mcp.enabled
+        ? {
+            mcp: {
+                deploymentId: snapshot ? "snapshot-mcp" : "pending-mcp",
+                url: snapshot
+                    ? "https://mcp-snapshot.invalid"
+                    : "https://mcp.invalid"
+            }
+        }
+        : {})
 });
-
-export const publicUrl = (siteUrl: string, prefix: string, path = ""): string => {
+export/** @internal */
+const createSnapshotProjects = (
+    config: DocsConfig
+): VercelProjects =>
+{
+    const suffix = (project: string | undefined, fallback: string): string =>
+        `${project ?? fallback}-snapshot`;
+    return {
+        documentation: {
+            ...config.vercel.projects.documentation,
+            project: suffix(
+                config.vercel.projects.documentation.project,
+                "documentation"
+            )
+        },
+        landing: {
+            ...config.vercel.projects.landing,
+            project: suffix(config.vercel.projects.landing.project, "landing")
+        },
+        ...(config.vercel.projects.storybook === undefined
+            ? {}
+            : {
+                storybook: {
+                    ...config.vercel.projects.storybook,
+                    project: suffix(
+                        config.vercel.projects.storybook.project,
+                        "storybook"
+                    )
+                }
+            }),
+        ...(config.vercel.projects.mcp === undefined
+            ? {}
+            : {
+                mcp: {
+                    ...config.vercel.projects.mcp,
+                    project: suffix(
+                        config.vercel.projects.mcp.project,
+                        "mcp"
+                    )
+                }
+            })
+    };
+};
+export/** @internal */
+const publicUrl = (
+    siteUrl: string,
+    prefix: string,
+    path: string = ""
+): string =>
+{
     const normalizedSite = normalizedUrl(siteUrl);
     const normalizedPath = path.replace(/^\/+/, "");
     return `${normalizedSite}${prefix}${normalizedPath === "" ? "" : `/${normalizedPath}`}`;

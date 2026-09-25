@@ -1,18 +1,20 @@
 ---
 import type { ApiReferenceRecord } from "@sorrell/docs-core";
-import { recordToLlmDocument } from "@sorrell/docs-api-reference";
+import { recordToAgentDocument } from "@sorrell/docs-api-reference";
+import { formatAgentDocument } from "@sorrell/docs-core";
 import { canonicalUrl, docsPath } from "@sorrell/docs-astro";
 import { docsUiCss } from "@sorrell/docs-ui";
 
-interface Props {
+interface Props
+{
     readonly record: ApiReferenceRecord;
 }
 
 const { record } = Astro.props as Props;
-const document = recordToLlmDocument(record);
-const copyText = [ `# ${document.title}`, `Context: ${document.context}`, `URL: ${new URL(Astro.url.pathname, "https://sorrell.sh").toString()}`, "", document.content ].join("\n");
+const document = recordToAgentDocument(record);
+const copyText = formatAgentDocument({ ...document, url: new URL(Astro.url.pathname, "https://docs.sorrell.sh").toString() });
 const canonicalPath = Astro.url.pathname;
-const canonical = canonicalUrl("https://sorrell.sh", canonicalPath);
+const canonical = canonicalUrl("https://docs.sorrell.sh", canonicalPath);
 const sourceHref = (source: ApiReferenceRecord["source"]): string | undefined => source === undefined ? undefined : `${source.repositoryUrl}/blob/${source.revision}/${source.file}${source.line === undefined ? "" : `#L${source.line}`}`;
 const declarationsFor = (categoryId: string) => record.declarations.filter((declaration) => declaration.categoryId === categoryId);
 ---
@@ -26,6 +28,7 @@ const declarationsFor = (categoryId: string) => record.declarations.filter((decl
         <meta property="og:description" content={record.summary} />
         <meta property="og:title" content={`${record.displayName} · API Reference`} />
         <link rel="canonical" href={canonical} />
+        <link rel="alternate" type="text/markdown" href={`${canonicalPath}.md`} />
         <title>{record.displayName} · API Reference</title>
     </head>
     <body>

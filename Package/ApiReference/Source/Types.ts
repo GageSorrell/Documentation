@@ -9,8 +9,9 @@
  * @license   MIT
  */
 
-import type { ApiReferenceRecord } from "@sorrell/docs-core";
+import type { AgentDocument, ApiReferenceRecord } from "@sorrell/docs-core";
 
+/** @internal */
 export interface ApiReferencePackageInput {
     readonly id: string;
     readonly name: string;
@@ -18,7 +19,7 @@ export interface ApiReferencePackageInput {
     readonly entryPoints: ReadonlyArray<string>;
     readonly tsconfig?: string;
 }
-
+/** @internal */
 export interface ApiReferenceGenerationOptions {
     readonly packages: ReadonlyArray<ApiReferencePackageInput>;
     readonly repositoryUrl?: string;
@@ -28,7 +29,7 @@ export interface ApiReferenceGenerationOptions {
     readonly generatedAt?: string;
     readonly typedoc?: Readonly<Record<string, unknown>>;
 }
-
+/** @internal */
 export interface ApiReferenceDataset {
     readonly version: 1;
     readonly generatedAt: string;
@@ -36,14 +37,11 @@ export interface ApiReferenceDataset {
     readonly sourceRevision?: string;
     readonly records: ReadonlyArray<ApiReferenceRecord>;
 }
-
-export interface ApiReferenceLlmDocument {
-    readonly title: string;
-    readonly context: string;
-    readonly url?: string;
-    readonly content: string;
-}
-
+/** @internal */
+export type ApiReferenceAgentDocument = AgentDocument;
+/** @internal */
+export type ApiReferenceLlmDocument = ApiReferenceAgentDocument;
+/** @internal */
 export interface ApiReferenceValidationResult {
     readonly valid: boolean;
     readonly errors: ReadonlyArray<string>;

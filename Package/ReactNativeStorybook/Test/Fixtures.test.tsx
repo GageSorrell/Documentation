@@ -9,14 +9,15 @@
  * @license   MIT
  */
 
-import { isValidElement } from "react";
+import { decorators, story } from "./Fixtures/Story.js";
 import { describe, expect, it } from "vitest";
 import { article } from "./Fixtures/Article.js";
 import { example } from "./Fixtures/Example.js";
-import { decorators, story } from "./Fixtures/Story.js";
-
-describe("public native Storybook fixtures", () => {
-    it("discovers stories, examples, and articles through public exports", () => {
+import { isValidElement } from "react";
+describe("public native Storybook fixtures", () =>
+{
+    it("discovers stories, examples, and articles through public exports", () =>
+    {
         expect(isValidElement(story())).toBe(true);
         expect(isValidElement(example)).toBe(true);
         expect(isValidElement(article)).toBe(true);

@@ -9,8 +9,15 @@
  * @license   MIT
  */
 
-import { ArticleText, createNativeDecorators, type NativeStoryRenderer } from "../../Source/index.js";
-
-export const story: NativeStoryRenderer = () => <ArticleText>Fixture story</ArticleText>;
-
-export const decorators = createNativeDecorators("Fixture Story");
+import {
+    ArticleText,
+    type NativeStoryRenderer,
+    createNativeDecorators
+} from "../../Source/index.js";
+export/** @internal */
+const story: NativeStoryRenderer = () => (
+    <ArticleText>Fixture story</ArticleText>
+);
+export/** @internal */
+const decorators =
+    createNativeDecorators("Fixture Story");

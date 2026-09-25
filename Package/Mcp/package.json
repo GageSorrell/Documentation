@@ -1,0 +1,18 @@
+{
+  "name": "@sorrell/docs-mcp",
+  "version": "0.1.0",
+  "description": "Effect MCP server for Sorrell documentation agent corpora.",
+  "author": { "name": "Gage Sorrell", "email": "gage@sorrell.sh", "url": "https://sorrell.sh" },
+  "repository": { "type": "git", "url": "https://github.com/GageSorrell/Documentation/tree/Master#ReadMe", "directory": "Package/Mcp" },
+  "bugs": { "url": "https://github.com/GageSorrell/Documentation/issues" },
+  "license": "MIT",
+  "private": false,
+  "type": "module",
+  "files": ["Distribution", "ReadMe.md"],
+  "main": "./Distribution/index.js",
+  "types": "./Distribution/index.d.ts",
+  "exports": { ".": { "types": "./Distribution/index.d.ts", "import": "./Distribution/index.js" } },
+  "scripts": { "build": "npm run clean && tsc --project tsconfig.json", "clean": "node ../../Script/Release/CleanBuild.mjs", "typecheck": "tsc --project tsconfig.json --noEmit", "test": "vitest run" },
+  "dependencies": { "@effect/platform-node": "4.0.0-rc.117", "@sorrell/docs-core": "0.1.0", "effect": "4.0.0-rc.117" },
+  "devDependencies": { "@effect/vitest": "4.0.0-rc.117", "vitest": "5.0.1" }
+}

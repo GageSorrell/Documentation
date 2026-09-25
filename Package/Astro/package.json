@@ -31,7 +31,8 @@
     }
   },
   "scripts": {
-    "build": "tsc --project tsconfig.json",
+    "build": "npm run clean && tsc --project tsconfig.json",
+    "clean": "node ../../Script/Release/CleanBuild.mjs",
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {

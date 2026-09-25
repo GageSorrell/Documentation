@@ -8,46 +8,58 @@
  * @copyright (c) 2026 Gage Sorrell
  * @license   MIT
  */
-
-/** @module @sorrell/docs-core/Config */
-
-import { Effect, Result, Schema, SchemaIssue } from "effect";
-import { DocsConfigError, type ConfigPathSegment, type DocsConfigDiagnostic } from "./Errors.js";
 import {
-    ApiGenerationConfigSchema,
-    DocumentationVersionSchema,
-    DocsConfigInputSchema,
-    GeneratedManifestSchema,
-    LandingContentSchema,
-    NavigationSchema,
-    PackageReferenceSchema,
-    RedirectSchema,
-    SiteMetadataSchema,
-    StorybookConfigSchema,
-    SiteRoutingSchema,
-    VercelConfigSchema,
-    DesignTokensSchema,
+    type AgentConfig,
+    AgentConfigSchema,
+    type AgentSkillConfig,
+    AgentSkillConfigSchema,
     type ApiGenerationConfig,
+    ApiGenerationConfigSchema,
     type DesignTokens,
-    type DocumentationVersion,
+    DesignTokensSchema,
     type DocsConfigInput,
+    DocsConfigInputSchema,
+    type DocumentationVersion,
+    DocumentationVersionSchema,
     type GeneratedManifest,
+    GeneratedManifestSchema,
     type LandingContent,
+    LandingContentSchema,
     type Navigation,
+    type NavigationItemInput,
+    NavigationSchema,
     type PackageReference,
+    PackageReferenceSchema,
     type Redirect,
+    RedirectSchema,
     type SiteMetadata,
-    type StorybookConfig,
+    SiteMetadataSchema,
     type SiteRouting,
-    type VercelConfig
+    SiteRoutingSchema,
+    type StorybookConfig,
+    StorybookConfigSchema,
+    type VercelConfig,
+    VercelConfigSchema
 } from "./Schemas.js";
-
+import {
+    type ConfigPathSegment,
+    type DocsConfigDiagnostic,
+    DocsConfigError
+} from "./Errors.js";
+import { Effect, Result, Schema, SchemaIssue } from "effect";
 const decodeAs = <Value>(schema: unknown, value: unknown): Value =>
-    Schema.decodeUnknownSync(schema as Schema.ConstraintDecoder<unknown, never>)(value) as Value;
-
-const omitUndefined = (value: Record<string, unknown>): Record<string, unknown> =>
-    Object.fromEntries(Object.entries(value).filter(([ , entry ]) => entry !== undefined));
-
+    Schema.decodeUnknownSync(
+        schema as Schema.ConstraintDecoder<unknown, never>
+    )(value) as Value;
+const omitUndefined = (
+    value: Record<string, unknown>
+): Record<string, unknown> =>
+    Object.fromEntries(
+        Object.entries(value).filter(
+            ([ , entry ]: [string, unknown]) => entry !== undefined
+        )
+    );
+/** @internal */
 export interface DocsConfig {
     readonly metadata: SiteMetadata;
     readonly tokens: DesignTokens;
@@ -58,176 +70,539 @@ export interface DocsConfig {
     readonly redirects: ReadonlyArray<Redirect>;
     readonly storybook: StorybookConfig;
     readonly api: ApiGenerationConfig;
+    readonly agent: AgentConfig;
+    readonly mcpEndpoint: string;
     readonly routing: SiteRouting;
     readonly vercel: VercelConfig;
     readonly manifests: ReadonlyArray<GeneratedManifest>;
 }
-
 const defaultColors = {
-    background: "#ffffff",
-    foreground: "#111111",
-    muted: "#6b7280",
-    border: "#e5e7eb",
     accent: "#2563eb",
-    codeBackground: "#f3f4f6"
+    background: "#ffffff",
+    border: "#e5e7eb",
+    codeBackground: "#f3f4f6",
+    foreground: "#111111",
+    muted: "#6b7280"
 } as const;
-
 const defaultDarkColors = {
-    background: "#09090b",
-    foreground: "#f4f4f5",
-    muted: "#a1a1aa",
-    border: "#27272a",
     accent: "#93c5fd",
-    codeBackground: "#18181b"
+    background: "#09090b",
+    border: "#27272a",
+    codeBackground: "#18181b",
+    foreground: "#f4f4f5",
+    muted: "#a1a1aa"
 } as const;
-
-export const DefaultDesignTokens: DesignTokens = {
-    light: defaultColors,
-    dark: defaultDarkColors
+export /** @internal */ const DefaultDesignTokens: DesignTokens = {
+    dark: defaultDarkColors,
+    light: defaultColors
 };
-
-const mergeColors = (base: DesignTokens["light"], value: Partial<DesignTokens["light"]> | undefined) => ({
+const mergeColors = (
+    base: DesignTokens["light"],
+    value: Partial<DesignTokens["light"]> | undefined
+) => ({
     ...base,
     ...value
 });
-
-const sortedByOrder = <Value extends { readonly order: number; readonly id: string }>(values: ReadonlyArray<Value>): ReadonlyArray<Value> =>
-    [ ...values ].sort((left, right) => left.order - right.order || left.id.localeCompare(right.id));
-
-const uniqueDiagnostics = (diagnostics: ReadonlyArray<DocsConfigDiagnostic>): ReadonlyArray<DocsConfigDiagnostic> => {
+const sortedByOrder = <
+    Value extends {
+        readonly order: number;
+        readonly id: string;
+    }
+>(
+    values: ReadonlyArray<Value>
+): ReadonlyArray<Value> =>
+    [ ...values ].sort(
+        (left: Value, right: Value) =>
+            left.order - right.order || left.id.localeCompare(right.id)
+    );
+const uniqueDiagnostics = (
+    diagnostics: ReadonlyArray<DocsConfigDiagnostic>
+): ReadonlyArray<DocsConfigDiagnostic> =>
+{
     const seen = new Set<string>();
-    return diagnostics.filter((diagnostic) => {
+    return diagnostics.filter((diagnostic: DocsConfigDiagnostic) =>
+    {
         const key = `${diagnostic.path.join(".")}:${diagnostic.message}`;
-        if (seen.has(key)) {return false;}
+        if (seen.has(key))
+        {
+            return false;
+        }
         seen.add(key);
         return true;
     });
 };
-
 const routePrefixesOverlap = (left: string, right: string): boolean =>
-    left === right || left.startsWith(`${right}/`) || right.startsWith(`${left}/`);
-
-const issuePath = (issue: SchemaIssue.Issue, prefix: ReadonlyArray<ConfigPathSegment> = []): ReadonlyArray<DocsConfigDiagnostic> => {
-    switch (issue._tag) {
+    left === right ||
+    left.startsWith(`${right}/`) ||
+    right.startsWith(`${left}/`);
+const issuePath = (
+    issue: SchemaIssue.Issue,
+    prefix: ReadonlyArray<ConfigPathSegment> = []
+): ReadonlyArray<DocsConfigDiagnostic> =>
+{
+    switch (issue._tag)
+    {
         case "Pointer":
-            return issuePath(issue.issue, [ ...prefix, ...issue.path.filter((segment): segment is ConfigPathSegment => typeof segment === "string" || typeof segment === "number") ]);
+            return issuePath(issue.issue, [
+                ...prefix,
+                ...issue.path.filter(
+                    (segment: PropertyKey): segment is ConfigPathSegment =>
+                        typeof segment === "string" ||
+                        typeof segment === "number"
+                )
+            ]);
         case "Composite":
         case "AnyOf":
-            return issue.issues.flatMap((child) => issuePath(child, prefix));
+            return issue.issues.flatMap((child: SchemaIssue.Issue) =>
+                issuePath(child, prefix)
+            );
         case "Filter":
         case "Encoding":
             return issuePath(issue.issue, prefix);
         default:
-            return [ {
-                path: prefix,
-                message: SchemaIssue.makeFormatterDefault()(issue),
-                expected: "valid configuration value"
-            } ];
+            return [
+                {
+                    expected: "valid configuration value",
+                    message: SchemaIssue.makeFormatterDefault()(issue),
+                    path: prefix
+                }
+            ];
     }
 };
-
-const decodeInput = (input: unknown): Result.Result<DocsConfigInput, DocsConfigError> => {
+const decodeInput = (
+    input: unknown
+): Result.Result<DocsConfigInput, DocsConfigError> =>
+{
     const decoded = Schema.decodeUnknownResult(
-        DocsConfigInputSchema as unknown as Schema.ConstraintDecoder<DocsConfigInput, never>
+        DocsConfigInputSchema as unknown as Schema.ConstraintDecoder<
+            DocsConfigInput,
+            never
+        >
     )(input);
-    if (Result.isFailure(decoded)) {
-        return Result.fail(new DocsConfigError({ diagnostics: uniqueDiagnostics(issuePath(decoded.failure.issue)) }));
+    if (Result.isFailure(decoded))
+    {
+        return Result.fail(
+            new DocsConfigError({
+                diagnostics: uniqueDiagnostics(
+                    issuePath(decoded.failure.issue)
+                )
+            })
+        );
     }
     return Result.succeed(decoded.success);
 };
-
-const duplicateDiagnostics = (name: string, values: ReadonlyArray<{ readonly id: string }>): ReadonlyArray<DocsConfigDiagnostic> => {
+const duplicateDiagnostics = (
+    name: string,
+    values: ReadonlyArray<{
+        readonly id: string;
+    }>
+): ReadonlyArray<DocsConfigDiagnostic> =>
+{
     const counts = new Map<string, number>();
-    for (const value of values) {counts.set(value.id, (counts.get(value.id) ?? 0) + 1);}
+    for (const value of values)
+    {
+        counts.set(value.id, (counts.get(value.id) ?? 0) + 1);
+    }
     return [ ...counts.entries() ]
-        .filter(([ , count ]) => count > 1)
-        .map(([ id ]) => ({ path: [ name, id ], message: `duplicate id "${id}"`, expected: "unique identifiers" }));
+        .filter(([ , count ]: [string, number]) => count > 1)
+        .map(([ id ]: [string, number]) => ({
+            expected: "unique identifiers",
+            message: `duplicate id "${id}"`,
+            path: [ name, id ]
+        }));
 };
-
-const validate = (config: DocsConfig): ReadonlyArray<DocsConfigDiagnostic> => {
+const validate = (config: DocsConfig): ReadonlyArray<DocsConfigDiagnostic> =>
+{
     const diagnostics: Array<DocsConfigDiagnostic> = [];
-    if (config.metadata.name.trim() === "") {diagnostics.push({ path: [ "metadata", "name" ], message: "must not be empty" });}
-    if (config.metadata.title.trim() === "") {diagnostics.push({ path: [ "metadata", "title" ], message: "must not be empty" });}
-    if (config.metadata.url !== "" && !/^https?:\/\//.test(config.metadata.url)) {
-        diagnostics.push({ path: [ "metadata", "url" ], message: "must be an http(s) URL" });
+    if (config.metadata.name.trim() === "")
+    {
+        diagnostics.push({
+            message: "must not be empty",
+            path: [ "metadata", "name" ]
+        });
+    }
+    if (config.metadata.title.trim() === "")
+    {
+        diagnostics.push({
+            message: "must not be empty",
+            path: [ "metadata", "title" ]
+        });
+    }
+    if (
+        config.metadata.url !== "" &&
+        !/^https?:\/\//.test(config.metadata.url)
+    )
+    {
+        diagnostics.push({
+            message: "must be an http(s) URL",
+            path: [ "metadata", "url" ]
+        });
+    }
+    if (
+        config.agent.skill.enabled &&
+        (config.agent.description === undefined ||
+            config.agent.description.trim() === "")
+    )
+    {
+        diagnostics.push({
+            message: "is required when agent.skill.enabled is true",
+            path: [ "agent", "description" ]
+        });
+    }
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(config.agent.skill.name))
+    {
+        diagnostics.push({
+            message: "must be a kebab-case identifier",
+            path: [ "agent", "skill", "name" ]
+        });
     }
     diagnostics.push(...duplicateDiagnostics("versions", config.versions));
     diagnostics.push(...duplicateDiagnostics("packages", config.packages));
-    for (const [ index, redirect ] of config.redirects.entries()) {
-        if (!redirect.from.startsWith("/")) {diagnostics.push({ path: [ "redirects", index, "from" ], message: "must begin with /" });}
-        if (!redirect.to.startsWith("/")) {diagnostics.push({ path: [ "redirects", index, "to" ], message: "must begin with /" });}
+    for (const [ index, redirect ] of config.redirects.entries())
+    {
+        if (!redirect.from.startsWith("/"))
+        {
+            diagnostics.push({
+                message: "must begin with /",
+                path: [ "redirects", index, "from" ]
+            });
+        }
+        if (!redirect.to.startsWith("/"))
+        {
+            diagnostics.push({
+                message: "must begin with /",
+                path: [ "redirects", index, "to" ]
+            });
+        }
     }
-    for (const [ index, version ] of config.versions.entries()) {
-        if (!/^[a-z0-9][a-z0-9-]*$/.test(version.id)) {diagnostics.push({ path: [ "versions", index, "id" ], message: "must be a lowercase URL-safe identifier" });}
+    for (const [ index, version ] of config.versions.entries())
+    {
+        if (!/^[a-z0-9][a-z0-9-]*$/.test(version.id))
+        {
+            diagnostics.push({
+                message: "must be a lowercase URL-safe identifier",
+                path: [ "versions", index, "id" ]
+            });
+        }
     }
-    for (const [ name, prefix ] of Object.entries(config.routing)) {
-        if (!prefix.startsWith("/")) {diagnostics.push({ path: [ "routing", name ], message: "must begin with /" });}
-        if (prefix !== "/" && prefix.endsWith("/")) {diagnostics.push({ path: [ "routing", name ], message: "must not end with /" });}
-        if (prefix === "/") {diagnostics.push({ path: [ "routing", name ], message: "must not be / because / belongs to the landing package" });}
+    for (const [ name, prefix ] of Object.entries(config.routing))
+    {
+        if (!prefix.startsWith("/"))
+        {
+            diagnostics.push({
+                message: "must begin with /",
+                path: [ "routing", name ]
+            });
+        }
+        if (prefix !== "/" && prefix.endsWith("/"))
+        {
+            diagnostics.push({
+                message: "must not end with /",
+                path: [ "routing", name ]
+            });
+        }
+        if (prefix === "/")
+        {
+            diagnostics.push({
+                message:
+                    "must not be / because / belongs to the landing package",
+                path: [ "routing", name ]
+            });
+        }
     }
-    if (routePrefixesOverlap(config.routing.documentationPrefix, config.routing.storybookPrefix)) {
-        diagnostics.push({ path: [ "routing" ], message: "documentationPrefix and storybookPrefix must not overlap" });
+    if (
+        routePrefixesOverlap(
+            config.routing.documentationPrefix,
+            config.routing.storybookPrefix
+        )
+    )
+    {
+        diagnostics.push({
+            message: "documentationPrefix and storybookPrefix must not overlap",
+            path: [ "routing" ]
+        });
     }
-    if (config.vercel.projects.landing.routePrefix !== "/") {
-        diagnostics.push({ path: [ "vercel", "projects", "landing", "routePrefix" ], message: "must be / because Landing owns the public root" });
+    if (config.vercel.projects.landing.routePrefix !== "/")
+    {
+        diagnostics.push({
+            message: "must be / because Landing owns the public root",
+            path: [ "vercel", "projects", "landing", "routePrefix" ]
+        });
     }
-    if (config.vercel.projects.documentation.routePrefix !== config.routing.documentationPrefix) {
-        diagnostics.push({ path: [ "vercel", "projects", "documentation", "routePrefix" ], message: "must match routing.documentationPrefix" });
+    if (
+        config.vercel.projects.documentation.routePrefix !==
+        config.routing.documentationPrefix
+    )
+    {
+        diagnostics.push({
+            message: "must match routing.documentationPrefix",
+            path: [ "vercel", "projects", "documentation", "routePrefix" ]
+        });
     }
-    if (config.vercel.projects.storybook !== undefined && config.vercel.projects.storybook.routePrefix !== config.routing.storybookPrefix) {
-        diagnostics.push({ path: [ "vercel", "projects", "storybook", "routePrefix" ], message: "must match routing.storybookPrefix" });
+    if (
+        config.vercel.projects.storybook !== undefined &&
+        config.vercel.projects.storybook.routePrefix !==
+            config.routing.storybookPrefix
+    )
+    {
+        diagnostics.push({
+            message: "must match routing.storybookPrefix",
+            path: [ "vercel", "projects", "storybook", "routePrefix" ]
+        });
+    }
+    if (config.agent.mcp.enabled && config.metadata.url === "")
+    {
+        diagnostics.push({
+            message: "is required when agent.mcp.enabled is true",
+            path: [ "metadata", "url" ]
+        });
+    }
+    if (config.agent.mcp.enabled && config.vercel.projects.mcp === undefined)
+    {
+        diagnostics.push({
+            message: "is required when agent.mcp.enabled is true",
+            path: [ "vercel", "projects", "mcp" ]
+        });
     }
     return uniqueDiagnostics(diagnostics);
 };
-
-export const normalizeDocsConfig = (input: DocsConfigInput): DocsConfig => {
+export /** @internal */ const normalizeDocsConfig = (
+    input: DocsConfigInput
+): DocsConfig =>
+{
     const metadataInput = input.metadata ?? {};
-    const metadata = decodeAs<SiteMetadata>(SiteMetadataSchema, omitUndefined({
-        name: metadataInput.name ?? "Sorrell Documentation",
-        title: metadataInput.title ?? metadataInput.name ?? "Sorrell Documentation",
-        description: metadataInput.description ?? "Documentation generated with Sorrell documentation tooling.",
-        url: metadataInput.url ?? "",
-        logo: metadataInput.logo,
-        repository: metadataInput.repository
-    }));
+    const metadata = decodeAs<SiteMetadata>(
+        SiteMetadataSchema,
+        omitUndefined({
+            description:
+                metadataInput.description ??
+                "Documentation generated with Sorrell documentation tooling.",
+            logo: metadataInput.logo,
+            name: metadataInput.name ?? "Sorrell Documentation",
+            repository: metadataInput.repository,
+            title:
+                metadataInput.title ??
+                metadataInput.name ??
+                "Sorrell Documentation",
+            url: metadataInput.url ?? ""
+        })
+    );
     const tokenInput = input.tokens ?? {};
     const tokens = decodeAs<DesignTokens>(DesignTokensSchema, {
-        light: mergeColors(defaultColors, tokenInput.light),
-        dark: mergeColors(defaultDarkColors, tokenInput.dark)
+        dark: mergeColors(defaultDarkColors, tokenInput.dark),
+        light: mergeColors(defaultColors, tokenInput.light)
     });
-    const navigation = decodeAs<Navigation>(NavigationSchema as Schema.Schema<Navigation>, {
-        groups: (input.navigation?.groups ?? []).map((group) => ({
-            id: group.id,
-            label: group.label,
-            items: group.items.map((item) => ({ ...item, kind: item.kind ?? "page" }))
-        }))
+    const navigation = decodeAs<Navigation>(
+        NavigationSchema as Schema.Schema<Navigation>,
+        {
+            groups: (input.navigation?.groups ?? []).map(
+                (group: {
+                    readonly id: string;
+                    readonly items: ReadonlyArray<NavigationItemInput>;
+                    readonly label: string;
+                }) => ({
+                    id: group.id,
+                    items: group.items.map((item: NavigationItemInput) => ({
+                        ...item,
+                        kind: item.kind ?? "page"
+                    })),
+                    label: group.label
+                })
+            )
+        }
+    );
+    const versions = sortedByOrder(
+        (
+            input.versions ?? [
+                {
+                    current: true,
+                    directory: ".",
+                    id: "current",
+                    label: "Current",
+                    order: 0
+                }
+            ]
+        ).map(
+            (
+                version: {
+                    readonly id: string;
+                    readonly version?: string;
+                    readonly label?: string;
+                    readonly href?: string;
+                    readonly current?: boolean;
+                    readonly order?: number;
+                    readonly directory?: string;
+                },
+                index: number
+            ) =>
+                decodeAs<DocumentationVersion>(
+                    DocumentationVersionSchema,
+                    omitUndefined({
+                        current: version.current ?? index === 0,
+                        directory: version.directory ?? version.id,
+                        href: version.href,
+                        id: version.id,
+                        label: version.label ?? version.version ?? version.id,
+                        order: version.order ?? index,
+                        version: version.version
+                    })
+                )
+        )
+    );
+    const packages = [ ...(input.packages ?? []) ]
+        .map(
+            (value: {
+                readonly id: string;
+                readonly name: string;
+                readonly version?: string;
+                readonly source?: {
+                    readonly url: string;
+                    readonly branch?: string;
+                    readonly directory?: string;
+                };
+                readonly description?: string;
+                readonly directory?: string;
+            }) => ({ ...value })
+        )
+        .sort(
+            (
+                left: {
+                    id: string;
+                    name: string;
+                    version?: string;
+                    source?: {
+                        readonly url: string;
+                        readonly branch?: string;
+                        readonly directory?: string;
+                    };
+                    description?: string;
+                    directory?: string;
+                },
+                right: {
+                    id: string;
+                    name: string;
+                    version?: string;
+                    source?: {
+                        readonly url: string;
+                        readonly branch?: string;
+                        readonly directory?: string;
+                    };
+                    description?: string;
+                    directory?: string;
+                }
+            ) => left.id.localeCompare(right.id)
+        )
+        .map(
+            (value: {
+                id: string;
+                name: string;
+                version?: string;
+                source?: {
+                    readonly url: string;
+                    readonly branch?: string;
+                    readonly directory?: string;
+                };
+                description?: string;
+                directory?: string;
+            }) =>
+                decodeAs<PackageReference>(
+                    PackageReferenceSchema,
+                    omitUndefined({
+                        description: value.description,
+                        directory: value.directory,
+                        id: value.id,
+                        name: value.name,
+                        source: value.source,
+                        version: value.version
+                    })
+                )
+        );
+    const landing = decodeAs<LandingContent>(
+        LandingContentSchema,
+        omitUndefined({
+            description: input.landing?.description ?? metadata.description,
+            primaryAction: input.landing?.primaryAction,
+            sections: (input.landing?.sections ?? []).map(
+                (section: {
+                    readonly id: string;
+                    readonly title: string;
+                    readonly href?: string;
+                    readonly body?: string;
+                }) => ({
+                    ...section,
+                    body: section.body ?? ""
+                })
+            ),
+            title: input.landing?.title ?? metadata.title
+        })
+    );
+    const redirects = [ ...(input.redirects ?? []) ]
+        .map(
+            (redirect: {
+                readonly from: string;
+                readonly to: string;
+                readonly status?: 301 | 302;
+            }) =>
+                decodeAs<Redirect>(RedirectSchema, {
+                    from: redirect.from,
+                    status: redirect.status ?? 301,
+                    to: redirect.to
+                })
+        )
+        .sort(
+            (
+                left: {
+                    readonly from: string;
+                    readonly status: 301 | 302;
+                    readonly to: string;
+                },
+                right: {
+                    readonly from: string;
+                    readonly status: 301 | 302;
+                    readonly to: string;
+                }
+            ) => left.from.localeCompare(right.from)
+        );
+    const storybook = decodeAs<StorybookConfig>(
+        StorybookConfigSchema,
+        omitUndefined({
+            command: input.storybook?.command,
+            directory: input.storybook?.directory,
+            enabled: input.storybook?.enabled ?? false,
+            stories: input.storybook?.stories ?? [],
+            url: input.storybook?.url
+        })
+    );
+    const api = decodeAs<ApiGenerationConfig>(
+        ApiGenerationConfigSchema,
+        omitUndefined({
+            enabled: input.api?.enabled ?? false,
+            entryPoints: input.api?.entryPoints ?? [],
+            outputDirectory: input.api?.outputDirectory ?? "Documentation/Api",
+            packages: input.api?.packages ?? [],
+            sourceRepository: input.api?.sourceRepository,
+            typedoc: input.api?.typedoc ?? {}
+        })
+    );
+    const defaultSkillName =
+        (metadata.name || "product-documentation")
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-|-$/g, "") || "product-documentation";
+    const skill = decodeAs<AgentSkillConfig>(AgentSkillConfigSchema, {
+        enabled: input.agent?.skill?.enabled ?? false,
+        name: input.agent?.skill?.name ?? defaultSkillName
     });
-    const versions = sortedByOrder((input.versions ?? [ { id: "current", label: "Current", directory: ".", current: true, order: 0 } ]).map((version, index) => decodeAs<DocumentationVersion>(DocumentationVersionSchema, omitUndefined({
-        id: version.id,
-        label: version.label ?? version.version ?? version.id,
-        version: version.version,
-        href: version.href,
-        directory: version.directory ?? version.id,
-        current: version.current ?? index === 0,
-        order: version.order ?? index
-    }))));
-    const packages = [ ...(input.packages ?? []) ].map((value) => ({ ...value })).sort((left, right) => left.id.localeCompare(right.id)).map((value) => decodeAs<PackageReference>(PackageReferenceSchema, omitUndefined({
-        id: value.id,
-        name: value.name,
-        version: value.version,
-        description: value.description,
-        directory: value.directory,
-        source: value.source
-    })));
-    const landing = decodeAs<LandingContent>(LandingContentSchema, omitUndefined({
-        title: input.landing?.title ?? metadata.title,
-        description: input.landing?.description ?? metadata.description,
-        sections: (input.landing?.sections ?? []).map((section) => ({ ...section, body: section.body ?? "" })),
-        primaryAction: input.landing?.primaryAction
-    }));
-    const redirects = [ ...(input.redirects ?? []) ].map((redirect) => decodeAs<Redirect>(RedirectSchema, { from: redirect.from, to: redirect.to, status: redirect.status ?? 301 })).sort((left, right) => left.from.localeCompare(right.from));
-    const storybook = decodeAs<StorybookConfig>(StorybookConfigSchema, omitUndefined({ enabled: input.storybook?.enabled ?? false, directory: input.storybook?.directory, command: input.storybook?.command, url: input.storybook?.url, stories: input.storybook?.stories ?? [] }));
-    const api = decodeAs<ApiGenerationConfig>(ApiGenerationConfigSchema, omitUndefined({ enabled: input.api?.enabled ?? false, entryPoints: input.api?.entryPoints ?? [], packages: input.api?.packages ?? [], outputDirectory: input.api?.outputDirectory ?? "Documentation/Api", typedoc: input.api?.typedoc ?? {}, sourceRepository: input.api?.sourceRepository }));
+    const agent = decodeAs<AgentConfig>(
+        AgentConfigSchema,
+        omitUndefined({
+            description: input.agent?.description,
+            enabled: input.agent?.enabled ?? true,
+            essentials: input.agent?.essentials ?? [],
+            mcp: { enabled: input.agent?.mcp?.enabled ?? false },
+            skill
+        })
+    );
     const routing = decodeAs<SiteRouting>(SiteRoutingSchema, {
         documentationPrefix: input.routing?.documentationPrefix ?? "/docs",
         storybookPrefix: input.routing?.storybookPrefix ?? "/storybook"
@@ -237,41 +612,121 @@ export const normalizeDocsConfig = (input: DocsConfigInput): DocsConfig => {
     const landingProject = projectInput?.landing;
     const documentationProject = projectInput?.documentation;
     const storybookProject = projectInput?.storybook;
-    const projectConfig = (value: typeof landingProject, directory: string, routePrefix: string, fallbackProject?: string) => omitUndefined({
-        id: value?.id,
-        project: value?.project ?? fallbackProject,
-        directory: value?.directory ?? directory,
-        routePrefix: value?.routePrefix ?? routePrefix,
-        origin: value?.origin,
-        productionBranch: value?.productionBranch ?? vercelInput?.productionBranch,
-        team: value?.team ?? vercelInput?.team
-    });
+    const mcpProject = projectInput?.mcp;
+    const projectConfig = (
+        value: typeof landingProject,
+        directory: string,
+        routePrefix: string,
+        fallbackProject?: string
+    ) =>
+        omitUndefined({
+            directory: value?.directory ?? directory,
+            id: value?.id,
+            origin: value?.origin,
+            productionBranch:
+                value?.productionBranch ?? vercelInput?.productionBranch,
+            project: value?.project ?? fallbackProject,
+            routePrefix: value?.routePrefix ?? routePrefix,
+            team: value?.team ?? vercelInput?.team
+        });
     const projects = omitUndefined({
-        landing: projectConfig(landingProject, "Landing", "/", vercelInput?.project),
-        documentation: projectConfig(documentationProject, "Documentation", routing.documentationPrefix),
-        storybook: storybook.enabled ? projectConfig(storybookProject, "Storybook", routing.storybookPrefix) : undefined
+        documentation: projectConfig(
+            documentationProject,
+            "Documentation",
+            routing.documentationPrefix
+        ),
+        landing: projectConfig(
+            landingProject,
+            "Landing",
+            "/",
+            vercelInput?.project
+        ),
+        mcp: agent.mcp.enabled
+            ? projectConfig(mcpProject, "Mcp", "/")
+            : undefined,
+        storybook: storybook.enabled
+            ? projectConfig(
+                storybookProject,
+                "Storybook",
+                routing.storybookPrefix
+            )
+            : undefined
     });
-    const vercel = decodeAs<VercelConfig>(VercelConfigSchema, omitUndefined({ enabled: vercelInput?.enabled ?? false, project: vercelInput?.project, team: vercelInput?.team, outputDirectory: vercelInput?.outputDirectory ?? ".", productionBranch: vercelInput?.productionBranch ?? "Master", domains: vercelInput?.domains ?? [], projects }));
-    const manifests = (input.manifests ?? []).map((manifest) => decodeAs<GeneratedManifest>(GeneratedManifestSchema, manifest));
-    return { metadata, tokens, navigation, versions, packages, landing, redirects, storybook, api, routing, vercel, manifests };
+    const vercel = decodeAs<VercelConfig>(
+        VercelConfigSchema,
+        omitUndefined({
+            domains: vercelInput?.domains ?? [],
+            enabled: vercelInput?.enabled ?? false,
+            outputDirectory: vercelInput?.outputDirectory ?? ".",
+            productionBranch: vercelInput?.productionBranch ?? "Master",
+            project: vercelInput?.project,
+            projects,
+            team: vercelInput?.team
+        })
+    );
+    const manifests = (input.manifests ?? []).map(
+        (manifest: {
+            readonly kind: "site" | "api-reference" | "storybook" | "project";
+            readonly path: string;
+            readonly revision?: string;
+            readonly checksum?: string;
+            readonly generatedAt?: string;
+        }) => decodeAs<GeneratedManifest>(GeneratedManifestSchema, manifest)
+    );
+    const mcpEndpoint =
+        metadata.url === ""
+            ? "https://mcp.localhost"
+            : `https://mcp.${new URL(metadata.url).host.replace(/^www\./u, "")}`;
+    return {
+        agent,
+        api,
+        landing,
+        manifests,
+        mcpEndpoint,
+        metadata,
+        navigation,
+        packages,
+        redirects,
+        routing,
+        storybook,
+        tokens,
+        vercel,
+        versions
+    };
 };
-
-export const decodeDocsConfig = (input: unknown): Result.Result<DocsConfig, DocsConfigError> => {
+export /** @internal */ const decodeDocsConfig = (
+    input: unknown
+): Result.Result<DocsConfig, DocsConfigError> =>
+{
     const decoded = decodeInput(input);
-    if (Result.isFailure(decoded)) {return Result.fail(decoded.failure);}
+    if (Result.isFailure(decoded))
+    {
+        return Result.fail(decoded.failure);
+    }
     const normalized = normalizeDocsConfig(decoded.success);
     const diagnostics = validate(normalized);
-    return diagnostics.length > 0 ? Result.fail(new DocsConfigError({ diagnostics })) : Result.succeed(normalized);
+    return diagnostics.length > 0
+        ? Result.fail(new DocsConfigError({ diagnostics }))
+        : Result.succeed(normalized);
 };
-
-export const decodeDocsConfigSync = (input: unknown): DocsConfig => {
+export /** @internal */ const decodeDocsConfigSync = (
+    input: unknown
+): DocsConfig =>
+{
     const decoded = decodeDocsConfig(input);
-    if (Result.isFailure(decoded)) {throw decoded.failure;}
+    if (Result.isFailure(decoded))
+    {
+        throw decoded.failure;
+    }
     return decoded.success;
 };
-
-export const decodeDocsConfigEffect = (input: unknown): Effect.Effect<DocsConfig, DocsConfigError> =>
-    Effect.suspend(() => {
+export /** @internal */ const decodeDocsConfigEffect = (
+    input: unknown
+): Effect.Effect<DocsConfig, DocsConfigError> =>
+    Effect.suspend(() =>
+    {
         const decoded = decodeDocsConfig(input);
-        return Result.isFailure(decoded) ? Effect.fail(decoded.failure) : Effect.succeed(decoded.success);
+        return Result.isFailure(decoded)
+            ? Effect.fail(decoded.failure)
+            : Effect.succeed(decoded.success);
     });
