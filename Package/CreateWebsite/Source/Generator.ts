@@ -273,7 +273,7 @@ const documentationFiles = (
                 astro: "7.3.4"
             },
             {
-                "@astrojs/check": "0.9.4",
+                "@astrojs/check": "0.9.10",
                 "@sorrell/tsconfig": "2.1.0",
                 typescript: "6.0.2"
             }

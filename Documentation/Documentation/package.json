@@ -36,7 +36,7 @@
     "astro": "7.3.4"
   },
   "devDependencies": {
-    "@astrojs/check": "0.9.4",
+    "@astrojs/check": "0.9.10",
     "@sorrell/tsconfig": "2.1.0",
     "pagefind": "1.5.2",
     "typescript": "6.0.2"
