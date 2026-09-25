@@ -1,0 +1,8 @@
+---
+interface Props { readonly name: string; readonly repositoryHref: string }
+const { name, repositoryHref } = Astro.props
+---
+<footer class="landing-footer">
+  <p>{name} documentation</p>
+  {repositoryHref && <a href={repositoryHref} target="_blank" rel="noopener noreferrer">GitHub ↗</a>}
+</footer>

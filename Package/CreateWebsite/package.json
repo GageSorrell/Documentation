@@ -18,7 +18,7 @@
   "license": "MIT",
   "private": false,
   "type": "module",
-  "files": ["Distribution", "ReadMe.md"],
+  "files": ["Distribution", "Templates", "ReadMe.md"],
   "main": "./Distribution/index.js",
   "types": "./Distribution/index.d.ts",
   "exports": {

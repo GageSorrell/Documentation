@@ -22,7 +22,7 @@ handing off repository changes.
 | `Package` | Published npm packages. Directory names are PascalCase and package manifests set `"private": false`. |
 | `Resource` | Shared development assets that are not packaged with a consumer. |
 | `Script` | Private packages and repository automation. Directory names are PascalCase. |
-| `Skill` | Installable AI skill source bundles, one PascalCase directory per skill. |
+| `Skill` | Installable AI skill source bundles, one directory per skill, named after the skill. |
 | `Website` | Web-package development sandbox; it is not the published documentation site. |
 | `Storybook` | Independent web Storybook application for `@sorrell/docs-storybook-web`, built at `/storybook/`. |
 

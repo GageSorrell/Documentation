@@ -1,0 +1,13 @@
+{
+  "extends": "@sorrell/tsconfig/base",
+  "compilerOptions": {
+    "noEmit": true,
+    "baseUrl": ".",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "paths": {
+      "@/*": ["./Source/*"]
+    }
+  },
+  "include": [".astro/types.d.ts", "**/*"]
+}

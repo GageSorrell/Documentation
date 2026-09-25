@@ -1,0 +1,28 @@
+:root {
+  --background: {{LIGHT_BACKGROUND}};
+  --foreground: {{LIGHT_FOREGROUND}};
+  --muted: {{LIGHT_CODE_BACKGROUND}};
+  --muted-foreground: {{LIGHT_MUTED}};
+  --border: {{LIGHT_BORDER}};
+  --border-strong: color-mix(in srgb, {{LIGHT_BORDER}}, {{LIGHT_FOREGROUND}} 24%);
+  --accent: {{LIGHT_ACCENT}};
+  --code-background: {{LIGHT_CODE_BACKGROUND}};
+  --code-foreground: {{LIGHT_FOREGROUND}};
+  --landing-soft: {{LIGHT_MUTED}};
+  --landing-panel: color-mix(in srgb, {{LIGHT_BACKGROUND}} 96%, {{LIGHT_FOREGROUND}});
+  --landing-panel-strong: color-mix(in srgb, {{LIGHT_BACKGROUND}} 91%, {{LIGHT_FOREGROUND}});
+}
+[data-theme="dark"], .dark {
+  --background: {{DARK_BACKGROUND}};
+  --foreground: {{DARK_FOREGROUND}};
+  --muted: {{DARK_CODE_BACKGROUND}};
+  --muted-foreground: {{DARK_MUTED}};
+  --border: {{DARK_BORDER}};
+  --border-strong: color-mix(in srgb, {{DARK_BORDER}}, {{DARK_FOREGROUND}} 28%);
+  --accent: {{DARK_ACCENT}};
+  --code-background: {{DARK_CODE_BACKGROUND}};
+  --code-foreground: {{DARK_FOREGROUND}};
+  --landing-soft: {{DARK_MUTED}};
+  --landing-panel: color-mix(in srgb, {{DARK_BACKGROUND}} 92%, {{DARK_FOREGROUND}});
+  --landing-panel-strong: color-mix(in srgb, {{DARK_BACKGROUND}} 86%, {{DARK_FOREGROUND}});
+}

@@ -1,0 +1,28 @@
+import tailwindcss from "@tailwindcss/vite";
+import { fileURLToPath } from "node:url";
+import { defineConfig } from "astro/config";
+
+export default defineConfig({
+    build: { format: "directory" },
+    outDir: "./Distribution",
+    output: "static",
+    server: { host: "127.0.0.1", port: 4173 },
+    srcDir: "./Source",
+    vite: {
+        plugins: [ tailwindcss() ],
+        resolve: {
+            alias: {
+                "@": fileURLToPath(new URL("./Source/", import.meta.url))
+            }
+        },
+        server: {
+            proxy: {
+                {{DOCUMENTATION_PREFIX}}: "http://localhost:4321",
+                {{STORYBOOK_PREFIX}}: {
+                    target: "http://localhost:6006",
+                    rewrite: (path) => path.replace({{STORYBOOK_PREFIX}}, "")
+                }
+            }
+        }
+    }
+});

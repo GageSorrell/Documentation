@@ -231,8 +231,8 @@ product and are distinct from the six workflow skills, which describe
 Use reusable Effect services for workspace discovery, package-manager
 selection, templates, safe targets, manifests, Git, Vercel, archives,
 checksums, retries, and atomic promotion. Keep npm and GitHub Actions thin.
-Store six skill bundles under PascalCase `Skill` directories with canonical
-kebab-case install names, use `sorrell-docs` in examples, install to Codex by
+Store six skill bundles directly under `Skill` in directories named after
+their canonical kebab-case install names, use `sorrell-docs` in examples, install to Codex by
 default or Claude Code with `--agent claude`, and refuse unmanaged installation
 collisions.
 

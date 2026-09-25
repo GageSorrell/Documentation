@@ -24,6 +24,7 @@ import type {
     GeneratedWebsitePackage,
     WebsiteGenerationOptions
 } from "./Types.js";
+import { landingTemplateFiles } from "./LandingTemplate.js";
 import {
     createLandingRewrites,
     createPlaceholderDeployments,
@@ -69,149 +70,7 @@ const landingFiles = (
         ...(config.agent.mcp.enabled ? [ "Mcp" ] : [])
     ];
     return [
-        {
-            content: packageManifest(
-                "generated-documentation-landing",
-                {
-                    build: "vite build",
-                    dev: "vite --host 127.0.0.1 --port 4173",
-                    verify: "vite build"
-                },
-                {
-                    "@sorrell/docs-core": "0.1.0",
-                    "@sorrell/docs-ui": "0.1.0",
-                    "@vitejs/plugin-react": "6.1.1",
-                    react: "19.2.3",
-                    "react-dom": "19.2.3",
-                    vite: "8.3.0"
-                },
-                {
-                    "@sorrell/tsconfig": "2.1.0",
-                    "@types/react": "19.3.0",
-                    "@types/react-dom": "19.3.0",
-                    typescript: "6.0.2"
-                }
-            ),
-            path: "Landing/package.json"
-        },
-        { content: baseTsconfig(), path: "Landing/tsconfig.json" },
-        {
-            content: `<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
-        <title>${html(config.landing.title)}</title>
-    </head>
-    <body>
-        <div id="root"></div>
-        <script type="module" src="/Source/main.tsx"></script>
-    </body>
-</html>`,
-            path: "Landing/index.html"
-        },
-        {
-            content: `import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
-
-export default defineConfig({
-    base: "/",
-    build: { outDir: "Distribution" },
-    plugins: [react()],
-    server: {
-        proxy: {
-            "${config.routing.documentationPrefix}": "http://localhost:4321",
-            "${config.routing.storybookPrefix}": {
-                target: "http://localhost:6006",
-                rewrite: (path) => path.replace(${JSON.stringify(config.routing.storybookPrefix)}, "")
-            }
-        }
-    }
-});
-`,
-            path: "Landing/vite.config.ts"
-        },
-        {
-            content: `import { createRoot } from "react-dom/client";
-import {
-    Cta,
-    createThemeCss,
-    DocsFooter,
-    DocsHeader,
-    Faq,
-    LandingPage,
-    LandingSection,
-    QuoteRail,
-    ThemeProvider,
-    docsUiCss
-} from "@sorrell/docs-ui";
-import { content, tokens } from "./Content.js";
-import "./Tokens.css";
-
-const links = ${JSON.stringify([
-    { href: `${config.routing.documentationPrefix}/`, label: "Docs" },
-    ...(config.storybook.enabled
-        ? [ { href: `${config.routing.storybookPrefix}/`, label: "Storybook" } ]
-        : [])
-])};
-
-const Landing = () => (
-    <ThemeProvider initialMode="system">
-        <style>{docsUiCss}</style>
-        <style>{createThemeCss(tokens)}</style>
-        <div className="docs-site">
-            <DocsHeader
-                links={ links }
-                repositoryHref={ ${JSON.stringify(config.metadata.repository?.url ?? "")} }
-                title={ ${JSON.stringify(config.metadata.title)} } />
-            <main>
-                <LandingPage
-                    content={ content }
-                    installCommand="npm install ${config.metadata.name}"
-                >
-                {content.sections.map((section) => (
-                    <LandingSection key={ section.id } title={ section.title }>
-                        <p>{ section.body }</p>
-                    </LandingSection>
-                ))}
-                <LandingSection eyebrow="From the community" title="Built to be read">
-                    <QuoteRail
-                        author="Sorrell Documentation"
-                        quote="A single source of truth for people and the tools that help them build."
-                    />
-                </LandingSection>
-                <LandingSection title="Frequently asked questions">
-                    <Faq items={[
-                        { question: "Where do I start?", answer: "Read the documentation, then explore the component stories." },
-                        { question: "Can I copy pages for an LLM?", answer: "Every article and reference page exposes a Copy for LLM action." }
-                    ]} />
-                </LandingSection>
-                <Cta href={ content.primaryAction?.href ?? "${config.routing.documentationPrefix}/" }
-                    label={ content.primaryAction?.label ?? "Read the docs" }
-                    title="Build something worth documenting." />
-                    <DocsFooter>{ ${JSON.stringify(config.metadata.description)} }</DocsFooter>
-                </LandingPage>
-            </main>
-        </div>
-    </ThemeProvider>
-);
-
-createRoot(document.getElementById("root")!).render(<Landing />);
-`,
-            path: "Landing/Source/main.tsx"
-        },
-        {
-            content: `import type { DesignTokens, LandingContent } from "@sorrell/docs-core";
-
-export const content = ${JSON.stringify(config.landing, null, 4)} as const satisfies LandingContent;
-export const tokens = ${JSON.stringify(config.tokens, null, 4)} as const satisfies DesignTokens;
-`,
-            path: "Landing/Source/Content.ts"
-        },
-        {
-            content: ":root { color-scheme: light dark; }\n",
-            path: "Landing/Source/Tokens.css"
-        },
+        ...landingTemplateFiles(config),
         {
             content: json(config.vercel.projects.landing),
             path: "Landing/VercelProject.json"

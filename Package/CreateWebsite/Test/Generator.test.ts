@@ -13,6 +13,85 @@ import { describe, expect, it } from "vitest";
 import { createGeneratedWebsite } from "../Source/Generator.js";
 describe("three-package website generation", () =>
 {
+    it("generates the ported Astro landing composition and interactive components", () =>
+    {
+        const website = createGeneratedWebsite({ target: "generated" });
+        const contents = new Map(
+            website.files.map((file: GeneratedWebsiteFile) => [ file.path, file.content ])
+        );
+        const landingPackage = JSON.parse(contents.get("Landing/package.json") ?? "{}");
+        const landingTsconfig = JSON.parse(contents.get("Landing/tsconfig.json") ?? "{}");
+        expect(landingTsconfig.compilerOptions.moduleResolution).toBe("Bundler");
+        expect(landingPackage.scripts).toEqual({
+            build: "astro build",
+            dev: "astro dev --host 127.0.0.1 --port 4173",
+            verify: "astro check"
+        });
+        expect(contents.has("Landing/Source/main.tsx")).toBe(false);
+        expect(contents.has("Landing/vite.config.ts")).toBe(false);
+        expect(contents.get("Landing/astro.config.mjs")).toContain("outDir: \"./Distribution\"");
+        expect(contents.get("Landing/Source/pages/index.astro")).toContain(
+            "import BaseLayout from \"../layouts/BaseLayout.astro\""
+        );
+        expect(contents.get("Landing/Source/pages/index.astro")).not.toContain("@/layouts/");
+        expect(contents.get("Landing/Source/components/landing/sections/LandingHero.astro"))
+            .toContain("@lucide/astro/icons/arrow-right");
+        expect(contents.get("Landing/Source/components/landing/LandingPage.astro"))
+            .toContain("LandingCallToAction");
+        expect(contents.get("Landing/Source/components/landing/sections/LandingProblem.astro"))
+            .toContain("LandingComplexityChart");
+        expect(contents.get("Landing/Source/components/landing/sections/LandingQuotes.astro"))
+            .toContain(".effect-landing-quote-button");
+        expect(contents.get("Landing/Source/components/landing/LandingInstallCommand.astro"))
+            .toMatch(/npm[\s\S]*pnpm[\s\S]*yarn[\s\S]*bun[\s\S]*deno/);
+        expect(contents.get("Landing/Source/components/landing/LandingInstallCommand.astro"))
+            .toContain("fallbackCopy(value)");
+        expect(contents.get("Landing/Source/components/landing/LandingGridRails.astro"))
+            .toContain("landing-grid-rails");
+        expect(contents.get("Landing/Source/styles/tokens.css"))
+            .toContain("[data-theme=\"dark\"]");
+    });
+    it("interpolates site identity, routes, actions, and theme tokens into the Astro landing source", () =>
+    {
+        const website = createGeneratedWebsite({
+            config: {
+                landing: {
+                    description: "A widget docs starter.",
+                    primaryAction: { href: "/start", label: "Start here" },
+                    sections: [],
+                    title: "Widget Documentation"
+                },
+                metadata: {
+                    description: "Widget docs.",
+                    logo: "/assets/widget.svg",
+                    name: "@example/widget",
+                    repository: { url: "https://github.com/example/widget" },
+                    title: "Widget",
+                    url: "https://example.test"
+                },
+                routing: { documentationPrefix: "/reference", storybookPrefix: "/stories" },
+                storybook: { enabled: true },
+                tokens: { light: { accent: "#f00" } }
+            },
+            target: "generated"
+        });
+        const contents = new Map(
+            website.files.map((file: GeneratedWebsiteFile) => [ file.path, file.content ])
+        );
+        expect(contents.get("Landing/Source/pages/index.astro")).toContain("logo: \"/assets/widget.svg\"");
+        expect(contents.get("Landing/Source/pages/index.astro")).toContain("name: \"@example/widget\"");
+        expect(contents.get("Landing/Source/pages/index.astro")).toContain("Widget Documentation");
+        expect(contents.get("Landing/Source/pages/index.astro")).toContain("href: \"/reference/v1/onboarding/introduction\"");
+        expect(contents.get("Landing/Source/pages/index.astro")).toContain("primaryCta: {\"href\":\"/start\",\"label\":\"Start here\"}");
+        expect(contents.get("Landing/Source/pages/index.astro")).toContain("href: \"/stories/\"");
+        expect(contents.get("Landing/Source/pages/index.astro")).toContain("question: \"What does the package render?\"");
+        expect(contents.get("Landing/Source/lib/landing.ts")).not.toContain("LANDING_CONFIG");
+        expect(contents.get("Landing/Source/styles/tokens.css")).toContain("--accent: #f00;");
+        expect(contents.get("Landing/astro.config.mjs")).toContain("\"/reference\"");
+        expect(contents.get("Landing/astro.config.mjs")).toContain("\"/stories\"");
+        expect(contents.get("Landing/astro.config.mjs")).toContain("\"/reference\":");
+        expect(contents.get("Landing/astro.config.mjs")).not.toContain("\"\"/reference\"\"");
+    });
     it("generates Landing and Documentation without Storybook by default", () =>
     {
         const website = createGeneratedWebsite({
