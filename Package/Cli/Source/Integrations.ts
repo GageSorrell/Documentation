@@ -393,10 +393,10 @@ export class VercelService extends Context.Service<
                                 : []),
                             ...(options?.name === undefined
                                 ? []
-                                : [ "--name", options.name ]),
+                                : [ "--project", options.name ]),
                             ...(options?.team === undefined
                                 ? []
-                                : [ "--team", options.team ]),
+                                : [ "--scope", options.team ]),
                             "--yes",
                             "--json"
                         ]).pipe(

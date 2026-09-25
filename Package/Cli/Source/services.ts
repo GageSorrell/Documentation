@@ -486,6 +486,12 @@ export class CommandRunner extends Context.Service<
                             const exitCode = Number(result.exitCode);
                             if (exitCode !== 0)
                             {
+                                const output = [
+                                    result.stderr.trim(),
+                                    result.stdout.trim()
+                                ]
+                                    .filter((value: string) => value !== "")
+                                    .join("\n");
                                 return yield* Effect.fail(
                                     processFailure(
                                         command,
@@ -493,7 +499,10 @@ export class CommandRunner extends Context.Service<
                                         new Error(
                                             "Child process " +
                                                 "exited " +
-                                                "unsuccessfully"
+                                                "unsuccessfully" +
+                                                (output === ""
+                                                    ? ""
+                                                    : `:\n${output}`)
                                         ),
                                         exitCode,
                                         result.stdout,
