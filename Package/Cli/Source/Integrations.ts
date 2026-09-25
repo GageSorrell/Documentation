@@ -9,6 +9,7 @@
 
 import { type CommandResult, CommandRunner } from "./services.js";
 import { Context, Effect, Layer, Redacted, Schedule } from "effect";
+import { createRequire } from "node:module";
 import { DeploymentEnvironment } from "./Environment.js";
 import {
     DocsArchiveError,
@@ -46,10 +47,11 @@ export interface VercelDeploymentInspection
 const ansiEscape = String.fromCharCode(27);
 const ansiPattern = new RegExp(`${ansiEscape}\\[[0-?]*[ -/]*[@-~]`, "g");
 const stripAnsi = (value: string): string => value.replace(ansiPattern, "");
-const vercelExecutable = process.platform === "win32" ? "npx.cmd" : "npx";
+const require = createRequire(import.meta.url);
+const vercelExecutable = process.execPath;
+const vercelScript = require.resolve("vercel/dist/vc.js");
 const vercelCommand = (args: ReadonlyArray<string>): ReadonlyArray<string> => [
-    "--no-install",
-    "vercel",
+    vercelScript,
     ...args
 ];
 const parseDeployment = (raw: string): VercelDeploymentResult =>
