@@ -40,6 +40,7 @@ export interface VercelHeader {
 export interface LandingVercelConfig {
     readonly buildCommand?: "npm run build";
     readonly installCommand?: "npm install";
+    readonly outputDirectory?: "Distribution";
     readonly version: 2;
     readonly rewrites: ReadonlyArray<VercelRewrite>;
     readonly redirects: ReadonlyArray<VercelRedirect>;
@@ -87,6 +88,7 @@ const createLandingRewrites = (
             ])
     ],
     installCommand: "npm install",
+    outputDirectory: "Distribution",
     redirects: redirects.map(
         (redirect: {
             readonly from: string;
