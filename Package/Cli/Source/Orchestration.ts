@@ -72,7 +72,7 @@ export class AutomationOrchestrator extends Context.Service<
                                     )
                                 )
                             ),
-                        Effect.succeed([])
+                        Effect.succeed([ ])
                     )
             })
         );
